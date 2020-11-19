@@ -1,0 +1,26 @@
+.contenedor{
+    text-align: center;
+   
+    padding: 30px;
+}
+.rig{
+    border-radius: 5px 0px 0px 5px !important;
+}
+.lef{
+
+    border-radius: 0px 5px 5px 0px !important;
+}
+.mgtop{
+    margin-top: 10px;
+}
+.stylecenter{
+    justify-content: center !important;
+    text-align: center !important;
+}
+.listState{
+    cursor: pointer;
+    color: black !important;
+}
+.hover{
+    cursor: pointer;
+}

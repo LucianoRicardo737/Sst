@@ -1,0 +1,8 @@
+.marginbot{
+    margin-bottom: 10px;
+}
+.overflow{
+    overflow-x: auto;
+    height: 450px !important;
+    width: 100%;
+}
