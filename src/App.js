@@ -10,10 +10,13 @@ import Navegation from './components/layout/Navegation';
 import Login from './components/auth/Login';
 import Sales from './components/routes/Sales';
 
-
+import Test from './testIo';
+import socket from './io';
 
 
 function App() {
+
+  socket.emit('conectado', "Hola desde cliente");
 
   const [userData, setUserData]=useState({
     token:undefined,
@@ -55,19 +58,20 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="App roboto">
 
       <Router>
-      <UserContext.Provider value={{userData, setUserData}}> 
+      <UserContext.Provider value={{userData, setUserData}}>
       <Navegation/>
       <Route path='/login'  component={Login}/>
-  
-    
+
+
+
       <Route path='/ventas' component={Sales} />
       </UserContext.Provider>
-      <Route path='/' exact/>
+      <Route path='/' exact component={Test}/>
      </Router>
-     
+
     </div>
   );
 }

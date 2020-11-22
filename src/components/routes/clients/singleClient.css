@@ -10,7 +10,12 @@
     width: 100%;
 }
 .wid{
- 
     height: 390px !important;
     width: 100%;
+}
+.titleFont{
+  font-size: 22px;
+}
+.op50{
+  opacity: 0.6;
 }

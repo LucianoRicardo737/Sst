@@ -45,24 +45,24 @@ const CreateClient = () => {
           const config = { headers:{
             'labLERsst-auth-token':token
           }};
-  
+
           //enviamos la info con el token
           await Axios.post(`http://${IP}:${PORT}/clientes/nuevoCliente`,newClient, config);
-         
-         
-          
-  
+
+
+
+
           //limpiando los inputs
           let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea");
           let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea");
           for(let clearInput of clearInputs)
           clearInput.value = "";
           console.log(clearInput)
-  
-          
+
+
           //limpiando el estado
-         
-          
+
+
           // setNewClient(initialState);
           //refresh a la lista de clientes
           listAllClients();
@@ -71,10 +71,10 @@ const CreateClient = () => {
           console.log(error)
         }
       }
-  
+
         //Todos los clientes
         const {setClients}=useContext(RefreshClientsContext);
-      
+
           //peticion al servidor
       const listAllClients = async () =>{
         try {
@@ -87,105 +87,105 @@ const CreateClient = () => {
         } catch (error) {
           console.log(error)
         }
-    
+
       };
 
 
     return (
-       
+
 
 
 
  <div className="row ">
-     
+
   <div className="col-lg-12">
 
         <h3>NUEVO CLIENTE</h3>
       </div>
   <div className="col-md-4 marginbot">
-    
-    <input 
-    type="text" 
-    className="form-control" 
-    placeholder="Nombre" 
+
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Nombre"
     name='name'
     id='name'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-4 marginbot">
-    <input 
-    type="text" 
-    className="form-control" 
-    placeholder="Apellido" 
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Apellido"
     name='lastname'
     id='lastname'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-4 marginbot">
-    <input 
-    type="number" 
-    className="form-control" 
-    placeholder="Dni" 
+    <input
+    type="number"
+    className="form-control"
+    placeholder="Dni"
     name='dni'
     id='dni'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-6 marginbot">
-    <input 
-    type="text" 
-    className="form-control" 
-    placeholder="Direccion" 
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Direccion"
     name='address'
     id='address'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-6 marginbot">
-    <input 
-    type="text" 
-    className="form-control" 
-    placeholder="Ciudad" 
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Ciudad"
     name='city'
     id='city'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-12 marginbot">
-    <input 
-    type="text" 
-    className="form-control" 
-    placeholder="Telefono" 
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Telefono"
     name='telephone'
     id='telephone'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-12 marginbot">
-  <textarea 
-  className="form-control" 
-  placeholder='Observaciones extras' 
+  <textarea
+  className="form-control"
+  placeholder='Observaciones extras'
   name='observation'
   id='observation'
   onChange={handleChangeText} ></textarea>
   </div>
 
   <div className="col-md-12 btn-group">
+
+        <button
+        type="button"
+        data-dismiss="modal"
+        onClick={()=>submit()}
+        className="btn btn-success fif ">
+            Agregar Cliente</button>
         <button 
-        type="button" 
-        className="btn btn-secondary fif " 
+        type="button"
+        className="btn btn-secondary fif "
         data-dismiss="modal"
         onClick={hideNewClient}>
             Cerrar</button>
-        <button 
-        type="button" 
-        data-dismiss="modal" 
-        onClick={()=>submit()} 
-        className="btn btn-success fif ">
-            Agregar Cliente</button>
       </div>
 
  </div>
 
-        
+
     )
 }
 
 export default CreateClient
-        

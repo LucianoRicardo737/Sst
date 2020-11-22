@@ -3,7 +3,6 @@ import { useContext} from 'react'
 import {IP, PORT} from '../../../env';
 import Axios from 'axios';
 
-
 import './client.css'
 import SearchOrdersContext from '../../../context/SearchOrdersContext';
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
@@ -32,11 +31,11 @@ const Clients = () => {
       setSeOrHideNewOrder(false)
       setSeOrHideNewClient(true);
   }
-    
+
     //Todos los clientes
      const {clients}=useContext(RefreshClientsContext);
 
-   
+
     //ver cliente
     const seeClient = async (e)=>{
       let token = localStorage.getItem('auth-token');
@@ -47,89 +46,88 @@ const Clients = () => {
 
 
       let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + e, config);
-     
 
-     
+
+
       setDataClient(client.data);
       setSeOrHideOrders(false);
     }
 
-    
-      
 
-     
+
       let searchFilter = clients.filter(function(client){return client.name.toLowerCase().includes(searchClients.toLowerCase())||
       client.dni.toString().includes(searchClients.toString())||
       client.lastname.toLowerCase().includes(searchClients.toLowerCase())||
       client.telephone.toString().includes(searchClients.toString())
-     
+
       })
+
+
 
     return (
         <>
 
-
-
           <div className=''>
 
-          <h3>Clientes</h3>
-            <div className='input-group '>
-            <button
-            onClick={showNewClient}
-            className='btn btn-info rig'
-            >Nuevo Cliente</button>
-            <input 
+            <div className='modal-header '>
+
+
+
+              <div className='titleFontClients'>
+                <span >Clientes</span>
+              </div>
+
+            </div>
+            <div className='input-group mt-1 '>
+
+                <button
+                onClick={showNewClient}
+                className='btn btn-info rig'
+                >Nuevo Cliente</button>
+
+            <input
             placeholder='Buscar cliente'
             type='text'
             id='searchClient'
             onChange={(e)=>setSearchClients(e.target.value)}
-            className='form-control inputSearch  lef'
+            className='form-control inputSearch  border border-info'
             />
             </div>
-           
-              <table className="table mgtop  ">
-              <thead>
+
+              <table className="table mt-1">
+              <thead >
                   <tr>
                     <th scope="col">DNI</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Telefono</th>
-                    <th scope="col">Acciones</th>
                   </tr>
                 </thead>
               </table>
-              <div className='overflow '>
-            <table className="table table-sm  table-hover">
-              
+              <div className='overflow'>
+            <table className="table table-hover">
+
         <tbody>
 
 
             {
              searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(client =>
-                
+
                 {
                 return(
                   <tr key={client._id}>
-          <th scope='row'>{client.dni}</th>
+          <th scope='row'>
+            <button
+            onClick={(e)=>seeClient(e.target.value)}
+            value={client._id}
+            className='btn btn-link'
+              >{client.dni}
+            </button>
+          </th>
                       <td>{client.name}</td>
                       <td>{client.lastname}</td>
                       <td>{client.telephone}</td>
-                      <td>
-                          <div className='btn-group'>
-                          <button 
-                          onClick={(e)=>seeClient(e.target.value)}
-                          value={client._id} className='btn btn-outline-info'>
-                            Ver
-                          </button>
-                          {/* <button 
-                          onClick={(e)=>seeClient(e.target.value)}
-                          value={client._id} className='btn btn-outline-success'>
-                            Ordenes
-                          </button> */}
-                          </div>
-                          
-                      </td>
-            </tr>     
+            </tr>
           )
         })
       }

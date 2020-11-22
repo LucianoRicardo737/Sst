@@ -1,5 +1,8 @@
-.overflow{
+/* .overflow{
     overflow-x: scroll;
     height: 450px !important;
     width: 100%;
+} */
+.titleFontOrders{
+    font-size: 22px;
 }

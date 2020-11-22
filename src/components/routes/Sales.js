@@ -4,6 +4,7 @@ import './sales.css'
 import SearchOrdersConntext from '../../context/SearchOrdersContext'
 import SeOrHideOrdersContext from '../../context/SeOrHideOrdersContext'
 import ClientDataContext from '../../context/ClientDataContext'
+import OrderDataContext from '../../context/OrderDataContext'
 import RefreshClientsContext from '../../context/RefreshClientsContext';
 import RefreshOrderContext from '../../context/RefreshOrderContext';
 
@@ -15,21 +16,27 @@ import Orders from './orders/Orders';
 import SingleClient from './clients/SingleClient';
 import CreateClient from './clients/CreateClient';
 import CreateOrder from './orders/CreateOrder';
+import { SingleOrder } from './orders/SingleOrder';
 
 const Sales = () => {
   //contexto para busqueda en ordenes
-  const [searchOrders, setSearchOrders]=useState('')
+  const [searchOrders, setSearchOrders]=useState('');
   //contexto para busqueda en clientes
-  const [searchClients, setSearchClients]=useState('')
+  const [searchClients, setSearchClients]=useState('');
   //mostrar u ocultar ordenes/cliente
-  const [seOrHideOrders, setSeOrHideOrders]=useState(true)
+  const [seOrHideOrders, setSeOrHideOrders]=useState(true);
     //mostrar u ocultar nuevo cliente
-    const [seOrHideNewClient, setSeOrHideNewClient]=useState(false)
-     //mostrar u ocultar nuevo cliente
-     const [seOrHideNewOrder, setSeOrHideNewOrder]=useState(false)
+    const [seOrHideNewClient, setSeOrHideNewClient]=useState(false);
+     //mostrar u ocultar nueva orden
+    const [seOrHideNewOrder, setSeOrHideNewOrder]=useState(false);
+     //mostrar u ocultar clientes/ orden unica
+    const [seOrHIdeOrder, setSeOrHideOrder] = useState(false);
+
 
   //data del cliente a mostrar
   const [dataClient, setDataClient]=useState([]);
+  //data de la orden a mostarar
+  const [dataOrder, setDataOrder]=useState([]);
 
   //actalizar lista de clientes
    //todos los clientes
@@ -51,7 +58,7 @@ const Sales = () => {
         } catch (error) {
           console.log(error)
         }
-    
+
       };
 
       const listAllOrders = async () =>{
@@ -74,42 +81,42 @@ const Sales = () => {
       },[]);
 
 
-    
-   
 
-    return ( 
+
+
+    return (
         <>
         <div className='contenedor'>
 
 <div className='row'>
 <div className='col-lg-12'>
-<SeOrHideOrdersContext.Provider 
+<SeOrHideOrdersContext.Provider
   value={{
     seOrHideNewClient,
     setSeOrHideNewClient,
-    seOrHideNewOrder, 
+    seOrHideNewOrder,
     setSeOrHideNewOrder}}>
 
        <RefreshClientsContext.Provider value={{clients,setClients}}>
        <SearchOrdersConntext.Provider value={{seOrHideNewOrder, setSeOrHideNewOrder}}>
   {
-    seOrHideNewClient ?  
+    seOrHideNewClient ?
      <div className='border border-info p-4 mb-3'>
 
     <CreateClient/>
     </div> : null
-    
+
   }
   </SearchOrdersConntext.Provider>
   </RefreshClientsContext.Provider>
   <ClientDataContext.Provider value={{dataClient,setDataClient}}>
     <RefreshOrderContext.Provider value={{orders,setOrders}}>
   {
-    seOrHideNewOrder ? 
+    seOrHideNewOrder ?
     <div  className='border border-info p-4 mb-3'>
      <CreateOrder/>
      </div> : null
-    
+
   }
   </RefreshOrderContext.Provider>
   </ClientDataContext.Provider>
@@ -122,26 +129,49 @@ const Sales = () => {
   {/* Componente Clientes */}
   <div className='col-lg-6 '>
   <div className='border border-info p-2 '>
-  <SearchOrdersConntext.Provider 
+  <SearchOrdersConntext.Provider
   value={{
-    searchOrders, 
-    setSearchOrders, 
-    searchClients, 
+    searchOrders,
+    setSearchOrders,
+    searchClients,
     setSearchClients}}>
 
-  <SeOrHideOrdersContext.Provider 
+  <SeOrHideOrdersContext.Provider
   value={{
     seOrHideOrders,
     setSeOrHideOrders,
     seOrHideNewClient,
     setSeOrHideNewClient,
-    setSeOrHideNewOrder}}>
+    setSeOrHideNewOrder,
+    seOrHIdeOrder,
+    setSeOrHideOrder}}>
 <ClientDataContext.Provider value={{dataClient,setDataClient}}>
     <RefreshClientsContext.Provider value={{clients,setClients}}>
 
+{
+  seOrHIdeOrder === false ?
+
   <Clients/>
 
-  
+
+  :
+
+
+
+<RefreshOrderContext.Provider value={{
+  orders}}>
+  <OrderDataContext.Provider value={{dataOrder}}>
+
+   <SingleOrder/>
+
+   </OrderDataContext.Provider>
+
+</RefreshOrderContext.Provider>
+
+
+}
+
+
   </RefreshClientsContext.Provider>
  </ClientDataContext.Provider>
   </SeOrHideOrdersContext.Provider>
@@ -153,54 +183,63 @@ const Sales = () => {
   {/* Componente Ordenes y Vista de un Cliente*/}
   <div className='col-lg-6 '>
 <div className='border border-info p-2'>
-<SearchOrdersConntext.Provider 
+<SearchOrdersConntext.Provider
 value={{
-  searchOrders, 
-  setSearchOrders, 
-  searchClients, 
+  searchOrders,
+  setSearchOrders,
+  searchClients,
   setSearchClients}}>
 
-<SeOrHideOrdersContext.Provider 
+<SeOrHideOrdersContext.Provider
   value={{
     seOrHideOrders,
     setSeOrHideOrders,
     seOrHideNewClient,
     setSeOrHideNewClient,
     seOrHideNewOrder,
-    setSeOrHideNewOrder}}>
+    setSeOrHideNewOrder,
+    seOrHIdeOrder,
+    setSeOrHideOrder}}>
 
+<RefreshOrderContext.Provider value={{
+  orders,
+  setOrders}}>
 
+  <OrderDataContext.Provider value={{dataOrder,setDataOrder}}>
 {
     seOrHideOrders === true ?
 
-<RefreshOrderContext.Provider value={{orders,setOrders}}>
 
-<Orders/> 
 
-</RefreshOrderContext.Provider>
-: 
+
+
+<Orders/>
+
+
+
+:
 
 <ClientDataContext.Provider value={{
   dataClient,
   setDataClient}}>
 
-<RefreshOrderContext.Provider value={{orders,setOrders}}>
+
 
 <SingleClient/>
-
-</RefreshOrderContext.Provider>
-
 
 </ClientDataContext.Provider>
 
 }
 
+</OrderDataContext.Provider>
+
+</RefreshOrderContext.Provider>
 
 </SeOrHideOrdersContext.Provider>
 
 </SearchOrdersConntext.Provider>
 </div>
-  </div>  
+  </div>
 </div>
 
 

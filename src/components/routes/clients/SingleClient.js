@@ -1,22 +1,24 @@
-
 import {useContext} from 'react';
-
+import Axios from 'axios';
+import {IP, PORT} from '../../../env'
 
 
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import ClientDataContext from '../../../context/ClientDataContext';
-
-import './singleClient.css'
+import OrderDataContext from '../../../context/OrderDataContext';
 import SearchOrdersContext from '../../../context/SearchOrdersContext';
 import RefreshOrderContext from '../../../context/RefreshOrderContext';
 
-
+import './singleClient.css'
 
 
 const SingleClient = () => {
 
+
+
+
     //ver o esconder nueva orden
-    const {setSeOrHideNewOrder,setSeOrHideNewClient} = useContext(SeOrHideOrdersContext);
+    const {setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder} = useContext(SeOrHideOrdersContext);
 
     const showNewOrder = () =>{
       setSeOrHideNewClient(false)
@@ -29,6 +31,10 @@ const SingleClient = () => {
     //Data del cliente a leer
     const {dataClient}=useContext(ClientDataContext);
 
+    //Datos de la orden a SingleOrder
+    const {setDataOrder}=useContext(OrderDataContext);
+
+    //Setear parametros de busqueda de ordenes
     const {searchOrders, setSearchOrders}=useContext(SearchOrdersContext);
 
     //seteo de ordenes
@@ -38,10 +44,31 @@ const SingleClient = () => {
     const backToOrders = ()=>{
         setSeOrHideOrders(true)
         setSeOrHideNewOrder(false)
+        setSeOrHideOrder(false)
 
     }
 
- 
+
+    //setear datos de la orden
+    const seeOrder = async (e)=>{
+      let token = localStorage.getItem('auth-token');
+
+      let config = {headers:{
+        'labLERsst-auth-token': token
+      }};
+
+
+      let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + e, config);
+
+      setDataOrder(order.data);
+
+      setSeOrHideOrder(true);
+
+    }
+
+
+
+
 
     // filtro de busqueda de orden de trabajo
     let searchFilter = orders.filter(function(order){return order.numberid.toString().includes(searchOrders
@@ -52,98 +79,106 @@ const SingleClient = () => {
           .toLowerCase())||
         order.state.toLowerCase().includes(searchOrders
           .toLowerCase())
-       
+
         })
-        
+
     return (
 
-        
+
 
         <div className=''>
 
         {/* informacion de */}
-        <div>
+      <div className='modal-header '>
+
+        <div className='titleFont'>
         {
                 dataClient.map(client=>{
                     return(
-                    <h3 key={client._id}>{client.name}&nbsp;{client.lastname}</h3>
+                    <span  key={client._id}>{client.name}&nbsp;{client.lastname}</span>
                     )
                 })
             }
         </div>
+        <div>
+          <button
+           className='btn btn-outline-danger'
+           onClick={()=>backToOrders()}>
+              Cerrar
+          </button>
+
+        </div>
+      </div>
 
         {/* Barra de busqueda y botones de accion */}
-             <div className='input-group mt-2'>
-             <button 
-            onClick={showNewOrder}
-            className='btn btn-info rig'
-            >
-                Nueva Orden
-            </button>
-            <input 
+             <div className='input-group mt-1 '>
+               <button
+              onClick={showNewOrder}
+              className='btn btn-info rig'
+              >
+                  Nueva Orden
+              </button>
+            <input
             placeholder='Buscar orden de trabajo'
             id='searchOrder'
             type='text'
-            className='form-control noradius'
+            className='form-control border border-info '
             onChange={(e)=>setSearchOrders(e.target.value)}
             />
-            <button 
-             className='btn btn-warning  lef'
-             onClick={()=>backToOrders()}>
-                Cerrar
-            </button>
+
             </div>
-           
+
 
 
         {/* info del cliente */}
-        <div className='mt-2'>
+        <div className='mt-1 text-left border rounded'>
 
               {
                     dataClient.map(client =>{
                         return(
-        <div key={client._id} className=''>
+        <div key={client._id} className='mt-1'>
            <div className='input-group mb-1'>
 
-      <label 
-      className='form-control col-lg-4' >
-          Nombre:&nbsp;&nbsp;
+      <label
+      className=' col-lg-6' >
+        <span className='op50'>Nombre:</span>&nbsp;&nbsp;
           <span className='spanData'>{client.name}</span>
           </label>
-      <label 
-      className='form-control col-lg-4' >
-          Apellido:&nbsp;&nbsp;
+      <label
+      className=' col-lg-6' >
+          <span className='op50'>Apellido:</span>&nbsp;&nbsp;
           <span className='spanData'>{client.lastname}</span>
           </label>
-      <label 
-      className='form-control col-lg-4' >
-          Dni:&nbsp;&nbsp;
-          <span className='spanData'>{client.dni}</span>
-          </label>
-       
 
-  
+
+
+
   </div>
 
 
-  
-  <div className='input-group mb-1'>
-      <label 
-      className='form-control col-lg-6' >
-          Direccion:&nbsp;&nbsp;
+
+  <div className='input-group mb-1 '>
+      <label
+      className=' col-lg-6' >
+          <span className='op50'>Direccion:</span>&nbsp;&nbsp;
           <span className='spanData'>{client.address}</span>
           </label>
-      <label 
-      className='form-control col-lg-6' >
-          Ciudad:&nbsp;&nbsp;
+      <label
+      className=' col-lg-6' >
+          <span className='op50'>Ciudad:</span>&nbsp;&nbsp;
           <span className='spanData'>{client.city}</span></label>
       </div>
-      <div className='input-group mb-1'>
-      <label 
-      className='form-control col-lg-12' >
-          Telefono:&nbsp;&nbsp;
+      <div className='input-group '>
+      <label
+      className=' col-lg-6' >
+          <span className='op50'>Telefono:</span>&nbsp;&nbsp;
           <span className='spanData'>{client.telephone}</span>
           </label>
+          <label
+          className=' col-lg-6' >
+              <span className='op50'>Dni:</span>&nbsp;&nbsp;
+              <span className='spanData'>{client.dni}</span>
+              </label>
       </div>
 </div>
                        )
@@ -152,9 +187,9 @@ const SingleClient = () => {
               </div>
 
         {/* ordenes de trabajo */}
-        <div className='wid mt-2'>
+        <div className='wid mt-1'>
 
-          <table  className="table mgtop ">
+          <table  className="table  ">
           <thead>
     <tr>
       <th scope="col">N°</th>
@@ -166,7 +201,7 @@ const SingleClient = () => {
   </thead>
 
           </table>
- <div className="overflowSingle p1 ">
+ <div className="overflowSingle">
  <table className="table table-sm table-hover overflowSingle ">
 
 <tbody>
@@ -178,9 +213,9 @@ const SingleClient = () => {
         return( order)
         } else {
           return(null)
-         
+
         }
-      
+
       }).slice(0, 50).sort(function(a, b){return a-b}).map(order =>{
         return(
           <tr key={order._id}>
@@ -189,11 +224,14 @@ const SingleClient = () => {
                     <td>{order.brand}</td>
                     <td>{order.state}</td>
                     <td>
-                        <button className='btn btn-outline-info'>
+                        <button
+                        value={order._id}
+                        onClick={(e)=>seeOrder(e.target.value)}
+                        className='btn btn-link'>
                           Ver
                         </button>
                     </td>
-          </tr>     
+          </tr>
         )
       })
     }
@@ -203,10 +241,10 @@ const SingleClient = () => {
 
  </div>
 </div>
-           
+
         </div>
 
-        
+
     )
 }
 
