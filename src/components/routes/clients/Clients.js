@@ -1,22 +1,22 @@
-import { useContext} from 'react'
+import { memo,useContext,useState,useEffect,useCallback} from 'react'
 
 import {IP, PORT} from '../../../env';
 import Axios from 'axios';
 
 import './client.css'
-import SearchOrdersContext from '../../../context/SearchOrdersContext';
+
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import ClientDataContext from '../../../context/ClientDataContext';
-import RefreshClientsContext from '../../../context/RefreshClientsContext';
 
-const Clients = () => {
+import socket from '../../../io';
 
-    //Variables de contexto
-    //busqueda en ordenes
-    // const {setSearchOrders}=useContext(SearchOrdersContext);
+
+const Clients = memo(() => {
+
+ console.log("Soy Clientes")
 
     //busqueda de clientes
-    const {searchClients, setSearchClients}=useContext(SearchOrdersContext);
+    const [searchClients, setSearchClients]=useState("");
 
     //mostrar ordenes o cliente
     const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
@@ -33,9 +33,30 @@ const Clients = () => {
   }
 
     //Todos los clientes
-     const {clients}=useContext(RefreshClientsContext);
+     const [clients,setClients]=useState([]);
+     const [render,setRender]=useState(true);
 
+     const listAllClients =  useCallback( () =>{
+      try {
+      socket.emit('cliente');
+      socket.on('clientes', data=>{
+          setClients(data);
+      })
+      } catch (error) {
+        console.log(error)
+      }
+    },[]);
 
+    useEffect( ()=>{
+      if(render===true){
+        listAllClients()
+      }
+      return()=>{
+        setRender(false)
+      }
+    },[listAllClients,render])
+  
+   
     //ver cliente
     const seeClient = async (e)=>{
       let token = localStorage.getItem('auth-token');
@@ -49,7 +70,7 @@ const Clients = () => {
 
 
 
-      setDataClient(client.data);
+      setDataClient(client?.data);
       setSeOrHideOrders(false);
     }
 
@@ -138,5 +159,5 @@ const Clients = () => {
         </>
     )
 }
-
+)
 export default Clients

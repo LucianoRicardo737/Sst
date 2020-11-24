@@ -1,15 +1,10 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import './sales.css'
 
-import SearchOrdersConntext from '../../context/SearchOrdersContext'
+
 import SeOrHideOrdersContext from '../../context/SeOrHideOrdersContext'
 import ClientDataContext from '../../context/ClientDataContext'
 import OrderDataContext from '../../context/OrderDataContext'
-import RefreshClientsContext from '../../context/RefreshClientsContext';
-import RefreshOrderContext from '../../context/RefreshOrderContext';
-
-import {IP, PORT} from '../../env';
-import Axios from 'axios';
 
 import Clients from './clients/Clients';
 import Orders from './orders/Orders';
@@ -19,10 +14,7 @@ import CreateOrder from './orders/CreateOrder';
 import { SingleOrder } from './orders/SingleOrder';
 
 const Sales = () => {
-  //contexto para busqueda en ordenes
-  const [searchOrders, setSearchOrders]=useState('');
-  //contexto para busqueda en clientes
-  const [searchClients, setSearchClients]=useState('');
+
   //mostrar u ocultar ordenes/cliente
   const [seOrHideOrders, setSeOrHideOrders]=useState(true);
     //mostrar u ocultar nuevo cliente
@@ -40,49 +32,9 @@ const Sales = () => {
 
   //actalizar lista de clientes
    //todos los clientes
-   const [clients, setClients]=useState([]);
+  //  const [clients, setClients]=useState([]);
 
-  //actalizar lista de Ordenes
-   //todos las Ordenes
-   const [orders, setOrders]=useState([]);
-
-      //peticion al servidor
-      const listAllClients = async () =>{
-        try {
-          let token = localStorage.getItem('auth-token');
-        let config = {headers:{
-          'labLERsst-auth-token':token
-        }};
-        const allClients = await Axios.get(`http://${IP}:${PORT}/clientes/`,config);
-        setClients(allClients.data)
-        } catch (error) {
-          console.log(error)
-        }
-
-      };
-
-      const listAllOrders = async () =>{
-        try {
-          let token = localStorage.getItem('auth-token');
-          let config = {headers:{
-            'labLERsst-auth-token':token
-          }};
-          const allOrders = await Axios.get(`http://${IP}:${PORT}/reparaciones/`,config);
-          setOrders(allOrders.data)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-
-      useEffect(()=>{
-        // ejecutamos el script
-        listAllClients();
-        listAllOrders();
-      },[]);
-
-
-
-
+   
 
     return (
         <>
@@ -97,28 +49,28 @@ const Sales = () => {
     seOrHideNewOrder,
     setSeOrHideNewOrder}}>
 
-       <RefreshClientsContext.Provider value={{clients,setClients}}>
-       <SearchOrdersConntext.Provider value={{seOrHideNewOrder, setSeOrHideNewOrder}}>
+       
+      
   {
     seOrHideNewClient ?
-     <div className='border border-info p-4 mb-3'>
+     <div className='border  border-info p-4 mb-3'>
 
     <CreateClient/>
     </div> : null
 
   }
-  </SearchOrdersConntext.Provider>
-  </RefreshClientsContext.Provider>
+ 
+  
   <ClientDataContext.Provider value={{dataClient,setDataClient}}>
-    <RefreshOrderContext.Provider value={{orders,setOrders}}>
+   
   {
     seOrHideNewOrder ?
-    <div  className='border border-info p-4 mb-3'>
+    <div  className='border  border-info p-4 mb-3'>
      <CreateOrder/>
      </div> : null
 
   }
-  </RefreshOrderContext.Provider>
+
   </ClientDataContext.Provider>
     </SeOrHideOrdersContext.Provider>
 </div>
@@ -129,12 +81,7 @@ const Sales = () => {
   {/* Componente Clientes */}
   <div className='col-lg-6 '>
   <div className='border border-info p-2 '>
-  <SearchOrdersConntext.Provider
-  value={{
-    searchOrders,
-    setSearchOrders,
-    searchClients,
-    setSearchClients}}>
+ 
 
   <SeOrHideOrdersContext.Provider
   value={{
@@ -146,7 +93,7 @@ const Sales = () => {
     seOrHIdeOrder,
     setSeOrHideOrder}}>
 <ClientDataContext.Provider value={{dataClient,setDataClient}}>
-    <RefreshClientsContext.Provider value={{clients,setClients}}>
+ 
 
 {
   seOrHIdeOrder === false ?
@@ -158,37 +105,30 @@ const Sales = () => {
 
 
 
-<RefreshOrderContext.Provider value={{
-  orders}}>
+
   <OrderDataContext.Provider value={{dataOrder}}>
 
    <SingleOrder/>
 
    </OrderDataContext.Provider>
 
-</RefreshOrderContext.Provider>
+
 
 
 }
 
 
-  </RefreshClientsContext.Provider>
+
  </ClientDataContext.Provider>
   </SeOrHideOrdersContext.Provider>
 
-  </SearchOrdersConntext.Provider>
   </div>
   </div>
 
   {/* Componente Ordenes y Vista de un Cliente*/}
   <div className='col-lg-6 '>
 <div className='border border-info p-2'>
-<SearchOrdersConntext.Provider
-value={{
-  searchOrders,
-  setSearchOrders,
-  searchClients,
-  setSearchClients}}>
+
 
 <SeOrHideOrdersContext.Provider
   value={{
@@ -201,9 +141,6 @@ value={{
     seOrHIdeOrder,
     setSeOrHideOrder}}>
 
-<RefreshOrderContext.Provider value={{
-  orders,
-  setOrders}}>
 
   <OrderDataContext.Provider value={{dataOrder,setDataOrder}}>
 {
@@ -233,11 +170,11 @@ value={{
 
 </OrderDataContext.Provider>
 
-</RefreshOrderContext.Provider>
+
 
 </SeOrHideOrdersContext.Provider>
 
-</SearchOrdersConntext.Provider>
+
 </div>
   </div>
 </div>

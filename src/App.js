@@ -10,19 +10,13 @@ import Navegation from './components/layout/Navegation';
 import Login from './components/auth/Login';
 import Sales from './components/routes/Sales';
 
-import Test from './testIo';
-import socket from './io';
-
 
 function App() {
-
-  socket.emit('conectado', "Hola desde cliente");
 
   const [userData, setUserData]=useState({
     token:undefined,
     user:undefined
   });
-
 
 
   useEffect(()=>{
@@ -54,9 +48,6 @@ function App() {
 
 
 
-
-
-
   return (
     <div className="App roboto">
 
@@ -69,7 +60,7 @@ function App() {
 
       <Route path='/ventas' component={Sales} />
       </UserContext.Provider>
-      <Route path='/' exact component={Test}/>
+      <Route path='/' exact />
      </Router>
 
     </div>

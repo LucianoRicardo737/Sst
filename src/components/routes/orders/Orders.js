@@ -1,7 +1,7 @@
-import { useContext} from 'react'
+import { memo,useContext,useState, useEffect, useCallback} from 'react'
 
-import SearchOrdersContext from '../../../context/SearchOrdersContext';
-import RefreshOrderContext from '../../../context/RefreshOrderContext';
+// import SearchOrdersContext from '../../../context/SearchOrdersContext';
+// import RefreshOrderContext from '../../../context/RefreshOrderContext';
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import OrderDataContext from '../../../context/OrderDataContext';
 import './orders.css';
@@ -9,21 +9,50 @@ import './orders.css';
 import Axios from 'axios';
 import {IP, PORT} from '../../../env'
 
-const Orders = () => {
+import socket from '../../../io';
 
+const Orders =memo (() => {
 
+ //Datos de la orden a SingleOrder
+ const {setDataOrder}=useContext(OrderDataContext);
 
+  console.log('Soy Ordenes')
+ //seteo de ordenes
+ const [orders,setOrders]=useState([]);
+
+ // condicional el render
+const [render,setRender]=useState(true);
+
+  const listAllOrders =  useCallback( () =>{
+    try {
+      socket.emit('order');
+      socket.on('orders', orders=>{
+        if(orders){
+        setOrders(orders);
+      }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },[]);
+
+  useEffect(()=>{
+    if(render===true){
+    listAllOrders();
+  }
+  return()=>{
+    setRender(false)
+  };
+    
+  },[listAllOrders,render]);
 
   //Buscar ordenes
-  const {searchOrders,
-    setSearchOrders}=useContext(SearchOrdersContext);
+  const [searchOrders, setSearchOrders]=useState("");
 
     //mostramos u coultamos clientes
     const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
-    //Datos de la orden a SingleOrder
-    const {setDataOrder}=useContext(OrderDataContext);
-    //seteo de ordenes
-    const {orders}=useContext(RefreshOrderContext);
+   
+   
     //peticion al backend
 
     const seeOrder = async (e)=>{
@@ -37,18 +66,15 @@ const Orders = () => {
 
       let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + e, config);
 
-      setDataOrder(order.data);
+      setDataOrder(order?.data);
 
       setSeOrHideOrder(true);
 
     }
 
-    //filtro de busqueda de orden de trabajo
+    // filtro de busqueda de orden de trabajo
     let searchFilter = orders.filter(function(order){
-
-
       return order.numberid.toString().includes(searchOrders.toString())
-
       });
 
 
@@ -117,6 +143,6 @@ const Orders = () => {
 </div>
         </div>
     )
-}
+})
 
 export default Orders

@@ -6,7 +6,9 @@ import Axios from 'axios';
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 
 import './createClient.css'
-import RefreshClientsContext from '../../../context/RefreshClientsContext';
+
+import socket from '../../../io';
+
 
 const CreateClient = () => {
 
@@ -65,30 +67,15 @@ const CreateClient = () => {
 
           // setNewClient(initialState);
           //refresh a la lista de clientes
-          listAllClients();
+          // listAllClients();
+            socket.emit('cliente');
           setSeOrHideNewClient(false);
         } catch (error) {
           console.log(error)
         }
       }
 
-        //Todos los clientes
-        const {setClients}=useContext(RefreshClientsContext);
 
-          //peticion al servidor
-      const listAllClients = async () =>{
-        try {
-          let token = localStorage.getItem('auth-token');
-        let config = {headers:{
-          'labLERsst-auth-token':token
-        }};
-        const allClients = await Axios.get(`http://${IP}:${PORT}/clientes/`,config);
-        setClients(allClients.data)
-        } catch (error) {
-          console.log(error)
-        }
-
-      };
 
 
     return (
@@ -174,7 +161,7 @@ const CreateClient = () => {
         onClick={()=>submit()}
         className="btn btn-success fif ">
             Agregar Cliente</button>
-        <button 
+        <button
         type="button"
         className="btn btn-secondary fif "
         data-dismiss="modal"

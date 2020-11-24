@@ -6,3 +6,8 @@
 .titleFontSingleOrder{
   font-size: 22px;
 }
+.ovflow{
+  overflow-x: auto;
+  height: 200px !important;
+  width: 100%;
+}

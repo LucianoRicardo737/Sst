@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import { useContext,useState, useEffect, useCallback}  from 'react';
 import Axios from 'axios';
 import {IP, PORT} from '../../../env'
 
@@ -6,25 +6,20 @@ import {IP, PORT} from '../../../env'
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import ClientDataContext from '../../../context/ClientDataContext';
 import OrderDataContext from '../../../context/OrderDataContext';
-import SearchOrdersContext from '../../../context/SearchOrdersContext';
-import RefreshOrderContext from '../../../context/RefreshOrderContext';
+// import SearchOrdersContext from '../../../context/SearchOrdersContext';
+
 
 import './singleClient.css'
 
+import socket from '../../../io';
 
 const SingleClient = () => {
-
-
 
 
     //ver o esconder nueva orden
     const {setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder} = useContext(SeOrHideOrdersContext);
 
-    const showNewOrder = () =>{
-      setSeOrHideNewClient(false)
-      setSeOrHideNewOrder(true)
-    }
-
+ 
     //Volver a ver todas las ordenes de trabajo
     const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
 
@@ -35,10 +30,42 @@ const SingleClient = () => {
     const {setDataOrder}=useContext(OrderDataContext);
 
     //Setear parametros de busqueda de ordenes
-    const {searchOrders, setSearchOrders}=useContext(SearchOrdersContext);
+    const [searchOrders, setSearchOrders]=useState("");
 
-    //seteo de ordenes
-    const {orders}=useContext(RefreshOrderContext);
+ //seteo de ordenes
+ const [orders,setOrders]=useState([]);
+
+  // condicional el render
+const [render,setRender]=useState(true);
+
+const showNewOrder = () =>{
+  setSeOrHideNewClient(false)
+  setSeOrHideNewOrder(true)
+}
+
+
+ const listAllOrders =  useCallback( () =>{
+  try {
+    socket.emit('order');
+    socket.on('orders', orders=>{
+      if(orders){
+      setOrders(orders);
+    }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+},[]);
+
+useEffect(()=>{
+  if(render===true){
+  listAllOrders();
+}
+return()=>{
+  setRender(false)
+};
+},[listAllOrders,render]);
+
 
     //ir a ordenes
     const backToOrders = ()=>{
@@ -52,21 +79,13 @@ const SingleClient = () => {
     //setear datos de la orden
     const seeOrder = async (e)=>{
       let token = localStorage.getItem('auth-token');
-
       let config = {headers:{
         'labLERsst-auth-token': token
       }};
-
-
       let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + e, config);
-
       setDataOrder(order.data);
-
       setSeOrHideOrder(true);
-
     }
-
-
 
 
 
@@ -82,16 +101,16 @@ const SingleClient = () => {
 
         })
 
+        console.log("Soy SingleCLient")
+
     return (
-
-
 
         <div className=''>
 
         {/* informacion de */}
       <div className='modal-header '>
 
-        <div className='titleFont'>
+        <div className='text-break titleFont'>
         {
                 dataClient.map(client=>{
                     return(
@@ -128,8 +147,6 @@ const SingleClient = () => {
 
             </div>
 
-
-
         {/* info del cliente */}
         <div className='mt-1 text-left border rounded'>
 
@@ -142,42 +159,37 @@ const SingleClient = () => {
       <label
       className=' col-lg-6' >
         <span className='op50'>Nombre:</span>&nbsp;&nbsp;
-          <span className='spanData'>{client.name}</span>
+          <span className='spanData text-break'>{client.name}</span>
           </label>
       <label
       className=' col-lg-6' >
           <span className='op50'>Apellido:</span>&nbsp;&nbsp;
-          <span className='spanData'>{client.lastname}</span>
+          <span className='spanData text-break'>{client.lastname}</span>
           </label>
 
-
-
-
   </div>
-
-
 
   <div className='input-group mb-1 '>
       <label
       className=' col-lg-6' >
           <span className='op50'>Direccion:</span>&nbsp;&nbsp;
-          <span className='spanData'>{client.address}</span>
+          <span className='spanData text-break'>{client.address}</span>
           </label>
       <label
       className=' col-lg-6' >
           <span className='op50'>Ciudad:</span>&nbsp;&nbsp;
-          <span className='spanData'>{client.city}</span></label>
+          <span className='spanData text-break'>{client.city}</span></label>
       </div>
       <div className='input-group '>
       <label
       className=' col-lg-6' >
           <span className='op50'>Telefono:</span>&nbsp;&nbsp;
-          <span className='spanData'>{client.telephone}</span>
+          <span className='spanData text-break'>{client.telephone}</span>
           </label>
           <label
           className=' col-lg-6' >
               <span className='op50'>Dni:</span>&nbsp;&nbsp;
-              <span className='spanData'>{client.dni}</span>
+              <span className='spanData text-break'>{client.dni}</span>
               </label>
       </div>
 </div>
@@ -207,8 +219,7 @@ const SingleClient = () => {
 <tbody>
     {
 
-
-      searchFilter.filter(function(order){
+searchFilter.filter(function(order){
         if(order.client===dataClient[0]._id){
         return( order)
         } else {

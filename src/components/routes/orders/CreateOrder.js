@@ -4,7 +4,9 @@ import {IP,PORT} from '../../../env';
 import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import UserContext from '../../../context/UserContext';
 import ClientDataContext from '../../../context/ClientDataContext';
-import RefreshOrderContext from '../../../context/RefreshOrderContext';
+
+
+import socket from '../../../io';
 
 const ModalSingleClien = () => {
 
@@ -67,34 +69,14 @@ const ModalSingleClien = () => {
           console.log(clearInput)
 
 
-          //limpiando el estado
-          // setNewOrder(initialState);
-          listAllOrders()
-
+  
+          // listAllOrders()
+            socket.emit('order');
 
         } catch (error) {
           console.log(error)
         }
       }
-
-      //estados de ordenes
-      const { setOrders} = useContext(RefreshOrderContext);
-
-      //actualizar ordenes
-      const listAllOrders = async () =>{
-        try {
-          let token = localStorage.getItem('auth-token');
-          let config = {headers:{
-            'labLERsst-auth-token':token
-          }};
-          const allOrders = await Axios.get(`http://${IP}:${PORT}/reparaciones/`,config);
-          setOrders(allOrders.data)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-
-
 
       //hide new order
       const {setSeOrHideNewOrder} = useContext(SeOrHideOrdersContext);
@@ -224,8 +206,8 @@ onChange={handleChangeText}>
     type="button"
     data-dismiss="modal"
     onClick={()=>submit()}
-    className="btn btn-success fif">
-      Agregar Cliente</button>
+    className="btn btn-success fif ">
+      <span >Crear Orden</span></button>
     <button
     type="button"
     className="btn btn-secondary fif"
