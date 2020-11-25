@@ -1,11 +1,11 @@
-import { useContext,useState, useEffect, useCallback}  from 'react';
+import { useState, useEffect, useCallback}  from 'react';
 import Axios from 'axios';
 import {IP, PORT} from '../../../env'
 
 
-import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
-import ClientDataContext from '../../../context/ClientDataContext';
-import OrderDataContext from '../../../context/OrderDataContext';
+// import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
+// import ClientDataContext from '../../../context/ClientDataContext';
+// import OrderDataContext from '../../../context/OrderDataContext';
 // import SearchOrdersContext from '../../../context/SearchOrdersContext';
 
 
@@ -13,59 +13,69 @@ import './singleClient.css'
 
 import socket from '../../../io';
 
-const SingleClient = () => {
+const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient}) => {
 
 
     //ver o esconder nueva orden
-    const {setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder} = useContext(SeOrHideOrdersContext);
+    // const {setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder} = useContext(SeOrHideOrdersContext);
 
  
     //Volver a ver todas las ordenes de trabajo
-    const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
+    // const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
 
     //Data del cliente a leer
-    const {dataClient}=useContext(ClientDataContext);
+    // const {dataClient}=useContext(ClientDataContext);
 
     //Datos de la orden a SingleOrder
-    const {setDataOrder}=useContext(OrderDataContext);
+    // const {setDataOrder}=useContext(OrderDataContext);
 
     //Setear parametros de busqueda de ordenes
     const [searchOrders, setSearchOrders]=useState("");
 
- //seteo de ordenes
- const [orders,setOrders]=useState([]);
+    //seteo de ordenes
+    const [orders,setOrders]=useState([]);
 
-  // condicional el render
-const [render,setRender]=useState(true);
+      // condicional el render
+    const [render,setRender]=useState(true);
 
 const showNewOrder = () =>{
   setSeOrHideNewClient(false)
   setSeOrHideNewOrder(true)
+
+  setSearchOrders("");
+  document.getElementById('searchOrder').value = "";
+
+  setTimeout(function(){
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  },200);
 }
 
 
- const listAllOrders =  useCallback( () =>{
-  try {
-    socket.emit('order');
-    socket.on('orders', orders=>{
-      if(orders){
-      setOrders(orders);
+const listAllOrders =  useCallback( () =>{
+    try {
+      socket.emit('order');
+      socket.on('orders', orders=>{
+        if(orders){
+        setOrders(orders);
+      }
+      })
+    } catch (error) {
+      console.log(error)
     }
-    })
-  } catch (error) {
-    console.log(error)
+  },[]);
+
+  useEffect(()=>{
+    if(render===true){
+    listAllOrders();
   }
-},[]);
-
-useEffect(()=>{
-  if(render===true){
-  listAllOrders();
-}
-return()=>{
-  setRender(false)
-};
-},[listAllOrders,render]);
-
+  return()=>{
+    setRender(false)
+  }
+},[listAllOrders, render]);
 
     //ir a ordenes
     const backToOrders = ()=>{
@@ -90,16 +100,24 @@ return()=>{
 
 
     // filtro de busqueda de orden de trabajo
-    let searchFilter = orders.filter(function(order){return order.numberid.toString().includes(searchOrders
-        .toString())||
-        order.type.toLowerCase().includes(searchOrders
-          .toLowerCase())||
-        order.brand.toLowerCase().includes(searchOrders
-          .toLowerCase())||
-        order.state.toLowerCase().includes(searchOrders
-          .toLowerCase())
+      let searchFilter = orders.filter(function(order){
+        if(order.client===dataClient[0]._id){
+          return  order.numberid.toString().includes(searchOrders
+            .toString())||
+            order.state.toString().toLowerCase().includes(searchOrders
+              .toString().toLowerCase())||
+              order.type.toString().toLowerCase().includes(searchOrders
+                .toLowerCase().toString())
+    
+              
+        } else {
+          return(null)
 
-        })
+        }
+
+      }
+
+      )
 
         console.log("Soy SingleCLient")
 
@@ -219,15 +237,7 @@ return()=>{
 <tbody>
     {
 
-searchFilter.filter(function(order){
-        if(order.client===dataClient[0]._id){
-        return( order)
-        } else {
-          return(null)
-
-        }
-
-      }).slice(0, 50).sort(function(a, b){return a-b}).map(order =>{
+searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
         return(
           <tr key={order._id}>
         <th scope='row'>{order.numberid}</th>

@@ -1,11 +1,6 @@
 import {useState} from 'react';
 import './sales.css'
 
-
-import SeOrHideOrdersContext from '../../context/SeOrHideOrdersContext'
-import ClientDataContext from '../../context/ClientDataContext'
-import OrderDataContext from '../../context/OrderDataContext'
-
 import Clients from './clients/Clients';
 import Orders from './orders/Orders';
 import SingleClient from './clients/SingleClient';
@@ -15,8 +10,8 @@ import { SingleOrder } from './orders/SingleOrder';
 
 const Sales = () => {
 
-  //mostrar u ocultar ordenes/cliente
-  const [seOrHideOrders, setSeOrHideOrders]=useState(true);
+    //mostrar u ocultar ordenes/cliente
+    const [seOrHideOrders, setSeOrHideOrders]=useState(true);
     //mostrar u ocultar nuevo cliente
     const [seOrHideNewClient, setSeOrHideNewClient]=useState(false);
      //mostrar u ocultar nueva orden
@@ -30,11 +25,6 @@ const Sales = () => {
   //data de la orden a mostarar
   const [dataOrder, setDataOrder]=useState([]);
 
-  //actalizar lista de clientes
-   //todos los clientes
-  //  const [clients, setClients]=useState([]);
-
-   
 
     return (
         <>
@@ -42,37 +32,27 @@ const Sales = () => {
 
 <div className='row'>
 <div className='col-lg-12'>
-<SeOrHideOrdersContext.Provider
-  value={{
-    seOrHideNewClient,
-    setSeOrHideNewClient,
-    seOrHideNewOrder,
-    setSeOrHideNewOrder}}>
-
-       
       
   {
     seOrHideNewClient ?
      <div className='border  border-info p-4 mb-3'>
 
-    <CreateClient/>
+    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} />
     </div> : null
 
   }
  
-  
-  <ClientDataContext.Provider value={{dataClient,setDataClient}}>
+
    
   {
     seOrHideNewOrder ?
     <div  className='border  border-info p-4 mb-3'>
-     <CreateOrder/>
+     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} dataClient={dataClient} />
      </div> : null
 
   }
 
-  </ClientDataContext.Provider>
-    </SeOrHideOrdersContext.Provider>
+
 </div>
 <div className='col-lg-12'>
 
@@ -81,99 +61,36 @@ const Sales = () => {
   {/* Componente Clientes */}
   <div className='col-lg-6 '>
   <div className='border border-info p-2 '>
- 
-
-  <SeOrHideOrdersContext.Provider
-  value={{
-    seOrHideOrders,
-    setSeOrHideOrders,
-    seOrHideNewClient,
-    setSeOrHideNewClient,
-    setSeOrHideNewOrder,
-    seOrHIdeOrder,
-    setSeOrHideOrder}}>
-<ClientDataContext.Provider value={{dataClient,setDataClient}}>
- 
 
 {
   seOrHIdeOrder === false ?
 
-  <Clients/>
-
+  <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} />
 
   :
 
-
-
-
-  <OrderDataContext.Provider value={{dataOrder}}>
-
-   <SingleOrder/>
-
-   </OrderDataContext.Provider>
-
-
-
+   <SingleOrder dataOrder={dataOrder} setSeOrHideOrder={setSeOrHideOrder}   />
 
 }
 
-
-
- </ClientDataContext.Provider>
-  </SeOrHideOrdersContext.Provider>
-
   </div>
   </div>
 
-  {/* Componente Ordenes y Vista de un Cliente*/}
   <div className='col-lg-6 '>
 <div className='border border-info p-2'>
 
-
-<SeOrHideOrdersContext.Provider
-  value={{
-    seOrHideOrders,
-    setSeOrHideOrders,
-    seOrHideNewClient,
-    setSeOrHideNewClient,
-    seOrHideNewOrder,
-    setSeOrHideNewOrder,
-    seOrHIdeOrder,
-    setSeOrHideOrder}}>
-
-
-  <OrderDataContext.Provider value={{dataOrder,setDataOrder}}>
 {
     seOrHideOrders === true ?
 
 
-
-
-
-<Orders/>
-
+<Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder}  />
 
 
 :
 
-<ClientDataContext.Provider value={{
-  dataClient,
-  setDataClient}}>
-
-
-
-<SingleClient/>
-
-</ClientDataContext.Provider>
+<SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} />
 
 }
-
-</OrderDataContext.Provider>
-
-
-
-</SeOrHideOrdersContext.Provider>
-
 
 </div>
   </div>

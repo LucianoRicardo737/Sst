@@ -1,16 +1,16 @@
-import {useState, useContext} from 'react'
+import {useState } from 'react'
 
 import {IP, PORT} from '../../../env';
 import Axios from 'axios';
 
-import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
+// import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 
 import './createClient.css'
 
 import socket from '../../../io';
 
 
-const CreateClient = () => {
+const CreateClient = ({setSeOrHideNewClient}) => {
 
 
     //state inicial para el nuevo usuario
@@ -29,7 +29,7 @@ const CreateClient = () => {
       const [newClient, setNewClient]=useState(initialState);
 
       //mostrar u ocultar nuevo cliente
-    const {setSeOrHideNewClient}=useContext(SeOrHideOrdersContext);
+    // const {setSeOrHideNewClient}=useContext(SeOrHideOrdersContext);
 
     const hideNewClient = ()=>{
         setSeOrHideNewClient(false);

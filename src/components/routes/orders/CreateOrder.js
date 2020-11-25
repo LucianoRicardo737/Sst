@@ -1,23 +1,31 @@
 import {useState,  useContext} from 'react';
 import Axios from 'axios';
 import {IP,PORT} from '../../../env';
-import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
+// import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import UserContext from '../../../context/UserContext';
-import ClientDataContext from '../../../context/ClientDataContext';
+// import ClientDataContext from '../../../context/ClientDataContext';
+
+import ModalCreateType from '../modals/Modal_CreateType';
 
 
 import socket from '../../../io';
 
-const ModalSingleClien = () => {
+
+const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
   //user context
   const {userData}=useContext(UserContext)
     const user = userData.user
 
     //Data del cliente a leer
-    const {dataClient}=useContext(ClientDataContext);
+    // const {dataClient}=useContext(ClientDataContext);
 
 
+    //tipo de producto nuevo
+    const [type,setType]=useState("")
+
+    //passwor de validacion
+  const [password, setPassword]=useState("");
 
     let initialState={
         numberid:"",
@@ -79,12 +87,63 @@ const ModalSingleClien = () => {
       }
 
       //hide new order
-      const {setSeOrHideNewOrder} = useContext(SeOrHideOrdersContext);
+      // const {setSeOrHideNewOrder} = useContext(SeOrHideOrdersContext);
 
       //cerrar
       const hideNewOrder = () =>{
-        setSeOrHideNewOrder(false)
+        setSeOrHideNewOrder(false);
+
+       
       }
+
+
+
+      const createType = async () =>{
+      
+        try { 
+
+          //validamos los datos
+          const token = localStorage.getItem('auth-token');
+          const config = { headers:{
+            'labLERsst-auth-token':token
+          }};
+          
+          //importamos la clave
+          const validateUser = {password}
+    
+          //validamos el usuario solo con la pw
+          const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,validateUser,config);
+    
+          //cargamos el nombre en una variable
+          let nameIdentify = userLogRes.data.userExisting.name
+     
+          if(nameIdentify){
+          //empaquetamos
+          const newType = {
+            name:nameIdentify, 
+            typeProduct:type
+          }
+    
+          
+    
+          // enviamos la info con el token
+          await Axios.post(`http://${IP}:${PORT}/generales/crearTipo`,newType, config);
+      
+          let typeValue = document.getElementById('newType')
+          typeValue.value = ""
+          
+          console.log(newType)
+          setType("")
+    }else {
+      console.log("Contraseña Invalida")
+    }
+      
+            // socket.emit('message'); 
+    
+        } catch (error) {
+          console.log(error)
+        }
+      };
 
     return (
 
@@ -94,6 +153,16 @@ const ModalSingleClien = () => {
 
 
       <div className="row">
+
+        {/* modal */}
+      <ModalCreateType 
+      setType={setType} 
+      setPassword={setPassword} 
+      createType={createType}/>
+
+
+
+
 
       <div className="col-lg-12" >
 
@@ -111,7 +180,10 @@ const ModalSingleClien = () => {
 
 <div className='input-group'>
 
-<button className='btn btn-outline-info rig'>+</button>
+<button 
+className='btn btn-outline-info rig'
+data-toggle="modal" data-target="#addType"
+  >+</button>
 
 <select
 className="custom-select"

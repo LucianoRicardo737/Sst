@@ -2,35 +2,29 @@ import {useContext, useState,useEffect, useCallback} from 'react';
 import Axios from 'axios';
 import {IP,PORT} from '../../../env';
 
-import OrderDataContext from '../../../context/OrderDataContext';
-import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
 import  './singleOrder.css'
 import UserContext from '../../../context/UserContext';
 
 import socket from '../../../io';
-// import Orders from './Orders';
+import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
-export const SingleOrder = () => {
+
+export const SingleOrder = ({dataOrder,setSeOrHideOrder}) => {
 
   const {userData}=useContext(UserContext)
   const user = userData.user
-
-  //data en context
-  const {dataOrder}=useContext(OrderDataContext);
-  //id orden perteneciente
-  const idOrder =dataOrder[0]._id;
 
   const [messageData, setMessageData] = useState([]);
 
   //datos del mensaje
   const [msg, setMsg]=useState("");
-  const [reparation, setReparation]=useState(idOrder);
+  const [reparation, setReparation]=useState(dataOrder[0]._id);
   const [userid, setUserid]=useState(user.id);
   //passwor de validacion
   const [password, setPassword]=useState("");
 
 //Cerrar ventana
-const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
+// const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
 
 //editar estado
 const [state, setState] = useState([]);
@@ -39,206 +33,115 @@ const [state, setState] = useState([]);
 // condicional el render
 const [render,setRender]=useState(true);
 
+//Mostrar Clientes o cerrar single order
 const showClients = () =>{
   setSeOrHideOrder(false)
 }
 
-// const handleChangeText = (e)=>{
-
-// }
+//Actualizar datos de ordenes
 const actualizarDatos = useCallback(() =>{
-
-
-  setReparation(idOrder)
+  setReparation(dataOrder[0]._id)
   setUserid(user.id)
+},[dataOrder,user.id])
 
-},[idOrder,user.id])
-
-
+// todos los mensajes
 const listAllMsgs = useCallback(() =>{
   socket.emit('message');
-
   socket.on('messages', data=>{
     setMessageData(data);
   })
 },[]);
 
+//ejecutamos todos los mensajes
 useEffect(()=>{
   listAllMsgs();
 },[listAllMsgs])
 
+//ejecutamos todos los datos.
 useEffect(()=>{
   if(render===true){
   actualizarDatos();
-
 }
 return()=>{
   setRender(false)
 };
-},[actualizarDatos,render])
-
-
-
+},[listAllMsgs,actualizarDatos,render])
 
   console.log("Soy Single Order")
 
-
+  //cambiamos el state
   const chargeNewState = async (e) =>{
     try {
-
-      let orderData = dataOrder;
-      setState({...orderData[0], state:e});
-
+      setState({...dataOrder[0], state:e});
     } catch (error) {
       console.log(error)
     }
   }
 //Enviar mensaje
   const sendMessage = async () =>{
-      
     try { 
+
+       //validamos los datos
+       const token = localStorage.getItem('auth-token');
+       const config = { headers:{
+         'labLERsst-auth-token':token
+       }};
+ 
       
       //importamos la clave
       const validateUser = {password}
 
       //validamos el usuario solo con la pw
-      const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,validateUser);
+      const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,validateUser,config);
 
       //cargamos el nombre en una variable
       let nameIdentify = userLogRes.data.userExisting.name
+      
  
       //empaquetamos
-      const newMessage = {name:nameIdentify,reparation,msg,userid }
+      const newMessage = {
+        name:nameIdentify,
+        reparation,
+        msg,
+        userid,
+        stateEdit:state.state }
 
-      //validamos los datos
-      const token = localStorage.getItem('auth-token');
-      const config = { headers:{
-        'labLERsst-auth-token':token
-      }};
+     if(nameIdentify){
 
       // enviamos la info con el token
       await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
   
- 
+      if(state?.state){
 
+      await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, state, config );
+        let stateValue =  document.getElementById('spanState');
+        let stateValueTitle =  document.getElementById('spanStateTitle');
+        stateValueTitle.innerHTML = "Editado: "
+        stateValue.innerHTML = state.state;
 
-      let orderData = dataOrder;
+        let stateValueSelect = document.getElementById('state');
+        stateValueSelect.selectedIndex = 0;
+        
+        console.log(stateValueSelect.value)
+        socket.emit('order');
+        setState([])
 
-      await Axios.put(`http://${IP}:${PORT}/reparaciones/` + orderData[0]._id, state, config );
+      }
+        socket.emit('message'); 
 
-
-      socket.emit('message');
-
-      
+     }
     } catch (error) {
       console.log(error)
     }
   };
 
 
-
-
-  
-
     return (
       <div className=''>
 
 {/* modal */}
 
-<div className="modal fade" id="validateUser" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Confirme el usuario antes de agregar</h5>
-      </div>
-      <div className="modal-body">
-
-
-      <div className='container'>
-
-
-
-
-  <div className='form-group'>
-    <label htmlFor='password'>Ingrese su contraseña</label>
-     <input
-     onChange={(e)=>setPassword(e.target.value)}
-     name='password' 
-      id='password'
-      type='password'
-     className="form-control"
-     placeholder='Ingrese su contraseña'
-     />
-     </div>
-     
-
-
-</div>
-
-
-      </div>
-      <div className="modal-footer m-auto">
-      <div className=''>
-              <select
-                className="custom-select "
-                id="state"
-                name='state'
-                defaultValue='disabled'
-                onChange={(e)=>chargeNewState(e.target.value)}
-                >
-        <option  disabled value='disabled'>Estado Inicial</option>
-        <option >A Reparar</option>
-        <option >Garantia</option>
-        <option >Retirar En Domicilio</option>
-        <option >En Reparacion</option>
-        <option >Llamar Al Cliente</option>
-        <option >Entregar Sin Reparacion</option>
-        <option >Listo Para Entregar</option>
-      </select>
-      </div>
-
-        <button 
-        type="button" 
-        className="btn btn-secondary " 
-        data-dismiss="modal"
-          >Cancelar</button>
-        <button 
-         onClick={sendMessage}
-        type="button" 
-        className="btn btn-danger" 
-        data-dismiss="modal"
-          >Agregar</button>
-          
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-        <div className='modal-header'>
-            <div className='titleFontSingleOrder'>
-              {
-                dataOrder.map(order=>{
-                  return(
-                    <span
-                    key={order._id}
-                    >
-                    Orden N°:&nbsp;{order.numberid}
-                  </span>
-                  )
-                })
-              }
-            </div>
-            <div className=''>
-              <button
-                onClick={showClients}
-                className='btn btn-outline-danger'
-                  >Cerrar</button>
-            </div>
-
-        </div>
-
+<ModalCreateMessage chargeNewState={chargeNewState} setPassword={setPassword} sendMessage={sendMessage} showClients={showClients} dataOrder={dataOrder} />
 
   {/* info del orden */}
 <div className='mt-1 text-left border rounded'>
@@ -288,9 +191,9 @@ N° Serie:&nbsp;&nbsp;</span>
 <div className='input-group mb-1'>
 <label
 className=' col-lg-12' >
-<span className='op50'>
+<span id='spanStateTitle' className='op50'>
 Estado:&nbsp;&nbsp;</span>
-<span className='spanData text-break'>{order.state}</span></label>
+<span className='spanData text-break' id='spanState'>{order.state}</span></label>
 
 
 
@@ -347,6 +250,9 @@ type="submit"
 
 
   {
+
+
+
     messageData.filter(function(msg){
       if(msg.reparation===reparation){
       return( msg)
@@ -356,18 +262,52 @@ type="submit"
       }
 
     }).sort(function(a, b){return a-b}).map(msg =>{
+     
+      let  n =  new Date(msg.createdAt);
+        //Año
+      let y = n.getFullYear();
+        //Mes
+      let  m = n.getMonth() + 1;
+        //Día
+      let  d = n.getDate();
+        //hora
+      let h = n.getHours();
+        //minutos
+      let min = n.getMinutes();
+
+        //Lo ordenas a gusto.
+      let date = d + "/" + m + "/" + y + " - " + h + ":" + min;
+
+
       return (
+ 
 
+    <div key={msg._id} className='row border-bottom  mt-1 '>
 
+        <span className='text-muted col-sm-4 text-left fotns'>{msg.name}</span>
+        <span id='date' className='text-muted col-sm-8 text-right fotns'>{date}</span>
+        <p  className='col-sm-12 text-info text-break text-left'>{msg.msg}</p>
 
-        
-        <div key={msg._id} className='row border-bottom  mt-1 '>
-           <span className='text-muted col-sm-4 text-left'>{msg.name}</span>
-          <span className='text-muted col-sm-8 text-right'>{msg.createdAt}</span>
+           {
+
+        msg.stateEdit === undefined ? 
+        null
+        : <>
+          <span className='col-sm-12 text-right fotns sizemenos15'> 
+          <span className='text-muted '>Se cambio a:</span>
+          &nbsp;
+        "{msg.stateEdit}"</span>
+</>
+
+}
+          
     
-          <p className='col-sm-12 text-info text-break text-left'>{msg.msg}</p>
+          
+
+      
         </div>
 
+        
 
 
 

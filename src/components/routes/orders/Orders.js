@@ -1,9 +1,8 @@
-import { memo,useContext,useState, useEffect, useCallback} from 'react'
+import { memo,useState, useEffect, useCallback} from 'react'
 
-// import SearchOrdersContext from '../../../context/SearchOrdersContext';
-// import RefreshOrderContext from '../../../context/RefreshOrderContext';
-import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
-import OrderDataContext from '../../../context/OrderDataContext';
+
+// import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
+// import OrderDataContext from '../../../context/OrderDataContext';
 import './orders.css';
 
 import Axios from 'axios';
@@ -11,20 +10,26 @@ import {IP, PORT} from '../../../env'
 
 import socket from '../../../io';
 
-const Orders =memo (() => {
+const Orders =memo (({setDataOrder, setSeOrHideOrder}) => {
 
  //Datos de la orden a SingleOrder
- const {setDataOrder}=useContext(OrderDataContext);
+//  const {setDataOrder}=useContext(OrderDataContext);
 
   console.log('Soy Ordenes')
  //seteo de ordenes
  const [orders,setOrders]=useState([]);
+  //Buscar ordenes
+  const [searchOrders, setSearchOrders]=useState("");
+
+  //mostramos u coultamos clientes
+  // const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
 
  // condicional el render
 const [render,setRender]=useState(true);
 
   const listAllOrders =  useCallback( () =>{
     try {
+      
       socket.emit('order');
       socket.on('orders', orders=>{
         if(orders){
@@ -36,46 +41,53 @@ const [render,setRender]=useState(true);
     }
   },[]);
 
-  useEffect(()=>{
-    if(render===true){
-    listAllOrders();
-  }
-  return()=>{
-    setRender(false)
-  };
-    
-  },[listAllOrders,render]);
 
-  //Buscar ordenes
-  const [searchOrders, setSearchOrders]=useState("");
 
-    //mostramos u coultamos clientes
-    const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
-   
+  
+
    
     //peticion al backend
 
     const seeOrder = async (e)=>{
 
       let token = localStorage.getItem('auth-token');
-
       let config = {headers:{
         'labLERsst-auth-token': token
       }};
 
-
       let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + e, config);
 
       setDataOrder(order?.data);
-
       setSeOrHideOrder(true);
 
     }
 
+    useEffect(()=>{
+      if(render===true){
+      listAllOrders();
+    }
+    return()=>{
+      setRender(false)
+    };
+      
+    },[listAllOrders,render]);
+
+    console.log(orders)
+
     // filtro de busqueda de orden de trabajo
     let searchFilter = orders.filter(function(order){
+      
+      if (searchOrders === "") {
+        return order.numberid.toString().includes(searchOrders.toString())
+      }
+      
+      if(order.numberid.toString() === searchOrders.toString()){
+        
       return order.numberid.toString().includes(searchOrders.toString())
-      });
+    }
+      
+     
+      })
 
 
     return (

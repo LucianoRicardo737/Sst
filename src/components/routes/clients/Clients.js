@@ -11,7 +11,8 @@ import ClientDataContext from '../../../context/ClientDataContext';
 import socket from '../../../io';
 
 
-const Clients = memo(() => {
+const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setSeOrHideNewOrder
+  }) => {
 
  console.log("Soy Clientes")
 
@@ -19,23 +20,32 @@ const Clients = memo(() => {
     const [searchClients, setSearchClients]=useState("");
 
     //mostrar ordenes o cliente
-    const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
+    // const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
 
     //set data cliente a listar
-    const {setDataClient}=useContext(ClientDataContext);
+    // const {setDataClient}=useContext(ClientDataContext);
 
     //mostrar u ocultar nuevo cliente
-    const {setSeOrHideNewClient,setSeOrHideNewOrder}=useContext(SeOrHideOrdersContext)
+    // const {setSeOrHideNewClient,setSeOrHideNewOrder}=useContext(SeOrHideOrdersContext)
 
     const showNewClient = ()=>{
-      setSeOrHideNewOrder(false)
+      setSeOrHideNewOrder(false);
       setSeOrHideNewClient(true);
+      setSearchClients("");
+      document.getElementById('searchClient').value = "";
+      setTimeout(function(){
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+      },200)
+  
   }
 
     //Todos los clientes
      const [clients,setClients]=useState([]);
      const [render,setRender]=useState(true);
-
      const listAllClients =  useCallback( () =>{
       try {
       socket.emit('cliente');
@@ -56,6 +66,8 @@ const Clients = memo(() => {
       }
     },[listAllClients,render])
   
+
+
    
     //ver cliente
     const seeClient = async (e)=>{
@@ -74,16 +86,21 @@ const Clients = memo(() => {
       setSeOrHideOrders(false);
     }
 
+  
 
 
-      let searchFilter = clients.filter(function(client){return client.name.toLowerCase().includes(searchClients.toLowerCase())||
+  
+
+      let searchFilter = clients.filter(function(client){ 
+      return client.name.toLowerCase().includes(searchClients.toLowerCase())||
       client.dni.toString().includes(searchClients.toString())||
       client.lastname.toLowerCase().includes(searchClients.toLowerCase())||
       client.telephone.toString().includes(searchClients.toString())
+}
+      )
 
-      })
 
-
+      
 
     return (
         <>
