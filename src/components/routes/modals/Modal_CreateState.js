@@ -1,15 +1,15 @@
 
 import React from 'react'
 
-const ModalCreateType = ({ setPassword, createType, setType}) => {
+const ModalCreateState = ({ setPassword,setState,createState}) => {
   return (
     <div>
       
-    <div className="modal fade" id="addType" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal fade" id="addState" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Crear nueva clase de producto</h5>
+        <h5 className="modal-title" id="exampleModalLabel">Crear nuevo estado de producto</h5>
       </div>
       <div className="modal-body">
 
@@ -29,12 +29,10 @@ const ModalCreateType = ({ setPassword, createType, setType}) => {
   <input
     type="text"
     className="form-control border border-info"
-    placeholder="Ingrese la nueva clase"
-    name='newType'
-    id='newType'
-  
-   
-    onChange={(e)=>setType(e.target.value)} 
+    placeholder="Ingrese el nuevo estado"
+    name='newState'
+    id='newState'
+    onChange={(e)=>setState(e.target.value)} 
     />
   </form>
 
@@ -54,9 +52,9 @@ const ModalCreateType = ({ setPassword, createType, setType}) => {
 
  <input
   onChange={(e)=>setPassword(e.target.value)}
+  autoComplete="new-password"
   name='password' 
   id='password'
-  autoComplete="new-password"
   type='password'
   className="form-control"
   placeholder='Ingrese su contraseña'
@@ -72,7 +70,7 @@ const ModalCreateType = ({ setPassword, createType, setType}) => {
         data-dismiss="modal"
           >Cancelar</button>
         <button 
-        onClick={createType}
+        onClick={createState}
         type="button" 
         className="btn btn-danger" 
         data-dismiss="modal"
@@ -87,6 +85,4 @@ const ModalCreateType = ({ setPassword, createType, setType}) => {
   )
 }
 
-export default ModalCreateType
-
-
+export default ModalCreateState

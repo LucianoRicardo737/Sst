@@ -18,3 +18,9 @@
 .sizemenos15{
   margin-top: -15px;
 }
+.point{
+  cursor: pointer;
+}
+.textchiquito{
+  font-size: 11px !important;
+}

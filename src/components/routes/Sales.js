@@ -69,7 +69,7 @@ const Sales = () => {
 
   :
 
-   <SingleOrder dataOrder={dataOrder} setSeOrHideOrder={setSeOrHideOrder}   />
+   <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders}/>
 
 }
 
@@ -83,7 +83,7 @@ const Sales = () => {
     seOrHideOrders === true ?
 
 
-<Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder}  />
+<Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} setDataClient={setDataClient} />
 
 
 :

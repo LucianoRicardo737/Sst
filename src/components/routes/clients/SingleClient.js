@@ -3,12 +3,6 @@ import Axios from 'axios';
 import {IP, PORT} from '../../../env'
 
 
-// import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
-// import ClientDataContext from '../../../context/ClientDataContext';
-// import OrderDataContext from '../../../context/OrderDataContext';
-// import SearchOrdersContext from '../../../context/SearchOrdersContext';
-
-
 import './singleClient.css'
 
 import socket from '../../../io';
@@ -16,18 +10,6 @@ import socket from '../../../io';
 const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient}) => {
 
 
-    //ver o esconder nueva orden
-    // const {setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder} = useContext(SeOrHideOrdersContext);
-
- 
-    //Volver a ver todas las ordenes de trabajo
-    // const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
-
-    //Data del cliente a leer
-    // const {dataClient}=useContext(ClientDataContext);
-
-    //Datos de la orden a SingleOrder
-    // const {setDataOrder}=useContext(OrderDataContext);
 
     //Setear parametros de busqueda de ordenes
     const [searchOrders, setSearchOrders]=useState("");
@@ -119,7 +101,7 @@ const listAllOrders =  useCallback( () =>{
 
       )
 
-        console.log("Soy SingleCLient")
+        // console.log("Soy SingleCLient")
 
     return (
 
@@ -202,7 +184,7 @@ const listAllOrders =  useCallback( () =>{
       <label
       className=' col-lg-6' >
           <span className='op50'>Telefono:</span>&nbsp;&nbsp;
-          <span className='spanData text-break'>{client.telephone}</span>
+          <span className='spanData text-break'>{client.prefijo + " " + client.codigo + "-" + client.telephone}</span>
           </label>
           <label
           className=' col-lg-6' >
@@ -226,12 +208,11 @@ const listAllOrders =  useCallback( () =>{
       <th scope="col">Tipo</th>
       <th scope="col">Marca</th>
       <th scope="col">Estado</th>
-      <th scope="col">Acciones</th>
     </tr>
   </thead>
 
           </table>
- <div className="overflowSingle">
+ <div className="">
  <table className="table table-sm table-hover overflowSingle ">
 
 <tbody>
@@ -240,17 +221,17 @@ const listAllOrders =  useCallback( () =>{
 searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
         return(
           <tr key={order._id}>
-        <th scope='row'>{order.numberid}</th>
+        <th scope='row'><button
+                        value={order._id}
+                        onClick={(e)=>seeOrder(e.target.value)}
+                        className='btn btn-link'>
+                         {order.numberid}
+                        </button></th>
                     <td>{order.type}</td>
                     <td>{order.brand}</td>
                     <td>{order.state}</td>
                     <td>
-                        <button
-                        value={order._id}
-                        onClick={(e)=>seeOrder(e.target.value)}
-                        className='btn btn-link'>
-                          Ver
-                        </button>
+                        
                     </td>
           </tr>
         )

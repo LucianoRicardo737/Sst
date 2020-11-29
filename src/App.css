@@ -1,3 +1,6 @@
 .roboto{
   font-family: 'Roboto', sans-serif;
 }
+input,select,textarea{
+  color: black !important;
+}

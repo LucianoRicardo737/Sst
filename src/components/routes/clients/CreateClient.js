@@ -19,7 +19,10 @@ const CreateClient = ({setSeOrHideNewClient}) => {
         lastname:"",
         dni:"",
         address:"",
+        prefijo:"+54",
         telephone:"",
+        codigo:"",
+        email:"",
         city:"",
         observation:""
       }
@@ -59,8 +62,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
           let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea");
           for(let clearInput of clearInputs)
           clearInput.value = "";
-          console.log(clearInput)
-
+         
 
           //limpiando el estado
 
@@ -135,13 +137,41 @@ const CreateClient = ({setSeOrHideNewClient}) => {
     id='city'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-12 marginbot">
+  <div className="col-md-1 marginbot">
+    <input
+    type="text"
+    className="form-control"
+    placeholder="+54"
+    value="+54"
+    name='prefijo'
+    id='prefijo'
+    onChange={handleChangeText} />
+  </div>
+  <div className="col-md-2 marginbot">
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Codigo de Area"
+    name='codigo'
+    id='codigo'
+    onChange={handleChangeText} />
+  </div>
+  <div className="col-md-3 marginbot">
     <input
     type="text"
     className="form-control"
     placeholder="Telefono"
     name='telephone'
     id='telephone'
+    onChange={handleChangeText} />
+  </div>
+  <div className="col-md-6 marginbot">
+    <input
+    type="email"
+    className="form-control"
+    placeholder="Email"
+    name='email'
+    id='email'
     onChange={handleChangeText} />
   </div>
   <div className="col-md-12 marginbot">

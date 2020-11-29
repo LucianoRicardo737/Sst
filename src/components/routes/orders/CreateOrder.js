@@ -1,12 +1,12 @@
-import {useState,  useContext} from 'react';
+import {useState,  useContext, useEffect, useCallback} from 'react';
 import Axios from 'axios';
 import {IP,PORT} from '../../../env';
-// import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
+
 import UserContext from '../../../context/UserContext';
-// import ClientDataContext from '../../../context/ClientDataContext';
+
 
 import ModalCreateType from '../modals/Modal_CreateType';
-
+import ModalCreateState from '../modals/Modal_CreateState';
 
 import socket from '../../../io';
 
@@ -23,9 +23,18 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
     //tipo de producto nuevo
     const [type,setType]=useState("")
+    //estados 
+    const [state,setState]=useState("")
+  
+    //estados de carga de datos de variables
+    const [typeData, setTypeData]=useState([]);
+    const [stateData, setStateData]=useState([]);
 
     //passwor de validacion
-  const [password, setPassword]=useState("");
+    const [password, setPassword]=useState("");
+
+    //condicional de desmonte
+    const [render,setRender]=useState(true);
 
     let initialState={
         numberid:"",
@@ -34,6 +43,8 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
         model:"",
         nserie:"",
         failure:"",
+        pacord:"0",
+        seña:"0",
         state:"",
         observation:"",
         client:"",
@@ -46,15 +57,15 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
     newOrder.client=dataClient[0]._id
 
       //capturando inputs
-    const handleChangeText = (e)=>{
+    const handleChangeText = useCallback((e)=>{
         setNewOrder({...newOrder, [e.target.name]:e.target.value});
-      }
+        // console.log("Se ejecuta handle Change")
+      },[newOrder])
 
 
          //cargar nuevo cliente
     const submit = async ()=> {
-      console.log(newOrder)
-
+      
 
 
         try {
@@ -81,6 +92,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
           // listAllOrders()
             socket.emit('order');
 
+            // console.log("Enviando")
         } catch (error) {
           console.log(error)
         }
@@ -93,13 +105,13 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
       const hideNewOrder = () =>{
         setSeOrHideNewOrder(false);
 
-       
+        // console.log("mostrar nueva orden")
       }
 
 
-
+      //crear tipo de producto
       const createType = async () =>{
-      
+        
         try { 
 
           //validamos los datos
@@ -132,8 +144,12 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
           let typeValue = document.getElementById('newType')
           typeValue.value = ""
           
-          console.log(newType)
+          // console.log(newType)
           setType("")
+          setPassword("")
+          SeeData()
+
+          // console.log("creando tipo")
     }else {
       console.log("Contraseña Invalida")
     }
@@ -145,6 +161,103 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
         }
       };
 
+      //crear estado de reparacion
+      const createState = async () =>{
+   
+        try { 
+        //validamos los datos
+        const token = localStorage.getItem('auth-token');
+        const config = { headers:{
+          'labLERsst-auth-token':token
+        }};
+        
+        //importamos la clave
+        const validateUser = {password}
+  
+        //validamos el usuario solo con la pw
+        const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,validateUser,config);
+  
+        //cargamos el nombre en una variable
+        let nameIdentify = userLogRes.data.userExisting.name
+   
+        if(nameIdentify){
+
+   
+        //empaquetamos
+        const newState = {
+          name:nameIdentify,
+          stateAdd:state
+        }
+  
+        
+  
+        // enviamos la info con el token
+        await Axios.post(`http://${IP}:${PORT}/generales/crearEstado`,newState, config);
+    
+        let typeState = document.getElementById('newState')
+        typeState.value = ""
+        
+        console.log(newState)
+        setState("")
+        setPassword("")
+        SeeData()
+        
+        // console.log("crear estado")
+  }else {
+    console.log("Contraseña Invalida")
+  }
+    
+          // socket.emit('message'); 
+  
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+
+
+
+    
+    
+
+ 
+       //cargar los estados de reparacion
+       const SeeData = useCallback(async () =>{
+        let token = localStorage.getItem('auth-token');
+        let config = {headers:{
+          'labLERsst-auth-token': token
+        }};
+  
+  
+        let states = await Axios.get(`http://${IP}:${PORT}/generales/estados`, config);
+
+        setStateData(states.data);
+
+
+        let types = await Axios.get(`http://${IP}:${PORT}/generales/tipos`, config);
+
+        setTypeData(types.data);
+        
+          // console.log("Ver data")
+      },[])
+
+   
+
+  useEffect(() => {
+    if(render===true){
+
+      // console.log("Use Effect")
+
+    SeeData()
+
+
+  }
+    return () => {
+      setRender(false)
+    }
+  }, [SeeData, render,dataClient])
+
+
     return (
 
 
@@ -154,13 +267,22 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
       <div className="row">
 
+
+  
+
         {/* modal */}
       <ModalCreateType 
       setType={setType} 
       setPassword={setPassword} 
-      createType={createType}/>
+      createType={createType}
+      />
 
-
+      <ModalCreateState 
+      createState={createState} 
+      setState={setState} 
+      setPassword={setPassword}  
+     
+      />
 
 
 
@@ -192,9 +314,16 @@ name='type'
 onChange={handleChangeText}
 defaultValue='disabled'>
         <option  disabled value='disabled'>Seleccionar Tipo</option>
-        <option >Cocina</option>
-        <option >Heladera</option>
-        <option >Aire Acondicionado</option>
+    
+    {
+          typeData.sort(function(a, b){return a-b}).map(type =>
+            {
+            return(
+              <option key={type._id}>{type.typeProduct}</option>
+      )
+    })
+  }
+
       </select>
 
 </div>
@@ -233,7 +362,11 @@ defaultValue='disabled'>
   <div className="col-md-6 marginbot">
   <div className='input-group'>
 
-<button className='btn btn-outline-info rig'>+</button>
+<button 
+className='btn btn-outline-info rig'
+data-toggle="modal" 
+data-target="#addState"
+>+</button>
 
 <select
 className="custom-select"
@@ -242,19 +375,20 @@ name='state'
 defaultValue='disabled'
 onChange={handleChangeText}>
         <option  disabled value='disabled'>Estado Inicial</option>
-        <option >A Reparar</option>
-        <option >Garantia</option>
-        <option >Retirar En Domicilio</option>
-        <option >En Reparacion</option>
-        <option >Llamar Al Cliente</option>
-        <option >Entregar Sin Reparacion</option>
-        <option >Listo Para Entregar</option>
+  {    
+    stateData?.sort(function(a, b){return a-b}).map(state =>
+      {
+      return(
+        <option key={state._id}>{state.stateAdd}</option>
+)
+})
+  }
       </select>
 
 </div>
   </div>
 
-  <div className="col-md-12 marginbot">
+  <div className="col-md-6 marginbot">
     <input
     type="text"
     className="form-control"
@@ -264,7 +398,8 @@ onChange={handleChangeText}>
     onChange={handleChangeText} />
   </div>
 
-  <div className="col-md-12 marginbot">
+
+  <div className="col-md-6 marginbot">
   <textarea
   className="form-control"
   placeholder='Observaciones extras'
@@ -272,6 +407,30 @@ onChange={handleChangeText}>
   id='observation'
   onChange={handleChangeText} ></textarea>
   </div>
+
+  <div className="col-md-3 marginbot">
+    <input
+    type="number"
+    className="form-control border border-success"
+    placeholder="Seña"
+    name='seña'
+    id='seña'
+    onChange={handleChangeText} />
+  </div>
+
+  <div className="col-md-3 marginbot">
+    <input
+    type="number"
+    className="form-control border border-warning"
+    placeholder="Precio acordado"
+    name='pacord'
+    id='pacord'
+    onChange={handleChangeText} />
+  </div>
+
+
+
+
 
   <div className="col-md-12 btn-group">
     <button

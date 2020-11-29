@@ -9,12 +9,13 @@ import socket from '../../../io';
 import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
 
-export const SingleOrder = ({dataOrder,setSeOrHideOrder}) => {
+export const SingleOrder = ({dataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders}) => {
 
   const {userData}=useContext(UserContext)
   const user = userData.user
 
   const [messageData, setMessageData] = useState([]);
+
 
   //datos del mensaje
   const [msg, setMsg]=useState("");
@@ -23,15 +24,19 @@ export const SingleOrder = ({dataOrder,setSeOrHideOrder}) => {
   //passwor de validacion
   const [password, setPassword]=useState("");
 
+
 //Cerrar ventana
 // const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
 
-//editar estado
-const [state, setState] = useState([]);
-
+const [newState, setNewState] = useState(undefined);
 
 // condicional el render
 const [render,setRender]=useState(true);
+
+//editar orden
+// const [price, setPrice] = useState("")
+const [sendNewPrice, setSendNewPrice] = useState([])
+
 
 //Mostrar Clientes o cerrar single order
 const showClients = () =>{
@@ -42,41 +47,89 @@ const showClients = () =>{
 const actualizarDatos = useCallback(() =>{
   setReparation(dataOrder[0]._id)
   setUserid(user.id)
-},[dataOrder,user.id])
+
+  socket.emit('message');
+    socket.on('messages', data=>{
+    setMessageData(data);
+    })
+},[dataOrder,user.id,setMessageData])
+
+
+useEffect(()=>{
+ 
+  setSendNewPrice(dataOrder[0]);
+  console.log("test")
+ 
+  return()=>{
+    setRender(false)
+  };
+},[dataOrder,render,])
+
 
 // todos los mensajes
-const listAllMsgs = useCallback(() =>{
-  socket.emit('message');
-  socket.on('messages', data=>{
-    setMessageData(data);
-  })
-},[]);
 
-//ejecutamos todos los mensajes
-useEffect(()=>{
-  listAllMsgs();
-},[listAllMsgs])
+// console.log("data",dataOrder[0]._id)
+// console.log(reparation)
 
-//ejecutamos todos los datos.
+// //ejecutamos todos los mensajes
+// useEffect(()=>{
+//   if(render===true){
+  
+//   }
+//   return()=>{
+//     setRender(false)
+
+//   };
+// },[render,dataOrder])
+
+//ejecutamos todos los datos..
+
+// useEffect(()=>{
+ 
+//   if(newState !== undefined){
+//     setSendNewPrice({...sendNewPrice, state:newState}) 
+//   }
+// },[setNewState])
+
+
 useEffect(()=>{
-  if(render===true){
   actualizarDatos();
-}
-return()=>{
-  setRender(false)
-};
-},[listAllMsgs,actualizarDatos,render])
+  return()=>{
+    setRender(false)
+  };
+},[dataOrder,actualizarDatos,render,setMessageData])
 
-  console.log("Soy Single Order")
+  // console.log("Soy Single Order")
 
-  //cambiamos el state
-  const chargeNewState = async (e) =>{
+  // // cambiamos el state
+  const chargeNewState = () =>{
     try {
-      setState({...dataOrder[0], state:e});
+    
+  
+    
     } catch (error) {
       console.log(error)
     }
   }
+
+
+// console.log(newState)
+
+
+  const chargeNewPrice =  (e) =>{
+    try {
+    
+
+    
+      setSendNewPrice({...sendNewPrice, [e.target.name]:e.target.value}); 
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+// console.log(dataOrder[0])
+
 //Enviar mensaje
   const sendMessage = async () =>{
     try { 
@@ -96,7 +149,9 @@ return()=>{
 
       //cargamos el nombre en una variable
       let nameIdentify = userLogRes.data.userExisting.name
+
       
+      if(nameIdentify){
  
       //empaquetamos
       const newMessage = {
@@ -104,29 +159,87 @@ return()=>{
         reparation,
         msg,
         userid,
-        stateEdit:state.state }
+        stateEdit:newState }
 
-     if(nameIdentify){
+
 
       // enviamos la info con el token
       await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
   
-      if(state?.state){
+      //y ahi se fue el mensaje.. que anda bien (arriba)
 
-      await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, state, config );
-        let stateValue =  document.getElementById('spanState');
-        let stateValueTitle =  document.getElementById('spanStateTitle');
-        stateValueTitle.innerHTML = "Editado: "
-        stateValue.innerHTML = state.state;
 
-        let stateValueSelect = document.getElementById('state');
-        stateValueSelect.selectedIndex = 0;
-        
-        console.log(stateValueSelect.value)
-        socket.emit('order');
-        setState([])
+      
+      console.log(
+        sendNewPrice)
+
+
+            //se guarda la data
+
+      await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, sendNewPrice, config );
+
+
+      socket.emit('order');
+
+      //condicional si no son iguales al anterior, se edita. Sino no. Pero tengo dudas
+      if(sendNewPrice.pacord !== dataOrder[0].pacord||sendNewPrice.seña !== dataOrder[0].seña){
+
+        //definimos que al no ser igual al dato viejo, sera una variable con el dato nuevo
+      let señaUndefined = sendNewPrice.seña
+
+        //y si son iguales a vacio que use el anterior. esto esta muy rebuscado.
+      if(
+        señaUndefined === ""||
+        señaUndefined === undefined){
+
+        setSendNewPrice({...sendNewPrice, seña:dataOrder[0].seña})
 
       }
+
+
+      
+
+  
+  
+      
+
+
+      // //limpiando los inputs
+      // let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea");
+      // let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea"); //limpiando los inputs
+      // let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea");
+      // let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea");
+      // for(let clearInput of clearInputs)
+      // clearInput.value = "";
+      
+      // for(let clearInput of clearInputs)
+      // clearInput.value = "";
+      
+        // let stateValue =  document.getElementById('spanState');
+        // let stateValueTitle =  document.getElementById('spanStateTitle');
+        // stateValueTitle.innerHTML = "Editado: "
+        // stateValue.innerHTML = state.state;
+
+    
+        
+
+   
+       
+
+
+        
+
+      }
+
+      let stateValueSelect = document.getElementById('state');
+      stateValueSelect.selectedIndex = 0;
+     
+      
+   
+    
+
+      document.getElementById('password').value = ""
+
         socket.emit('message'); 
 
      }
@@ -135,16 +248,65 @@ return()=>{
     }
   };
 
+  // console.log("precio", price)
+  // console.log("seña", seña)
+
+  // console.log(sendNewPrice)
+
+
+     //ver cliente
+     const seeClient = async (e)=>{
+      let token = localStorage.getItem('auth-token');
+
+      let config = {headers:{
+        'labLERsst-auth-token': token
+      }};
+
+
+      let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + e, config);
+
+
+      setDataClient(client?.data);
+      setSeOrHideOrders(false);
+
+    }
+
+  
+
 
     return (
       <div className=''>
 
 {/* modal */}
 
-<ModalCreateMessage chargeNewState={chargeNewState} setPassword={setPassword} sendMessage={sendMessage} showClients={showClients} dataOrder={dataOrder} />
+<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice} setNewState={setNewState} chargeNewState={chargeNewState} />
+
+
+
 
   {/* info del orden */}
 <div className='mt-1 text-left border rounded'>
+
+<div>
+
+{
+
+    <div 
+
+    title={sendNewPrice?._id}
+    onClick={(e)=> seeClient(e.target.title)}
+    className="mb-1 ml-2 btn-link point"
+    >
+      {sendNewPrice?.name}&nbsp;&nbsp;{sendNewPrice?.lastname}
+      </div>
+ 
+}
+
+
+
+
+
+</div>
 {
       dataOrder.map(order =>{
           return(
@@ -190,23 +352,23 @@ N° Serie:&nbsp;&nbsp;</span>
 
 <div className='input-group mb-1'>
 <label
-className=' col-lg-12' >
+className=' col-lg-6' >
 <span id='spanStateTitle' className='op50'>
 Estado:&nbsp;&nbsp;</span>
 <span className='spanData text-break' id='spanState'>{order.state}</span></label>
 
 
 
-</div>
 
-<div className='input-group mb-1'>
+
+
 <label
 className=' col-lg-6' >
 <span className='op50'>
 Falla:&nbsp;&nbsp;</span>
 <span className='text-break spanData'>{order.failure}</span>
 </label>
-
+</div>
 <div className='col-lg-6' >
 <label
 >
@@ -214,10 +376,9 @@ Falla:&nbsp;&nbsp;</span>
 Observaciones:&nbsp;&nbsp;</span>
 <span className=' text-break spanData'>{order.observation}</span>
 </label>
-</div>
-
 
 </div>
+
 </div>
          )
       })
@@ -226,7 +387,46 @@ Observaciones:&nbsp;&nbsp;</span>
 
 </div>
 
-<div className='col-lg-12  mt-3'>
+
+{
+
+  dataOrder.map(order=>{
+
+
+    return(
+
+<div key={order._id} className='row mt-1'>
+
+<div className='col-sm-4'>
+  <span 
+  className='textchiquito op50' 
+  id='acordPriceView'
+    >Acordado: 
+  </span>$ 
+  <span id='monto' className='text-break textonotanchiquitojajaja'>{order.pacord} </span>
+</div>
+
+<div className='col-sm-4 '>
+  <span className='textchiquito op50'>Entrego: </span> ${order.seña} 
+</div>
+
+
+
+
+<div className='col-sm-4 '>
+  <span className='textchiquito op50'>Resta: </span> <span className='textchiquito'>${order.pacord - order.seña}</span> 
+</div>
+
+
+</div>
+    )
+  })
+}
+
+
+
+
+<div className='col-lg-12  mt-1'>
 <div className='input-group'>
 
 

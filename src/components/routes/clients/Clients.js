@@ -1,12 +1,9 @@
-import { memo,useContext,useState,useEffect,useCallback} from 'react'
+import { memo,useState,useEffect,useCallback} from 'react'
 
 import {IP, PORT} from '../../../env';
 import Axios from 'axios';
 
 import './client.css'
-
-import SeOrHideOrdersContext from '../../../context/SeOrHideOrdersContext';
-import ClientDataContext from '../../../context/ClientDataContext';
 
 import socket from '../../../io';
 
@@ -14,19 +11,10 @@ import socket from '../../../io';
 const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setSeOrHideNewOrder
   }) => {
 
- console.log("Soy Clientes")
 
     //busqueda de clientes
     const [searchClients, setSearchClients]=useState("");
 
-    //mostrar ordenes o cliente
-    // const {setSeOrHideOrders}=useContext(SeOrHideOrdersContext);
-
-    //set data cliente a listar
-    // const {setDataClient}=useContext(ClientDataContext);
-
-    //mostrar u ocultar nuevo cliente
-    // const {setSeOrHideNewClient,setSeOrHideNewOrder}=useContext(SeOrHideOrdersContext)
 
     const showNewClient = ()=>{
       setSeOrHideNewOrder(false);
@@ -46,6 +34,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
     //Todos los clientes
      const [clients,setClients]=useState([]);
      const [render,setRender]=useState(true);
+     
      const listAllClients =  useCallback( () =>{
       try {
       socket.emit('cliente');
@@ -67,7 +56,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
     },[listAllClients,render])
   
 
-
+    
    
     //ver cliente
     const seeClient = async (e)=>{
@@ -99,8 +88,26 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
 }
       )
 
+      const goToWP = (e) =>{
+     
+        try {
+          const ventana = window.open(`https://api.whatsapp.com/send?phone=${e}`,"_blank");
+          setTimeout(function(){
+              ventana.close();
+          }, 10000); /* 10 Segundos*/
+        } catch (error) {
+          console.log(error)
+        }
+      }
 
-      
+
+      //enviar correo
+      const goToEmail = (e) =>{
+        console.log(e)
+      }
+
+
+    // console.log("Soy Clientes")
 
     return (
         <>
@@ -135,7 +142,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
               <table className="table mt-1">
               <thead >
                   <tr>
-                    <th scope="col">DNI</th>
+                    <th scope="col">INFO</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Telefono</th>
@@ -149,7 +156,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
 
 
             {
-             searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(client =>
+             searchFilter.slice(0, 300).sort(function(a, b){return a-b}).map(client =>
 
                 {
                 return(
@@ -158,13 +165,30 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
             <button
             onClick={(e)=>seeClient(e.target.value)}
             value={client._id}
-            className='btn btn-link'
-              >{client.dni}
+            className='btn btn-link '
+              >Ver
             </button>
           </th>
-                      <td>{client.name}</td>
-                      <td>{client.lastname}</td>
-                      <td>{client.telephone}</td>
+                      <td className="text-break">{client.name}</td>
+                      <td className="text-break">{client.lastname}</td>
+                      <td>
+  <img 
+className="whatsapp"
+   title={client.prefijo + " " +client.codigo + "-" + client.telephone}
+   onClick={(e)=>goToWP(e.target.title)}
+  src="icons/whatsapp.png" 
+  style={{width:"32px",height:"32px"}} alt=""/>
+
+<img 
+className="email"
+   title={client.email}
+   onClick={(e)=>goToEmail(e.target.title)}
+  src="icons/email.png" 
+  style={{width:"32px",height:"32px"}}
+  alt=""
+  />
+  
+                      </td>
             </tr>
           )
         })
