@@ -8,11 +8,11 @@
 }
 .ovflow{
   overflow-x: auto;
-  height: 200px !important;
+  height: 300px !important;
   width: 100%;
 }
 .fotns{
-  font-size: 13px;
+  font-size: 11px;
   
 }
 .sizemenos15{
@@ -23,4 +23,7 @@
 }
 .textchiquito{
   font-size: 11px !important;
+}
+.singleorder{
+  height: 625px !important;
 }

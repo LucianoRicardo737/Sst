@@ -9,7 +9,7 @@ import socket from '../../../io';
 import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
 
-export const SingleOrder = ({dataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders}) => {
+export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders}) => {
 
   const {userData}=useContext(UserContext)
   const user = userData.user
@@ -23,10 +23,8 @@ export const SingleOrder = ({dataOrder,setSeOrHideOrder, dataClient,setDataClien
   const [userid, setUserid]=useState(user.id);
   //passwor de validacion
   const [password, setPassword]=useState("");
+ 
 
-
-//Cerrar ventana
-// const {setSeOrHideOrder}=useContext(SeOrHideOrdersContext);
 
 const [newState, setNewState] = useState(undefined);
 
@@ -56,40 +54,12 @@ const actualizarDatos = useCallback(() =>{
 
 
 useEffect(()=>{
- 
   setSendNewPrice(dataOrder[0]);
-  console.log("test")
- 
+
   return()=>{
     setRender(false)
   };
 },[dataOrder,render,])
-
-
-// todos los mensajes
-
-// console.log("data",dataOrder[0]._id)
-// console.log(reparation)
-
-// //ejecutamos todos los mensajes
-// useEffect(()=>{
-//   if(render===true){
-  
-//   }
-//   return()=>{
-//     setRender(false)
-
-//   };
-// },[render,dataOrder])
-
-//ejecutamos todos los datos..
-
-// useEffect(()=>{
- 
-//   if(newState !== undefined){
-//     setSendNewPrice({...sendNewPrice, state:newState}) 
-//   }
-// },[setNewState])
 
 
 useEffect(()=>{
@@ -99,28 +69,13 @@ useEffect(()=>{
   };
 },[dataOrder,actualizarDatos,render,setMessageData])
 
-  // console.log("Soy Single Order")
-
-  // // cambiamos el state
-  const chargeNewState = () =>{
-    try {
-    
-  
-    
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
 
-// console.log(newState)
 
 
   const chargeNewPrice =  (e) =>{
     try {
-    
 
-    
       setSendNewPrice({...sendNewPrice, [e.target.name]:e.target.value}); 
 
     } catch (error) {
@@ -128,7 +83,7 @@ useEffect(()=>{
     }
   }
 
-// console.log(dataOrder[0])
+
 
 //Enviar mensaje
   const sendMessage = async () =>{
@@ -153,26 +108,7 @@ useEffect(()=>{
       
       if(nameIdentify){
  
-      //empaquetamos
-      const newMessage = {
-        name:nameIdentify,
-        reparation,
-        msg,
-        userid,
-        stateEdit:newState }
-
-
-
-      // enviamos la info con el token
-      await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
-  
-      //y ahi se fue el mensaje.. que anda bien (arriba)
-
-
-      
-      console.log(
-        sendNewPrice)
-
+    
 
             //se guarda la data
 
@@ -183,75 +119,92 @@ useEffect(()=>{
 
       //condicional si no son iguales al anterior, se edita. Sino no. Pero tengo dudas
       if(sendNewPrice.pacord !== dataOrder[0].pacord||sendNewPrice.seña !== dataOrder[0].seña){
-
         //definimos que al no ser igual al dato viejo, sera una variable con el dato nuevo
       let señaUndefined = sendNewPrice.seña
-
         //y si son iguales a vacio que use el anterior. esto esta muy rebuscado.
       if(
         señaUndefined === ""||
         señaUndefined === undefined){
-
         setSendNewPrice({...sendNewPrice, seña:dataOrder[0].seña})
-
       }
-
-
+    }
       
-
-  
-  
-      
-
-
-      // //limpiando los inputs
-      // let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea");
-      // let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea"); //limpiando los inputs
-      // let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea");
-      // let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea");
-      // for(let clearInput of clearInputs)
-      // clearInput.value = "";
-      
-      // for(let clearInput of clearInputs)
-      // clearInput.value = "";
-      
-        // let stateValue =  document.getElementById('spanState');
-        // let stateValueTitle =  document.getElementById('spanStateTitle');
-        // stateValueTitle.innerHTML = "Editado: "
-        // stateValue.innerHTML = state.state;
-
     
-        
 
+    let estadoEditado = undefined
+    if(sendNewPrice.state === newState)
+    { 
+      estadoEditado = sendNewPrice.state
+    }else{
+      estadoEditado = undefined
+    }
+
+
+    let newPrice = document.getElementById('newPrice').value
+    let nuevaEntrega = document.getElementById('nuevaEntrega').value
+
+    if(newPrice === ""){
+      newPrice = undefined
+    }
    
-       
+    if(nuevaEntrega === ""){
+      nuevaEntrega = undefined
+    }
+
+  //empaquetamos
+  const newMessage = {
+    name:nameIdentify,
+    reparation,
+    msg,
+    userid,
+    stateEdit:estadoEditado,
+    pacordEdit:newPrice,
+    señaEdit:nuevaEntrega }
 
 
-        
+  // enviamos la info con el token
+  await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
 
-      }
+  setNewState(undefined)
+  setMsg("")
 
+  //y ahi se fue el mensaje.. que anda bien (arriba)
+
+  
+
+    // limpiando los inputs
+      let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea,input[type='password']");
+      let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea,input[type='password']");
+      for(let clearInput of clearInputs)
+      clearInput.value = "";
+      
       let stateValueSelect = document.getElementById('state');
       stateValueSelect.selectedIndex = 0;
+      console.log(clearInput)
+
+      document.getElementById('password').value = ""
      
       
+      setPassword()
    
     
 
-      document.getElementById('password').value = ""
 
         socket.emit('message'); 
 
+        let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + sendNewPrice._id, config);
+
+     
+  
+    
+        setDataOrder(order?.data);
      }
     } catch (error) {
       console.log(error)
     }
   };
 
-  // console.log("precio", price)
-  // console.log("seña", seña)
-
-  // console.log(sendNewPrice)
+ 
 
 
      //ver cliente
@@ -271,15 +224,15 @@ useEffect(()=>{
 
     }
 
-  
+ 
 
 
     return (
-      <div className=''>
+      <div className='singleorder'>
 
 {/* modal */}
 
-<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice} setNewState={setNewState} chargeNewState={chargeNewState} />
+<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice} setNewState={setNewState}  />
 
 
 
@@ -293,11 +246,11 @@ useEffect(()=>{
 
     <div 
 
-    title={sendNewPrice?._id}
+    title={dataClient[0]._id}
     onClick={(e)=> seeClient(e.target.title)}
     className="mb-1 ml-2 btn-link point"
     >
-      {sendNewPrice?.name}&nbsp;&nbsp;{sendNewPrice?.lastname}
+      {dataClient[0].name}&nbsp;&nbsp;{dataClient[0].lastname}
       </div>
  
 }
@@ -414,7 +367,7 @@ Observaciones:&nbsp;&nbsp;</span>
 
 
 <div className='col-sm-4 '>
-  <span className='textchiquito op50'>Resta: </span> <span className='textchiquito'>${order.pacord - order.seña}</span> 
+  <span className='textchiquito op50'>Resta: </span> <span className=''>${order.pacord - order.seña}</span> 
 </div>
 
 
@@ -487,39 +440,67 @@ type="submit"
         <span className='text-muted col-sm-4 text-left fotns'>{msg.name}</span>
         <span id='date' className='text-muted col-sm-8 text-right fotns'>{date}</span>
         <p  className='col-sm-12 text-info text-break text-left'>{msg.msg}</p>
-
+        <div className='col-sm-12 text-right'>
            {
 
         msg.stateEdit === undefined ? 
         null
         : <>
-          <span className='col-sm-12 text-right fotns sizemenos15'> 
+          <span className='col-sm-8 fotns sizemenos15'> 
           <span className='text-muted '>Se cambio a:</span>
           &nbsp;
         "{msg.stateEdit}"</span>
 </>
 
+
 }
           
+
+          {
+
+msg?.pacordEdit === undefined ? 
+
+null
+: 
+<>
+
+  <span className='col-sm-2 fotns sizemenos15'> 
+  <span className='text-muted '>Precio:</span>
+  &nbsp;
+${msg.pacordEdit}</span>
+</>
+
+
+}
+{
+
+msg?.señaEdit === undefined ? 
+
+null
+: 
+<>
+
+  <span className='col-sm-2 fotns sizemenos15'> 
+  <span className='text-muted '>Entrego:</span>
+  &nbsp;
+${msg.señaEdit}</span>
+</>
+
+
+}
+            </div>
     
           
-
-      
         </div>
-
-        
-
 
 
       )
     })
   }
 
-
 </div>
 </div>
 </div>
-
 
       </div>
 

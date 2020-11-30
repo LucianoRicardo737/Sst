@@ -1,10 +1,14 @@
-import React,{useContext} from 'react'
+import React,{useContext, useState, useCallback, useEffect} from 'react'
 import {Link} from 'react-router-dom';
 
 import './navegation.css'
 
 import UserContext from '../../context/UserContext';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
+
+
+import socket from '../../io';
 
 const Navegation = () => {
 
@@ -14,12 +18,48 @@ const Navegation = () => {
     const user = userData.user
     // const atributeUser = userData.user.atribute
 
+    const [repairs, setRepairs] = useState([])
+
+    // condicional el render
+    const [render,setRender]=useState(true);
+
+    const listAllOrders =  useCallback( () =>{
+      try {
+        socket.emit('order');
+        socket.on('orders', orders=>{
+          setRepairs(orders);
+        })
+      } catch (error) {
+        console.log(error)
+      }
+      },[]);
+
+      useEffect(()=>{
+        if(render===true){
+          console.log("todas las ordenes")
+        listAllOrders();
+      }
+      return()=>{
+        setRender(false)
+      };
+        
+      },[listAllOrders,render]);
+
+
     const logOut = () =>{
         setUserData({token:undefined, user:undefined});
         localStorage.setItem('auth-token', "");
 
         history.push('/');
     };
+
+    // let sear = repairs.filter(function(rep){
+    //   if(rep.state === "llamar al cliente"){
+       
+    //     return rep
+    //  }
+    // })
+
 
 return (
     <>
@@ -93,6 +133,11 @@ return (
             
         </ul>
         <ul className="navbar-nav">
+
+{/* {
+  sear.size
+} */}
+
         {
                  
             user ? <>

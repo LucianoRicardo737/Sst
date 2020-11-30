@@ -4,8 +4,7 @@ import Axios from 'axios';
 import {IP,PORT} from '../../../env';
 
 
-const ModalCreateMessage = ({chargeNewState, setPassword, sendMessage, showClients, dataOrder,password, setPrice,
-  setSeña, setSendNewPrice,chargeNewPrice,setNewState}) => {
+const ModalCreateMessage = ({setPassword, sendMessage,setNewState, showClients, dataOrder,password,chargeNewPrice}) => {
 
 
   //estados 
@@ -161,6 +160,7 @@ console.log("Contraseña Invalida")
                   name='state'
                   defaultValue='disabled'
                   onChange={chargeNewPrice}
+                  onClick={(e)=>{setNewState(e.target.value)}}
                   >
           <option  disabled value='disabled'>No modificar estado</option>
           {    
@@ -182,7 +182,7 @@ type="number"
 className="form-control border col-lg-5 ml-auto mr-auto mt-2"
 placeholder="Entrega"
 name='seña'
-id='newPrice'
+id='nuevaEntrega'
 
 
 onChange={chargeNewPrice} 
@@ -193,7 +193,7 @@ type="number"
 className="form-control border col-lg-5 ml-auto mr-auto mt-2"
 placeholder="Precio"
 name='pacord'
-id='nuevaEntrega'
+id='newPrice'
 
 
 onChange={chargeNewPrice} 

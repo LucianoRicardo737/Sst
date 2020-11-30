@@ -19,6 +19,7 @@ function App() {
   });
 
 
+  
   useEffect(()=>{
    const checkLoggedIn = async ()=>{
     //configuracion del header
