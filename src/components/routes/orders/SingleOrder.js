@@ -241,20 +241,24 @@ useEffect(()=>{
   {/* info del orden */}
 <div className='mt-1 text-left border rounded'>
 
-<div>
+
+
+
+<div className='row'>
 
 {
 
-    <div 
-
+      <div 
+      
     title={dataClient[0]._id}
     onClick={(e)=> seeClient(e.target.title)}
-    className="mb-1 ml-2 btn-link point"
-    >
+      className="mb-1 ml-2 btn-link point col-lg-6">
       {dataClient[0].name}&nbsp;&nbsp;{dataClient[0].lastname}
       </div>
+   
  
 }
+
 
 
 
@@ -263,6 +267,20 @@ useEffect(()=>{
 </div>
 {
       dataOrder.map(order =>{
+
+        let  n =  new Date(order.promised);
+        //Año
+      let y = n.getFullYear();
+        //Mes
+      let  m = n.getMonth() + 1;
+        //Día
+      let  d = n.getDate();
+  
+  
+        //Lo ordenas a gusto.
+      let date = d + "/" + m + "/" + y;
+
+
           return(
 <div key={order._id} className=''>
 
@@ -270,13 +288,13 @@ useEffect(()=>{
 
 <label
 className=' col-lg-6' >
-<span className='op50'>
+<span className='op50 textchiquito'>
 Tipo:&nbsp;&nbsp;</span>
 <span className='spanData text-break'>{order.type}</span>
 </label>
 <label
 className=' col-lg-6' >
-<span className='op50'>
+<span className='op50 textchiquito'>
 Marca:&nbsp;&nbsp;</span>
 <span className='spanData text-break'>{order.brand}</span>
 </label>
@@ -291,13 +309,13 @@ Marca:&nbsp;&nbsp;</span>
 <div className='input-group mb-1'>
 <label
 className=' col-lg-6' >
-<span className='op50'>
+<span className='op50 textchiquito'>
 Modelo:&nbsp;&nbsp;</span>
 <span className='spanData text-break'>{order.model}</span>
 </label>
 <label
 className=' col-lg-6' >
-<span className='op50'>
+<span className='op50 textchiquito'>
 N° Serie:&nbsp;&nbsp;</span>
 <span className='spanData text-break'>{order.nserie}</span>
 </label>
@@ -307,7 +325,7 @@ N° Serie:&nbsp;&nbsp;</span>
 <div className='input-group mb-1'>
 <label
 className=' col-lg-6' >
-<span id='spanStateTitle' className='op50'>
+<span id='spanStateTitle' className='op50 textchiquito'>
 Estado:&nbsp;&nbsp;</span>
 <span className='spanData text-break' id='spanState'>{order.state}</span></label>
 
@@ -318,21 +336,28 @@ Estado:&nbsp;&nbsp;</span>
 
 <label
 className=' col-lg-6' >
-<span className='op50'>
+<span className='op50 textchiquito'>
 Falla:&nbsp;&nbsp;</span>
 <span className='text-break spanData'>{order.failure}</span>
 </label>
 </div>
+<div className='input-group mb-1'>
 <div className='col-lg-6' >
 <label
 >
-<span className='op50'>
+<span className='op50 textchiquito'>
 Observaciones:&nbsp;&nbsp;</span>
 <span className=' text-break spanData'>{order.observation}</span>
 </label>
 
 </div>
-
+ <div className='point col-lg-6'
+      >
+      <span className='textchiquito op50'>Fecha de entrega:</span>
+      
+      <span className='text-danger'>{date}</span></div>
+  
+</div>
 </div>
          )
       })

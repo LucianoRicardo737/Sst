@@ -332,12 +332,12 @@ onChange={(e)=>searchForState(e.target.value)}
 
 <label
 className=' col-lg-6' >
-<span className='op50'>Nombre:</span>&nbsp;&nbsp;
+<span className='op50 textchiquito'>Nombre:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.name}</span>
 </label>
 <label
 className=' col-lg-6' >
-<span className='op50'>Apellido:</span>&nbsp;&nbsp;
+<span className='op50 textchiquito'>Apellido:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.lastname}</span>
 </label>
 
@@ -346,37 +346,37 @@ className=' col-lg-6' >
 <div className='input-group mb-1 '>
 <label
 className=' col-lg-6' >
-<span className='op50'>Dirección:</span>&nbsp;&nbsp;
+<span className='op50 textchiquito'>Dirección:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.address}</span>
 </label>
 <label
 className=' col-lg-6' >
-<span className='op50'>Ciudad:</span>&nbsp;&nbsp;
+<span className='op50 textchiquito'>Ciudad:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.city}</span></label>
 </div>
 <div className='input-group '>
 <label
 className=' col-lg-6' >
 <span 
-className='op50'
+className='op50 textchiquito'
 >Teléfono:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.prefijo + " " + client.codigo + "-" + client.telephone}</span>
 </label>
 <label
 className=' col-lg-6' >
-  <span className='op50'>Dni:</span>&nbsp;&nbsp;
+  <span className='op50 textchiquito'>Dni:</span>&nbsp;&nbsp;
   <span className='spanData text-break'>{client.dni}</span>
   </label>
 </div>
 <div className='input-group mb-1 '>
 <label
 className=' col-lg-6' >
-<span className='op50'>Email:</span>&nbsp;&nbsp;
+<span className='op50 textchiquito'>Email:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.email}</span>
 </label>
 <label
 className=' col-lg-6' >
-<span className='op50'>Observación:</span>&nbsp;&nbsp;
+<span className='op50 textchiquito'>Observación:</span>&nbsp;&nbsp;
 <span className='spanData text-break'>{client.observation}</span>
 </label>
 </div>
