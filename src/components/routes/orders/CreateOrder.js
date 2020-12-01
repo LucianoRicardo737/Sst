@@ -48,6 +48,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
         state:"",
         observation:"",
         client:"",
+        promised:"",
         createdby:user.id
       }
 
@@ -407,7 +408,15 @@ onChange={handleChangeText}>
   id='observation'
   onChange={handleChangeText} ></textarea>
   </div>
-
+  <div className="col-md-6 marginbot">
+    <input
+    type="date"
+    className="form-control border"
+    placeholder="Fecha de Entrega"
+    name='promised'
+    id='promised'
+    onChange={handleChangeText} />
+  </div>
   <div className="col-md-3 marginbot">
     <input
     type="number"
@@ -427,7 +436,7 @@ onChange={handleChangeText}>
     id='pacord'
     onChange={handleChangeText} />
   </div>
-
+ 
 
 
 

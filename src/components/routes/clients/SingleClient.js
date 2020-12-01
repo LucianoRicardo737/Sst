@@ -148,6 +148,12 @@ const listAllOrders =  useCallback( () =>{
 
     // filtro de busqueda de orden de trabajo
     let searchFilter = orders.filter(function(order){
+      if(order.client === dataClient[0]._id){
+        return order
+      } else {
+        return (null)
+      }
+    }).filter(function(order){
       if (searchOrders === "") {
         return order.state.toString().includes(searchOrdersForState.toString())
        
@@ -159,17 +165,7 @@ const listAllOrders =  useCallback( () =>{
       
     }  else {
           return(null)
-
-        }
-
-      }
-
-      )
-      
-
-      // useEffect(()=>{
-
-      // },)
+        }})
 
       const editClientOn = () =>{
       //  let infoClient = document.getElementById('dataClient')
@@ -205,36 +201,26 @@ const listAllOrders =  useCallback( () =>{
             'labLERsst-auth-token':token
                           }};
 
-
  //importamos la clave
  const validateUser = {password}
-
  //validamos el usuario solo con la pw
  const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,validateUser,config);
 
  //cargamos el nombre en una variable
  let nameIdentify = userLogRes.data.userExisting.name
 
- 
  if(nameIdentify){
-          
          await Axios.put(`http://${IP}:${PORT}/clientes/` + dataClient[0]._id, editClientData, config );
          
         socket.emit('cliente');
-      
         let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + idClient, config);
-
-
 
         setDataClient(client?.data);
         setHideAndSeeData(false);
-
 }
 
   setPassword(undefined)
   document.getElementById("password").value= ""
-
-
         } catch (error) {
           console.log(error)
         }
@@ -243,8 +229,6 @@ const listAllOrders =  useCallback( () =>{
         // console.log("Soy SingleCLient")
 
     return (
-
-      
         <div className=''>
 
           <ModalValidate setPassword={setPassword} sendEditClient={sendEditClient} />
