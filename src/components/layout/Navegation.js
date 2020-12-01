@@ -53,12 +53,13 @@ const Navegation = () => {
         history.push('/');
     };
 
-    // let sear = repairs.filter(function(rep){
-    //   if(rep.state === "llamar al cliente"){
-       
-    //     return rep
-    //  }
-    // })
+    let sear = repairs.filter(function(rep){
+      if(rep.state === "llamar al cliente"){
+        return rep.state
+     } else {
+       return null
+     }
+    })
 
 
 return (
@@ -134,9 +135,7 @@ return (
         </ul>
         <ul className="navbar-nav">
 
-{/* {
-  sear.size
-} */}
+           <span className=" nav-link active ">Llamar al cliente Restantes:&nbsp;<span className='restantes border border-success'>{sear.length}</span></span>
 
         {
                  

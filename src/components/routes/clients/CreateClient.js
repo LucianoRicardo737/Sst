@@ -10,7 +10,7 @@ import './createClient.css'
 import socket from '../../../io';
 
 
-const CreateClient = ({setSeOrHideNewClient}) => {
+const CreateClient = ({setSeOrHideNewClient, setError}) => {
 
 
     //state inicial para el nuevo usuario
@@ -35,6 +35,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
     // const {setSeOrHideNewClient}=useContext(SeOrHideOrdersContext);
 
     const hideNewClient = ()=>{
+        setError(undefined)
         setSeOrHideNewClient(false);
     }
 
@@ -51,6 +52,10 @@ const CreateClient = ({setSeOrHideNewClient}) => {
             'labLERsst-auth-token':token
           }};
 
+          if(newClient.codigo === ""){
+            setNewClient({...newClient, codigo:"54"})
+          }
+
           //enviamos la info con el token
           await Axios.post(`http://${IP}:${PORT}/clientes/nuevoCliente`,newClient, config);
 
@@ -62,7 +67,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
           let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea");
           for(let clearInput of clearInputs)
           clearInput.value = "";
-         
+          console.log(clearInput)
 
           //limpiando el estado
 
@@ -72,8 +77,10 @@ const CreateClient = ({setSeOrHideNewClient}) => {
           // listAllClients();
             socket.emit('cliente');
           setSeOrHideNewClient(false);
-        } catch (error) {
-          console.log(error)
+          setError(undefined)
+        } catch (err) {
+          err.response.data.msg && 
+          setError(err.response.data.msg);
         }
       }
 
@@ -123,7 +130,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
     <input
     type="text"
     className="form-control"
-    placeholder="Direccion"
+    placeholder="Dirección"
     name='address'
     id='address'
     onChange={handleChangeText} />
@@ -142,7 +149,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
     type="text"
     className="form-control"
     placeholder="+54"
-    value="+54"
+    
     name='prefijo'
     id='prefijo'
     onChange={handleChangeText} />
@@ -151,7 +158,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
     <input
     type="text"
     className="form-control"
-    placeholder="Codigo de Area"
+    placeholder="Código de área"
     name='codigo'
     id='codigo'
     onChange={handleChangeText} />
@@ -160,7 +167,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
     <input
     type="text"
     className="form-control"
-    placeholder="Telefono"
+    placeholder="Teléfono"
     name='telephone'
     id='telephone'
     onChange={handleChangeText} />
@@ -177,7 +184,7 @@ const CreateClient = ({setSeOrHideNewClient}) => {
   <div className="col-md-12 marginbot">
   <textarea
   className="form-control"
-  placeholder='Observaciones extras'
+  placeholder='Observaciones'
   name='observation'
   id='observation'
   onChange={handleChangeText} ></textarea>

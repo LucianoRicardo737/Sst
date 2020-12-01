@@ -8,7 +8,12 @@ import CreateClient from './clients/CreateClient';
 import CreateOrder from './orders/CreateOrder';
 import { SingleOrder } from './orders/SingleOrder';
 
+import Error from '../misc/Error'
+
 const Sales = () => {
+
+    //errores
+    const[error, setError]=useState(undefined);
 
     //mostrar u ocultar ordenes/cliente
     const [seOrHideOrders, setSeOrHideOrders]=useState(true);
@@ -19,7 +24,7 @@ const Sales = () => {
      //mostrar u ocultar clientes/ orden unica
     const [seOrHIdeOrder, setSeOrHideOrder] = useState(false);
 
-
+    const [hideAndSeeData, setHideAndSeeData]=useState(false)
   //data del cliente a mostrar
   const [dataClient, setDataClient]=useState([]);
   //data de la orden a mostarar
@@ -30,6 +35,10 @@ const Sales = () => {
         <>
         <div className='contenedor'>
 
+        {
+    error && (<Error message={error} clearError={()=>setError(undefined)}/>)
+    }
+
 <div className='row'>
 <div className='col-lg-12'>
       
@@ -37,7 +46,7 @@ const Sales = () => {
     seOrHideNewClient ?
      <div className='border  border-info p-4 mb-3'>
 
-    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} />
+    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} setError={setError} />
     </div> : null
 
   }
@@ -65,7 +74,7 @@ const Sales = () => {
 {
   seOrHIdeOrder === false ?
 
-  <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} />
+  <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} setHideAndSeeData={setHideAndSeeData} />
 
   :
 
@@ -77,8 +86,7 @@ const Sales = () => {
   </div>
 
   <div className='col-lg-6 '>
-<div className='border border-info p-2'>
-
+<div className='border border-info p-2 '>
 {
     seOrHideOrders === true ?
 
@@ -88,7 +96,7 @@ const Sales = () => {
 
 :
 
-<SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} />
+<SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} hideAndSeeData={hideAndSeeData} setHideAndSeeData={setHideAndSeeData} setDataClient={setDataClient} />
 
 }
 

@@ -8,7 +8,7 @@ import './client.css'
 import socket from '../../../io';
 
 
-const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setSeOrHideNewOrder
+const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setSeOrHideNewOrder, setHideAndSeeData
   }) => {
 
 
@@ -60,6 +60,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
    
     //ver cliente
     const seeClient = async (e)=>{
+      setHideAndSeeData(false)
       let token = localStorage.getItem('auth-token');
 
       let config = {headers:{
@@ -103,7 +104,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
 
       //enviar correo
       const goToEmail = (e) =>{
-        console.log(e)
+       window.location=`mailto:${e}`;
       }
 
 
@@ -115,13 +116,9 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
           <div className=''>
 
             <div className='modal-header '>
-
-
-
               <div className='titleFontClients'>
                 <span >Clientes</span>
               </div>
-
             </div>
             <div className='input-group mt-1 '>
 
@@ -139,21 +136,19 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
             />
             </div>
 
-              <table className="table mt-1">
+              <table className="table  table-sm  mt-1">
               <thead >
                   <tr>
-                    <th scope="col">INFO</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
-                    <th scope="col">Telefono</th>
+                    <th scope="col">Teléfono</th>
                   </tr>
                 </thead>
               </table>
               <div className='overflow'>
-            <table className="table table-hover">
-
+            <table className="table table-sm table-hover">
         <tbody>
-
 
             {
              searchFilter.slice(0, 300).sort(function(a, b){return a-b}).map(client =>
@@ -177,14 +172,14 @@ className="whatsapp"
    title={client.prefijo + " " +client.codigo + "-" + client.telephone}
    onClick={(e)=>goToWP(e.target.title)}
   src="icons/whatsapp.png" 
-  style={{width:"32px",height:"32px"}} alt=""/>
+  style={{width:"30px",height:"30px"}} alt=""/>
 
 <img 
 className="email"
    title={client.email}
    onClick={(e)=>goToEmail(e.target.title)}
   src="icons/email.png" 
-  style={{width:"32px",height:"32px"}}
+  style={{width:"30px",height:"30px"}}
   alt=""
   />
   

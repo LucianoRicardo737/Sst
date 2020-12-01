@@ -10,6 +10,7 @@ import Navegation from './components/layout/Navegation';
 import Login from './components/auth/Login';
 import Sales from './components/routes/Sales';
 
+import 'animate.css/animate.css'
 
 function App() {
 

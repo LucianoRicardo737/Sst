@@ -5,8 +5,19 @@ import {IP, PORT } from '../../env';
 import Axios from 'axios';
 
 import './login.css'
+import Error from '../misc/Error';
 
 const Login = () => {
+
+    const[error, setError]=useState(undefined);
+
+
+
+
+
+
+
+
 
     const {setUserData} = useContext(UserContext);
     
@@ -38,13 +49,22 @@ const Login = () => {
             localStorage.setItem('auth-token',token);
             history.push('/ventas');
 
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            err.response.data.msg && 
+            setError(err.response.data.msg);
+   
         }
     }
 
     return (
         <div className='container'>
+
+
+    
+    {
+    error && (<Error message={error} clearError={()=>setError(undefined)}/>)
+    }
+
 
            <h3 className='text-center'
            style={{marginTop:"70px"}}>INGRESAR</h3>

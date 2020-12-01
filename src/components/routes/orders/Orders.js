@@ -166,7 +166,7 @@ const [render,setRender]=useState(true);
              {/* barra de busqueda y botones de accion */}
   <div className='input-group mt-1'>
             <input
-            placeholder='Buscar orden de trabajo'
+            placeholder='Buscar por numero'
             id='searchOrder'
             type='text'
             className='form-control  border border-info'
@@ -205,7 +205,7 @@ onChange={(e)=>searchForState(e.target.value)}
   </thead>
   </table>
   <div className='overflow'>
-  <table className="table table-hover">
+  <table className="table table-hover overflow">
 
 
   <tbody >
