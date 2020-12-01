@@ -4,7 +4,7 @@ import Axios from 'axios';
 import {IP,PORT} from '../../../env';
 
 
-const ModalCreateMessage = ({setPassword, sendMessage,setNewState, showClients, dataOrder,password,chargeNewPrice}) => {
+const ModalCreateMessage = ({setPassword, sendMessage, showClients, dataOrder,password,chargeNewPrice}) => {
 
 
   //estados 
@@ -160,7 +160,7 @@ console.log("Contraseña Invalida")
                   name='state'
                   defaultValue='disabled'
                   onChange={chargeNewPrice}
-                  onClick={(e)=>{setNewState(e.target.value)}}
+                  // onClick={chargeNewPrice}
                   >
           <option  disabled value='disabled'>No modificar estado</option>
           {    
@@ -174,12 +174,26 @@ console.log("Contraseña Invalida")
         </select>
   </div>
 
+<div>
+<input
+type="date"
+className="form-control  col-lg-12  mt-2"
+placeholder="Fecha de Entrega"
+name='promised'
+id='promised'
+
+
+onChange={chargeNewPrice} 
+/>
+</div>
 
         <div className='row'>
 
+
+
 <input
 type="number"
-className="form-control border col-lg-5 ml-auto mr-auto mt-2"
+className="form-control  col-lg-5 ml-auto mr-auto mt-2"
 placeholder="Entrega"
 name='seña'
 id='nuevaEntrega'
@@ -190,7 +204,7 @@ onChange={chargeNewPrice}
 
 <input
 type="number"
-className="form-control border col-lg-5 ml-auto mr-auto mt-2"
+className="form-control  col-lg-5 ml-auto mr-auto mt-2"
 placeholder="Precio"
 name='pacord'
 id='newPrice'
@@ -270,28 +284,7 @@ seeNewState === true ?
 
 
 
-        <div className='modal-header'>
-            <div className='titleFontSingleOrder'>
-              {
-                dataOrder.map(order=>{
-                  return(
-                    <span
-                    key={order._id}
-                    >
-                    Orden N°:&nbsp;{order.numberid}
-                  </span>
-                  )
-                })
-              }
-            </div>
-            <div className=''>
-              <button
-                onClick={showClients}
-                className='btn btn-outline-danger'
-                  >Cerrar</button>
-            </div>
 
-        </div>
         </div>
     )
 }

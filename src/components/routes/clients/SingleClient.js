@@ -231,7 +231,13 @@ const listAllOrders =  useCallback( () =>{
     return (
         <div className=''>
 
+
+
           <ModalValidate setPassword={setPassword} sendEditClient={sendEditClient} />
+
+
+
+          
 
         {/* informacion de */}
       <div className='modal-header '>
@@ -249,75 +255,41 @@ const listAllOrders =  useCallback( () =>{
 {
   hideAndSeeData === true ?
   
+  
  <div className="button-group">
-  <button
-  className='btn btn-outline-danger rig'
-  onClick={()=>cancelEdit()}>
-     Cancelar Edicion
- </button> 
- <button
-  className='btn btn-outline-success lef'
+
+ <span
+  className=' btn btn-editar text-success mr-4'
   data-toggle="modal" data-target="#confirmEditClient"
   // onClick={()=>sendEditClient()}
   >
-     Confirmar
- </button> 
+     ✔
+ </span> 
+ <span
+  className='btn btn-close text-danger'
+  onClick={()=>cancelEdit()}>
+    X
+ </span> 
  </div>
   :
 
  <div className="button-group">
-        <button
-           className='btn btn-outline-warning rig'
+        <span
+           className=' btn btn-editar text-warning'
            onClick={()=>editClientOn()}>
-              Editar
-          </button>
-          <button
-           className='btn btn-outline-danger lef'
+              ?
+          </span>
+          <span
+           className='btn btn-close text-danger'
            onClick={()=>backToOrders()}>
-              Cerrar
-          </button>
+              X
+          </span>
 
           </div>
 
 }
         
       </div>
-
-        {/* Barra de busqueda y botones de accion */}
-             <div className='input-group mt-1 '>
-               <button
-              onClick={showNewOrder}
-              className='btn btn-info rig'
-              >
-                  Nueva Orden
-              </button>
-            <input
-            placeholder='Buscar por numero'
-            id='searchOrder'
-            type='text'
-            className='form-control border border-info '
-            onClick={()=>{clearClick()}}
-            onChange={(e)=>setSearchOrders(e.target.value)}
-            />
-            <select
-className="custom-select border border-info"
-id="state"
-name='state'
-defaultValue='disabled'
-onChange={(e)=>searchForState(e.target.value)}
->
-        <option  disabled value='disabled'>Buscar por Estado</option>
-  {    
-    stateData?.sort(function(a, b){return a-b}).map(state =>
-      {
-      return(
-        <option key={state._id}>{state.stateAdd}</option>
-)
-})
-  }
-      </select>
-
-            </div>
 
         {/* info del cliente */}
 {
@@ -500,6 +472,50 @@ className=' col-lg-12' >
 </div>
 
 }
+
+
+
+
+        {/* Barra de busqueda y botones de accion */}
+        <div className='input-group mt-1 '>
+               <button
+              onClick={showNewOrder}
+              className='btn btn-info rig'
+              >
+                  +
+              </button>
+            <input
+            placeholder='Buscar por numero'
+            id='searchOrder'
+            type='text'
+            className='form-control border border-info '
+            onClick={()=>{clearClick()}}
+            onChange={(e)=>setSearchOrders(e.target.value)}
+            />
+            <select
+className="custom-select border border-info"
+id="state"
+name='state'
+defaultValue='disabled'
+onChange={(e)=>searchForState(e.target.value)}
+>
+        <option  disabled value='disabled'>Buscar por Estado</option>
+  {    
+    stateData?.sort(function(a, b){return a-b}).map(state =>
+      {
+      return(
+        <option key={state._id}>{state.stateAdd}</option>
+)
+})
+  }
+      </select>
+
+            </div>
+
+
+
+
+
         {/* ordenes de trabajo */}
         <div className='wid mt-1'>
 

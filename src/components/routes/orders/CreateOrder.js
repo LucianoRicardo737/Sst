@@ -10,6 +10,8 @@ import ModalCreateState from '../modals/Modal_CreateState';
 
 import socket from '../../../io';
 
+import './createorder.css'
+
 
 const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
@@ -48,7 +50,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
         state:"",
         observation:"",
         client:"",
-        promised:"",
+        promised:undefined,
         createdby:user.id
       }
 
@@ -114,7 +116,6 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
       const createType = async () =>{
         
         try { 
-
           //validamos los datos
           const token = localStorage.getItem('auth-token');
           const config = { headers:{
@@ -137,7 +138,6 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
             typeProduct:type
           }
     
-          
     
           // enviamos la info con el token
           await Axios.post(`http://${IP}:${PORT}/generales/crearTipo`,newType, config);
@@ -216,11 +216,6 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
     }
 
 
-
-
-    
-    
-
  
        //cargar los estados de reparacion
        const SeeData = useCallback(async () =>{
@@ -266,7 +261,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
 
 
-      <div className="row">
+      <div className="row newOrder">
 
 
   
@@ -287,12 +282,12 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
 
 
-      <div className="col-lg-12" >
+      <div className="col-lg-12 text-left" >
 
         {
                 dataClient.map(client=>{
                     return(
-                    <h3 key={client._id}>Nueva orden a:&nbsp;&nbsp;{client.name}&nbsp;{client.lastname}</h3>
+                    <h4 key={client._id}>Nueva orden a:&nbsp;&nbsp;{client.name}&nbsp;{client.lastname}</h4>
                     )
                 })
             }
@@ -408,15 +403,19 @@ onChange={handleChangeText}>
   id='observation'
   onChange={handleChangeText} ></textarea>
   </div>
-  <div className="col-md-6 marginbot">
+  <div className=" marginbot col-md-2 m-auto">
+    <label>Fecha de entrega:</label>
+    </div>
+    <div className=" marginbot col-md-4">
     <input
     type="date"
-    className="form-control border"
+    className="form-control border "
     placeholder="Fecha de Entrega"
     name='promised'
     id='promised'
     onChange={handleChangeText} />
   </div>
+
   <div className="col-md-3 marginbot">
     <input
     type="number"
@@ -441,20 +440,27 @@ onChange={handleChangeText}>
 
 
 
-  <div className="col-md-12 btn-group">
-    <button
+<div className='row col-md-12 justify-content-end'>
+
+<div className="col-md-1 borderButtonGreen">
+    <span
     type="button"
     data-dismiss="modal"
     onClick={()=>submit()}
-    className="btn btn-success fif ">
-      <span >Crear Orden</span></button>
-    <button
+    className="btn btn-check text-success ">
+      ✔</span>
+      </div>
+
+<div className="col-md-1 borderButtonRed  mr-2">
+    <span
     type="button"
-    className="btn btn-secondary fif"
+    className="btn btn-close text-danger "
     onClick={hideNewOrder}>
-      Cerrar</button>
+      X</span>
 
       </div>
+
+</div>
 
 
 

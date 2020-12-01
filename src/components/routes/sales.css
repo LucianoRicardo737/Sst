@@ -24,3 +24,53 @@
 .hover{
     cursor: pointer;
 }
+
+.op50{
+    opacity: 0.6;
+  }
+  
+  .btn-editar,.btn-close, .btn-check{
+    scale: 1.3 !important;
+    transition: 0.2s !important;
+    border: 0px  !important;
+
+
+  }
+  .btn-editar,.btn-close{
+    font-size: 23px !important;
+  }
+  .btn-check{
+    font-size: 25px !important;
+  }
+ 
+  .btn-close:hover,.btn-editar:hover,.btn-check:hover{
+    text-shadow: darkslategray !important;
+    scale: 1.0 !important;
+    transition: 0.2s;
+   
+   
+  }
+
+  .borderButtonGreen,  .borderButtonRed,   .borderButtonWarning{
+    transition: 0.2s;
+    border-radius: 5px;
+  }
+   .borderButtonGreen:hover, .borderButtonRed:hover,.borderButtonWarning:hover{
+  transition: 0.2s;
+}
+
+  .borderButtonGreen:hover,.borderButtonGreen:focus{
+    box-shadow: inset 0 0 0 2px lightseagreen !important;
+  }
+
+  
+  .borderButtonRed:hover,  .borderButtonRed:focus{
+    box-shadow: inset 0 0 0 2px lightcoral !important;
+  }
+
+
+  .borderButtonWarning:hover,  .borderButtonWarning:focus{
+    box-shadow: inset 0 0 0 2px lightgoldenrodyellow !important;
+  }
+
+  

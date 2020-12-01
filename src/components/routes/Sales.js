@@ -44,7 +44,7 @@ const Sales = () => {
       
   {
     seOrHideNewClient ?
-     <div className='border  border-info p-4 mb-3'>
+     <div className='border  border-info p-4 mb-3 create'>
 
     <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} setError={setError} />
     </div> : null

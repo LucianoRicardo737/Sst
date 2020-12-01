@@ -92,13 +92,13 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
 
 
 
- <div className="row ">
+ <div className="row  ">
 
-  <div className="col-lg-12">
+  <div className="col-lg-12 text-left">
 
-        <h3>NUEVO CLIENTE</h3>
+        <h4>NUEVO CLIENTE</h4>
       </div>
-  <div className="col-md-4 marginbot">
+  <div className="col-md-4 ">
 
     <input
     type="text"
@@ -108,7 +108,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='name'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-4 marginbot">
+  <div className="col-md-4 ">
     <input
     type="text"
     className="form-control"
@@ -117,7 +117,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='lastname'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-4 marginbot">
+  <div className="col-md-4 mb-2">
     <input
     type="number"
     className="form-control"
@@ -126,7 +126,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='dni'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-6 marginbot">
+  <div className="col-md-6 mb-2">
     <input
     type="text"
     className="form-control"
@@ -135,7 +135,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='address'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-6 marginbot">
+  <div className="col-md-6 mb-2">
     <input
     type="text"
     className="form-control"
@@ -144,7 +144,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='city'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-1 marginbot">
+  <div className="col-md-1 mb-2">
     <input
     type="text"
     className="form-control"
@@ -154,7 +154,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='prefijo'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-2 marginbot">
+  <div className="col-md-2 mb-2">
     <input
     type="text"
     className="form-control"
@@ -163,7 +163,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='codigo'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-3 marginbot">
+  <div className="col-md-3 mb-2">
     <input
     type="text"
     className="form-control"
@@ -172,7 +172,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='telephone'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-6 marginbot">
+  <div className="col-md-6 mb-2">
     <input
     type="email"
     className="form-control"
@@ -181,7 +181,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     id='email'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-12 marginbot">
+  <div className="col-md-12 mb-2">
   <textarea
   className="form-control"
   placeholder='Observaciones'
@@ -189,22 +189,29 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
   id='observation'
   onChange={handleChangeText} ></textarea>
   </div>
+<div  className='row col-md-12 justify-content-end'>
 
-  <div className="col-md-12 btn-group">
+<div className="col-md-1 borderButtonGreen">
 
-        <button
-        type="button"
-        data-dismiss="modal"
-        onClick={()=>submit()}
-        className="btn btn-success fif ">
-            Agregar Cliente</button>
-        <button
-        type="button"
-        className="btn btn-secondary fif "
-        data-dismiss="modal"
-        onClick={hideNewClient}>
-            Cerrar</button>
-      </div>
+<span
+type="button"
+data-dismiss="modal"
+onClick={()=>submit()}
+className="btn btn-check text-success ">
+    ✔</span>
+
+    </div>
+    <div className="col-md-1 borderButtonRed  mr-2">
+
+<span
+type="button"
+className="btn btn-close text-danger "
+data-dismiss="modal"
+onClick={hideNewClient}>
+    X</span>
+</div>
+
+</div>
 
  </div>
 

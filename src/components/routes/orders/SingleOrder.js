@@ -11,6 +11,25 @@ import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
 export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders}) => {
 
+
+
+  const initualStateOrder = {
+    numberid:dataOrder[0].numberid,
+    type:dataOrder[0].type,
+    pacord:dataOrder[0].pacord,
+    seña:dataOrder[0].seña, 
+    brand:dataOrder[0].brand, 
+    model:dataOrder[0].model, 
+    nserie:dataOrder[0].nserie, 
+    failure:dataOrder[0].failure,
+    state:dataOrder[0].state, 
+    observation:dataOrder[0].observation,
+    client:dataOrder[0].client,
+    createdby:dataOrder[0].createdby,
+    promised:dataOrder[0].promised
+  }
+  
+
   const {userData}=useContext(UserContext)
   const user = userData.user
 
@@ -25,15 +44,14 @@ export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient
   const [password, setPassword]=useState("");
  
 
-
-const [newState, setNewState] = useState(undefined);
-
 // condicional el render
 const [render,setRender]=useState(true);
 
 //editar orden
 // const [price, setPrice] = useState("")
-const [sendNewPrice, setSendNewPrice] = useState([])
+const [sendNewPrice, setSendNewPrice] = useState(initualStateOrder)
+
+
 
 
 //Mostrar Clientes o cerrar single order
@@ -53,13 +71,7 @@ const actualizarDatos = useCallback(() =>{
 },[dataOrder,user.id,setMessageData])
 
 
-useEffect(()=>{
-  setSendNewPrice(dataOrder[0]);
 
-  return()=>{
-    setRender(false)
-  };
-},[dataOrder,render,])
 
 
 useEffect(()=>{
@@ -107,32 +119,16 @@ useEffect(()=>{
 
       
       if(nameIdentify){
- 
-    
+  
 
             //se guarda la data
 
       await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, sendNewPrice, config );
 
-
       socket.emit('order');
 
-      //condicional si no son iguales al anterior, se edita. Sino no. Pero tengo dudas
-      if(sendNewPrice.pacord !== dataOrder[0].pacord||sendNewPrice.seña !== dataOrder[0].seña){
-        //definimos que al no ser igual al dato viejo, sera una variable con el dato nuevo
-      let señaUndefined = sendNewPrice.seña
-        //y si son iguales a vacio que use el anterior. esto esta muy rebuscado.
-      if(
-        señaUndefined === ""||
-        señaUndefined === undefined){
-        setSendNewPrice({...sendNewPrice, seña:dataOrder[0].seña})
-      }
-    }
-      
-    
-
     let estadoEditado = undefined
-    if(sendNewPrice.state === newState)
+    if(sendNewPrice.state !== initualStateOrder.state)
     { 
       estadoEditado = sendNewPrice.state
     }else{
@@ -165,7 +161,7 @@ useEffect(()=>{
   // enviamos la info con el token
   await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
 
-  setNewState(undefined)
+
   setMsg("")
 
   //y ahi se fue el mensaje.. que anda bien (arriba)
@@ -173,8 +169,8 @@ useEffect(()=>{
   
 
     // limpiando los inputs
-      let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea,input[type='password']");
-      let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea,input[type='password']");
+      let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea,input[type='password'],input[type='date']");
+      let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea,input[type='password'],input[type='date']");
       for(let clearInput of clearInputs)
       clearInput.value = "";
       
@@ -192,12 +188,11 @@ useEffect(()=>{
 
         socket.emit('message'); 
 
-        let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + sendNewPrice._id, config);
+        let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, config);
 
      
-  
-    
         setDataOrder(order?.data);
+
      }
     } catch (error) {
       console.log(error)
@@ -233,8 +228,30 @@ useEffect(()=>{
 
 {/* modal */}
 
-<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice} setNewState={setNewState}  />
+<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice}   />
 
+<div className='modal-header'>
+            <div className='titleFontSingleOrder'>
+              {
+                dataOrder.map(order=>{
+                  return(
+                    <span
+                    key={order._id}
+                    >
+                    Orden N°:&nbsp;{order.numberid}
+                  </span>
+                  )
+                })
+              }
+            </div>
+            <div className=''>
+              <span
+                onClick={showClients}
+                className='btn btn-close text-danger'
+                  >X</span>
+            </div>
+
+        </div>
 
 
 
@@ -268,23 +285,75 @@ useEffect(()=>{
 {
       dataOrder.map(order =>{
 
-        let  n =  new Date(order.promised);
+      //   let  n =  new Date(order.promised);
+      //   //Año
+      // let y = n.getFullYear();
+      //   //Mes
+      // let  m = n.getMonth() + 1;
+      //   //Día
+      // let  d = n.getDate() + 1;
+  
+      //   console.log("soy N:",n.toString())
+      // if( d.toString().length === 1 ) {
+      //   d = "0" + d;
+      
+      // }
+
+      // if( m.toString().length === 1 ) {
+      //   m = "0" + m;
+      // }
+
+      // if(d.toString() >= "32"){
+      //   d = "01";
+      //   if(m.toString() >= 13){
+      //     m = "01"
+      //   }
+      // }
+
+      //   console.log(d.length)
+      //   //Lo ordenas a gusto.
+      // let date = {}
+
+      // if (order.promised === undefined){
+      //   date = "Sin fecha"
+      // } else {
+      //   date = d + "/" + m + "/" + y;
+      // }
+
+
+       
+      let fecha =  new Date(order.promised);
+
+      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
         //Año
-      let y = n.getFullYear();
+      let y = fecha.getFullYear();
         //Mes
-      let  m = n.getMonth() + 1;
+      let  m = fecha.getMonth() +1 ;
         //Día
-      let  d = n.getDate();
-  
-  
-        //Lo ordenas a gusto.
+      let  d = fecha.getDate();
+
+      let dayToString = d.toString()
+      if(dayToString.length === 1){
+        d = "0" + d
+      }
+
+      let mesToString = m.toString()
+      if(mesToString.length === 1){
+        m = "0" + m
+      }
+
+      //   //Lo ordenas a gusto.
       let date = d + "/" + m + "/" + y;
+
+
+        
+console.log(date)
 
 
           return(
 <div key={order._id} className=''>
 
-<div className='input-group mb-1'>
+<div className='input-group '>
 
 <label
 className=' col-lg-6' >
@@ -306,7 +375,7 @@ Marca:&nbsp;&nbsp;</span>
 
 
 
-<div className='input-group mb-1'>
+<div className='input-group '>
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>
@@ -322,7 +391,7 @@ N° Serie:&nbsp;&nbsp;</span>
 
 </div>
 
-<div className='input-group mb-1'>
+<div className='input-group '>
 <label
 className=' col-lg-6' >
 <span id='spanStateTitle' className='op50 textchiquito'>
@@ -341,7 +410,7 @@ Falla:&nbsp;&nbsp;</span>
 <span className='text-break spanData'>{order.failure}</span>
 </label>
 </div>
-<div className='input-group mb-1'>
+<div className='input-group '>
 <div className='col-lg-6' >
 <label
 >
@@ -351,11 +420,11 @@ Observaciones:&nbsp;&nbsp;</span>
 </label>
 
 </div>
- <div className='point col-lg-6'
+ <div className=' col-lg-6'
       >
       <span className='textchiquito op50'>Fecha de entrega:</span>
       
-      <span className='text-danger'>{date}</span></div>
+      <span className='text-danger textchiquito'>&nbsp;{date}</span></div>
   
 </div>
 </div>
