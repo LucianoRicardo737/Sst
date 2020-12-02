@@ -12,7 +12,7 @@
   width: 100%;
 }
 .fotns{
-  font-size: 11px;
+  font-size: 10px;
   
 }
 .sizemenos15{
@@ -26,4 +26,7 @@
 }
 .singleorder{
   height: 625px !important;
+}
+.tl{
+  margin-left: -15px !important;
 }

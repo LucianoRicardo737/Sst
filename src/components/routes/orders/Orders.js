@@ -194,7 +194,7 @@ onChange={(e)=>searchForState(e.target.value)}
   </div>
             {/* tabla de resultados */}
 
- <table className="table mt-1 ">
+ <table className="table  table-sm mt-1 ">
  <thead>
     <tr>
       <th scope="col">N°</th>
@@ -205,7 +205,7 @@ onChange={(e)=>searchForState(e.target.value)}
   </thead>
   </table>
   <div className='overflow'>
-  <table className="table table-hover overflow">
+  <table className="table  table-sm table-hover overflow">
 
 
   <tbody >

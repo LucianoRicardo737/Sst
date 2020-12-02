@@ -10,6 +10,8 @@ import { SingleOrder } from './orders/SingleOrder';
 
 import Error from '../misc/Error'
 
+
+
 const Sales = () => {
 
     //errores
@@ -56,7 +58,7 @@ const Sales = () => {
   {
     seOrHideNewOrder ?
     <div  className='border  border-info p-4 mb-3'>
-     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} dataClient={dataClient} />
+     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} setError={setError} dataClient={dataClient} />
      </div> : null
 
   }

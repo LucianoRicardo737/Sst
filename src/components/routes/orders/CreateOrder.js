@@ -13,7 +13,7 @@ import socket from '../../../io';
 import './createorder.css'
 
 
-const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
+const ModalSingleClien = ({setSeOrHideNewOrder,dataClient, setError}) => {
 
   //user context
   const {userData}=useContext(UserContext)
@@ -84,20 +84,23 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
 
           //limpiando los inputs
-          let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea");
-          let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea");
+          let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea,input[type='date']");
+          let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea,input[type='date']");
           for(let clearInput of clearInputs)
           clearInput.value = "";
-          console.log(clearInput)
-
+          let stateValueSelect = document.getElementById('state');
+          stateValueSelect.selectedIndex = 0;
+          let stateValueSType = document.getElementById('type');
+          stateValueSType.selectedIndex = 0;
 
   
           // listAllOrders()
             socket.emit('order');
-
+            setError(undefined)
             // console.log("Enviando")
-        } catch (error) {
-          console.log(error)
+        } catch (err) {
+          err.response.data.msg && 
+          setError(err.response.data.msg);
         }
       }
 
@@ -106,6 +109,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
 
       //cerrar
       const hideNewOrder = () =>{
+        setError(undefined)
         setSeOrHideNewOrder(false);
 
         // console.log("mostrar nueva orden")
@@ -144,12 +148,12 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
       
           let typeValue = document.getElementById('newType')
           typeValue.value = ""
-          
+            setError(undefined)
           // console.log(newType)
           setType("")
           setPassword("")
           SeeData()
-
+          setError(undefined)
           // console.log("creando tipo")
     }else {
       console.log("Contraseña Invalida")
@@ -157,8 +161,9 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
       
             // socket.emit('message'); 
     
-        } catch (error) {
-          console.log(error)
+        } catch (err) {
+          err.response.data.msg && 
+          setError(err.response.data.msg);
         }
       };
 
@@ -202,7 +207,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
         setState("")
         setPassword("")
         SeeData()
-        
+        setError(undefined)
         // console.log("crear estado")
   }else {
     console.log("Contraseña Invalida")
@@ -210,8 +215,9 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient}) => {
     
           // socket.emit('message'); 
   
-      } catch (error) {
-        console.log(error)
+      } catch (err) {
+        err.response.data.msg && 
+        setError(err.response.data.msg);
       }
     }
 

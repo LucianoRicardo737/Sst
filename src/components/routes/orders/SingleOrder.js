@@ -90,11 +90,18 @@ useEffect(()=>{
 
       setSendNewPrice({...sendNewPrice, [e.target.name]:e.target.value}); 
 
+
     } catch (error) {
       console.log(error)
     }
   }
 
+  // useEffect(()=>{
+  //   let nuevaEntrega = document.getElementById('nuevaEntrega').value
+  //   console.log(nuevaEntrega)
+  //   console.log(sendNewPrice)
+
+  // },[setSendNewPrice])
 
 
 //Enviar mensaje
@@ -119,11 +126,58 @@ useEffect(()=>{
 
       
       if(nameIdentify){
-  
 
+
+        let {numberid,
+          type,
+          pacord,
+          seña,
+          brand,
+          model,
+          nserie,
+          failure,
+          state,
+          observation,
+          client,
+          createdby,
+          promised} = sendNewPrice
+
+          let dataSeña = seña;
+          let dataState = state;
+          let dataPacord = pacord;
+          let dataPromised = promised;
+
+          if(seña===""){
+            dataSeña = dataOrder[0].seña
+          }
+          if(state===""){
+            dataState = dataOrder[0].state
+          }
+          if(pacord===""){
+            dataPacord = dataOrder[0].pacord
+          }
+          if(promised===""){
+            dataPromised = dataOrder[0].promised
+          }
+       
+       
+  
             //se guarda la data
 
-      await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, sendNewPrice, config );
+      await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id,
+      {numberid,
+      type,
+      pacord:dataPacord,
+      seña:dataSeña,
+      brand,
+      model,
+      nserie,
+      failure,
+      state:dataState,
+      observation,
+      client,
+      createdby,
+      promised:dataPromised} , config );
 
       socket.emit('order');
 
@@ -136,7 +190,24 @@ useEffect(()=>{
     }
 
 
+    let msjPromised = document.getElementById('promised').value
+
+    let fecha =  new Date(msjPromised);
+
+    if(msjPromised === null||msjPromised === undefined||msjPromised === ""){
+      msjPromised = undefined
+    } else {
+
+
+      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
+
+    }
+   
+
+
+
     let newPrice = document.getElementById('newPrice').value
+
     let nuevaEntrega = document.getElementById('nuevaEntrega').value
 
     if(newPrice === ""){
@@ -153,6 +224,7 @@ useEffect(()=>{
     reparation,
     msg,
     userid,
+    fechaEdit:fecha,
     stateEdit:estadoEditado,
     pacordEdit:newPrice,
     señaEdit:nuevaEntrega }
@@ -160,7 +232,7 @@ useEffect(()=>{
 
   // enviamos la info con el token
   await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
-
+console.log(newMessage)
 
   setMsg("")
 
@@ -285,41 +357,6 @@ useEffect(()=>{
 {
       dataOrder.map(order =>{
 
-      //   let  n =  new Date(order.promised);
-      //   //Año
-      // let y = n.getFullYear();
-      //   //Mes
-      // let  m = n.getMonth() + 1;
-      //   //Día
-      // let  d = n.getDate() + 1;
-  
-      //   console.log("soy N:",n.toString())
-      // if( d.toString().length === 1 ) {
-      //   d = "0" + d;
-      
-      // }
-
-      // if( m.toString().length === 1 ) {
-      //   m = "0" + m;
-      // }
-
-      // if(d.toString() >= "32"){
-      //   d = "01";
-      //   if(m.toString() >= 13){
-      //     m = "01"
-      //   }
-      // }
-
-      //   console.log(d.length)
-      //   //Lo ordenas a gusto.
-      // let date = {}
-
-      // if (order.promised === undefined){
-      //   date = "Sin fecha"
-      // } else {
-      //   date = d + "/" + m + "/" + y;
-      // }
-
 
        
       let fecha =  new Date(order.promised);
@@ -347,7 +384,7 @@ useEffect(()=>{
 
 
         
-console.log(date)
+
 
 
           return(
@@ -523,28 +560,78 @@ type="submit"
         //minutos
       let min = n.getMinutes();
 
+      let dayToString = d.toString()
+      if(dayToString.length === 1){
+        d = "0" + d
+      }
+
+      let mesToString = m.toString()
+      if(mesToString.length === 1){
+        m = "0" + m
+      }
+
+      let hourToString = h.toString()
+      if(hourToString.length === 1){
+        h = "0" + h
+      }
+
+      let minToString = min.toString()
+      if(minToString.length === 1){
+        min = "0" + min
+      }
+
+
         //Lo ordenas a gusto.
       let date = d + "/" + m + "/" + y + " - " + h + ":" + min;
+
+
+
+      //
+      let  dat =  new Date(msg.fechaEdit);
+      //Año
+    let year = dat.getFullYear();
+      //Mes
+    let  mes = dat.getMonth() + 1;
+      //Día
+    let  dia = dat.getDate();
+
+
+    let dayToStringEdit = dia.toString()
+    if(dayToStringEdit.length === 1){
+      dia = "0" + dia
+    }
+
+    let mesToStringEdit = mes.toString()
+    if(mesToStringEdit.length === 1){
+      mes = "0" + mes
+    }
+
+
+      //Lo ordenas a gusto.
+    let dateEdit = dia + "/" + mes + "/" + year;
 
 
       return (
  
 
-    <div key={msg._id} className='row border-bottom  mt-1 '>
+    <div key={msg._id} className='row  border-bottom  mt-1 '>
 
         <span className='text-muted col-sm-4 text-left fotns'>{msg.name}</span>
         <span id='date' className='text-muted col-sm-8 text-right fotns'>{date}</span>
         <p  className='col-sm-12 text-info text-break text-left'>{msg.msg}</p>
-        <div className='col-sm-12 text-right'>
-           {
+        <div className='col-sm-12 text-right row '>
+    {
 
-        msg.stateEdit === undefined ? 
-        null
-        : <>
-          <span className='col-sm-8 fotns sizemenos15'> 
-          <span className='text-muted '>Se cambio a:</span>
-          &nbsp;
-        "{msg.stateEdit}"</span>
+msg.stateEdit === undefined ? 
+null
+: <>
+
+
+  <div className=' mr-2 ml-1 fotns '> 
+  <span className='text-muted '>Cambio:</span>
+  &nbsp;
+"{msg.stateEdit}"</div>
+        
 </>
 
 
@@ -559,14 +646,15 @@ null
 : 
 <>
 
-  <span className='col-sm-2 fotns sizemenos15'> 
+  <div className=' fotns mr-2  ml-1'> 
   <span className='text-muted '>Precio:</span>
   &nbsp;
-${msg.pacordEdit}</span>
+${msg.pacordEdit}</div>
 </>
 
 
 }
+
 {
 
 msg?.señaEdit === undefined ? 
@@ -575,14 +663,35 @@ null
 : 
 <>
 
-  <span className='col-sm-2 fotns sizemenos15'> 
+  <div className='fotns mr-2  ml-1'> 
   <span className='text-muted '>Entrego:</span>
   &nbsp;
-${msg.señaEdit}</span>
+${msg.señaEdit}</div>
 </>
 
 
 }
+{
+
+msg?.fechaEdit === null ? 
+
+null
+: 
+<>
+
+  <div className=' fotns mr-2'> 
+  <span className='text-muted '>Entregar:</span>
+  &nbsp;
+{dateEdit}</div>
+</>
+
+
+}
+
+
+
+
+
             </div>
     
           

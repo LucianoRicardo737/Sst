@@ -203,14 +203,79 @@ const listAllOrders =  useCallback( () =>{
 
  //importamos la clave
  const validateUser = {password}
+
+
+
+
  //validamos el usuario solo con la pw
- const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,validateUser,config);
+ const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,
+ validateUser,config);
 
  //cargamos el nombre en una variable
  let nameIdentify = userLogRes.data.userExisting.name
 
  if(nameIdentify){
-         await Axios.put(`http://${IP}:${PORT}/clientes/` + dataClient[0]._id, editClientData, config );
+
+
+
+
+  let {name,
+    lastname,
+    dni,
+    address,
+    codigo,
+    prefijo,
+    telephone,
+    email,
+    city,
+    observation} =editClientData
+  
+    if(name===""){
+      name=dataClient[0].name
+    }
+    if(lastname===""){
+      lastname=dataClient[0].lastname
+    }
+    if(dni===""){
+      dni=dataClient[0].dni
+    }
+    if(address===""){
+      address=dataClient[0].address
+    }
+    if(codigo===""){
+      codigo=dataClient[0].codigo
+    }
+    if(prefijo===""){
+      prefijo=dataClient[0].prefijo
+    }
+    if(telephone===""){
+      telephone=dataClient[0].telephone
+    }
+    if(email===""){
+      email=dataClient[0].email
+    }
+    if(city===""){
+      city=dataClient[0].city
+    }
+    if(observation===""){
+      observation=dataClient[0].observation
+    }
+  
+
+
+
+         await Axios.put(`http://${IP}:${PORT}/clientes/` + dataClient[0]._id, 
+         {name,
+         lastname,
+         dni,
+         address,
+         codigo,
+         prefijo,
+         telephone,
+         email,
+         city,
+         observation} , config );
+
          
         socket.emit('cliente');
         let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + idClient, config);
