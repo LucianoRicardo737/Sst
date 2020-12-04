@@ -64,8 +64,10 @@ const [render,setRender]=useState(true);
       setDataClient(client?.data);
       setSeOrHideOrder(true);
     if(loc === "/taller"){
-      change()}
+      change()
       setSeeClient(false)
+    }
+  
 
     }
 
@@ -217,7 +219,28 @@ const [render,setRender]=useState(true);
        //Lo ordenas a gusto.
      let dateNowComplete = dia + "/" + mes + "/" + year;
 
-  
+     function VerClientes() {
+
+    try {
+      if (loc === "/taller"){
+        return(
+
+          seeClient === true ? null :
+                  <button
+                     onClick={showClients}
+                     className='btn btn-info rig'
+                     >Ver Clientes</button>)
+      } else {
+        return null
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    }
+
+
+
+
     return (
 
         <div id='orders'>
@@ -237,11 +260,10 @@ const [render,setRender]=useState(true);
              {/* barra de busqueda y botones de accion */}
   <div className='input-group mt-1'>
 
-    { seeClient === true ? null :
-             <button
-                onClick={showClients}
-                className='btn btn-info rig'
-                >Ver Clientes</button>}
+  <div>
+    <VerClientes/>
+ 
+  </div>
             <input
             placeholder='Buscar por numero'
             id='searchOrder'
@@ -278,7 +300,7 @@ onChange={(e)=>searchForState(e.target.value)}
   </div>
             {/* tabla de resultados */}
 
- <table className="table  table-sm table-hover overflow mt-1">
+ <table className="table  table-sm table-hover  mt-1">
  <thead>
     <tr>
       <th scope="col">N°</th>
@@ -288,11 +310,11 @@ onChange={(e)=>searchForState(e.target.value)}
       <th scope="col">Fecha de entrega</th>
     </tr>
   </thead>
-
+  </table>
   
   {/* <table className="table  table-sm table-hover overflow"> */}
-
-
+<div className='overflow'>
+  <table className="table table-sm table-hover ">
   <tbody >
       {
         searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(order =>{
@@ -324,6 +346,40 @@ onChange={(e)=>searchForState(e.target.value)}
           //Lo ordenas a gusto.
         let dateEdit = dia + "/" + mes + "/" + year;
 
+
+        function FechaDeEntrega(){
+          try {
+            if(dateNowComplete === dateEdit) {
+              return (
+                <td className="text-break text-warning">{dateEdit}</td>
+              )
+            } 
+            
+          
+            if(dateNowComplete > dateEdit) {
+              return (
+                <td className="text-break text-danger">{dateEdit}</td>
+              )
+            }
+            if(order.state === "entregado"){
+             return(
+                <td className="text-break text-success">{dateEdit}</td>
+             )
+            } 
+            
+            else {
+              return (
+              <td className="text-break ">{dateEdit}</td>)
+            }
+          } catch (error) {
+            console.log(error)
+          }
+}
+      
+      
+      
+      
+
           return(
             <tr key={order._id}>
 
@@ -346,7 +402,12 @@ onChange={(e)=>searchForState(e.target.value)}
                       
                      :
                      
-                     <td className="text-break">{dateEdit}</td>
+                   
+                      
+                      <FechaDeEntrega/>
+                     
+                      
+                   
 
                      }
 
@@ -360,6 +421,7 @@ onChange={(e)=>searchForState(e.target.value)}
   
 
   </table>
+  </div>
 </div>
     )
 })

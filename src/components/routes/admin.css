@@ -1,0 +1,36 @@
+.edit{
+    scale: 1.0;
+    transition: 0.2s !important;
+}
+.create2{
+    scale: 1.0;
+    transition: 0.2s !important;
+}
+.delete{
+    scale: 1.0;
+    transition: 0.2s !important;
+    
+}
+
+.edit:hover{
+    scale: 1.2 !important;
+    transition: 0.2s !important;
+
+}
+.create2:hover{
+    scale: 1.1 !important;
+    transition: 0.2s !important;
+    box-shadow: inset 0 0 0 2px lightseagreen !important;
+}
+.delete:hover{
+    scale: 1.4 !important;
+    transition: 0.2s !important;
+}
+
+.max{
+    height: 260px;
+  
+}
+.over{
+    overflow-y: auto;
+}

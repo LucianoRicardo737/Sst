@@ -10,18 +10,46 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 import socket from '../../io';
 
-const Navegation = () => {
+const Navegation = ({admin, isLog}) => {
 
     const history = useHistory();
+
+
+
+  
 
     const {userData, setUserData}=useContext(UserContext)
     const user = userData.user
     // const atributeUser = userData.user.atribute
 
+      
+
+
+
+
     const [repairs, setRepairs] = useState([])
 
     // condicional el render
     const [render,setRender]=useState(true);
+
+
+    // useEffect(()=>{
+    //   try {
+    //     if(user === undefined){
+    //       history.push('/login');
+    //       console.log("LOG")
+    //     } else {
+    //       if(user.role === "taller"){
+    //         history.push('/taller');
+    //       }
+    //       if(user.role === "vendedor"){
+    //         history.push('/ventas');
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },[user,history])
 
     const listAllOrders =  useCallback( () =>{
       try {
@@ -61,6 +89,14 @@ const Navegation = () => {
      }
     })
 
+
+    let reparacionesPEndientes = repairs.filter(function(rep){
+      if(rep.state === "reparacion aceptada"){
+        return rep.state
+     } else {
+       return null
+     }
+    })
 
 return (
     <>
@@ -113,29 +149,31 @@ return (
                 <Link to='/taller' className="nav-link">Taller</Link>
             </li>
            
-            {/* <li className="nav-item dropdown">
-                <Link  to='/' className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</Link>
-                <div className="dropdown-menu">
-                    <Link   to='/' className="dropdown-item">Action</Link>
-                    <Link  to='/' className="dropdown-item">Another action</Link>
-                    <Link  to='/' className="dropdown-item">Something else here</Link>
-                    <div className="dropdown-divider"></div>
-                    <Link  to='/' className="dropdown-item">Separated link</Link>
-                </div>
-            </li> */}
+            
            
                
                </> : <>
               
                </>
-           }
-
+            }
+        { admin === true ?
+            <li className="nav-item ">
+            <Link to='/admin' className="nav-link">Herramientas
+            </Link>
+        </li> : null
+        }
         
-            
+
         </ul>
         <ul className="navbar-nav">
 
-           <span className=" nav-link active ">Llamar al cliente Restantes:&nbsp;<span className='restantes border border-success'>{sear.length}</span></span>
+{     isLog === true ? 
+<>
+<span className=" nav-link active ">Llamar al cliente Restantes:&nbsp;<span className='restantes border border-success'>{sear.length}</span></span>
+
+           <span className=" nav-link active ">Reparaciones Restantes:&nbsp;<span className='restantes border border-success'>{reparacionesPEndientes.length}</span></span>
+           </>
+           : null}
 
         {
                  

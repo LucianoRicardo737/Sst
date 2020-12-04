@@ -478,7 +478,16 @@ Observaciones:&nbsp;&nbsp;</span>
       >
       <span className='textchiquito op50'>Fecha de entrega:</span>
       
-      <span className='text-danger textchiquito'>&nbsp;{date}</span></div>
+      <span className='text-danger textchiquito'>&nbsp;
+      
+      
+      {
+      order.promised === undefined ? <span>indefinida</span> :
+      
+      date}
+      
+      
+      </span></div>
   
 </div>
 </div>
