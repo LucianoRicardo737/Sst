@@ -1,5 +1,7 @@
 import { memo,useState, useEffect, useCallback} from 'react'
 
+
+
 import './orders.css';
 
 import Axios from 'axios';
@@ -7,7 +9,11 @@ import {IP, PORT} from '../../../env'
 
 import socket from '../../../io';
 
-const Orders =memo (({setDataOrder, setSeOrHideOrder,  setDataClient}) => {
+const Orders =memo (({setSeeClient,seeClient,setSeOrHideNewOrder, setSeOrHideNewClient,
+  setSearchClients, setDataOrder, setSeOrHideOrder,  setDataClient, change,loc}) => {
+
+
+
 
 
   // console.log('Soy Ordenes')
@@ -40,6 +46,8 @@ const [render,setRender]=useState(true);
 
     const seeOrder = async (e)=>{
 
+      
+
       let token = localStorage.getItem('auth-token');
       let config = {headers:{
         'labLERsst-auth-token': token
@@ -55,6 +63,9 @@ const [render,setRender]=useState(true);
       setDataOrder(order?.data);
       setDataClient(client?.data);
       setSeOrHideOrder(true);
+    if(loc === "/taller"){
+      change()}
+      setSeeClient(false)
 
     }
 
@@ -92,7 +103,7 @@ const [render,setRender]=useState(true);
       if(order.numberid.toString() === searchOrders.toString()){
         
       return order.numberid.toString().includes(searchOrders.toString())
-      
+
     } 
   
     else {
@@ -140,6 +151,18 @@ const [render,setRender]=useState(true);
       }
     }, [SeeData, render])
 
+    const showClients = () =>{
+
+
+
+      setSeOrHideOrder(false)
+      setSeeClient(true)
+
+
+      let idOrders = document.getElementById('idOrders');
+    idOrders.classList.add('col-lg-6')
+    idOrders.classList.remove('col-lg-12')
+    }
 
     // const wptest = ( ) =>{
     //   const ventana = window.open("https://api.whatsapp.com/send?phone=+543533415285","_blank");
@@ -148,6 +171,53 @@ const [render,setRender]=useState(true);
     //   }, 10000); /* 5 Segundos*/
     // }
 
+
+  //   const showNewClient = ()=>{
+
+  //     setSeOrHideNewOrder(false);
+  //     setSeOrHideNewClient(true);
+   
+
+  //     setTimeout(function(){
+  //       window.scroll({
+  //         top: 0,
+  //         left: 0,
+  //         behavior: 'smooth'
+  //       });
+  //     },200)
+  
+  // }
+
+
+
+     let fecha =  new Date();
+
+      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
+    
+
+       //Año
+       let year = fecha.getFullYear();
+       //Mes
+     let  mes = fecha.getMonth() + 1;
+       //Día
+     let  dia = fecha.getDate() ;
+ 
+ 
+     let dayToStringEdit = dia.toString()
+     if(dayToStringEdit.length === 1){
+       dia = "0" + dia
+     }
+ 
+     let mesToStringEdit = mes.toString()
+     if(mesToStringEdit.length === 1){
+       mes = "0" + mes
+     }
+ 
+ 
+       //Lo ordenas a gusto.
+     let dateNowComplete = dia + "/" + mes + "/" + year;
+
+  
     return (
 
         <div id='orders'>
@@ -158,6 +228,7 @@ const [render,setRender]=useState(true);
 
 
     <div className='modal-header'>
+    
       <div className='titleFontOrders'>
        <span>Ordenes de Trabajo</span>
      </div>
@@ -165,6 +236,12 @@ const [render,setRender]=useState(true);
 
              {/* barra de busqueda y botones de accion */}
   <div className='input-group mt-1'>
+
+    { seeClient === true ? null :
+             <button
+                onClick={showClients}
+                className='btn btn-info rig'
+                >Ver Clientes</button>}
             <input
             placeholder='Buscar por numero'
             id='searchOrder'
@@ -182,6 +259,13 @@ defaultValue='disabled'
 onChange={(e)=>searchForState(e.target.value)}
 >
         <option  disabled value='disabled'>Buscar por Estado</option>
+        <option >a revisar</option>
+        <option >entregado</option>
+        <option >llamar al cliente</option>
+        <option >reparacion aceptada</option>
+        <option >reparacion cancelada</option>
+        <option >listo para entregar</option>
+        <option >list sin reparacion</option>
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>
       {
@@ -194,23 +278,52 @@ onChange={(e)=>searchForState(e.target.value)}
   </div>
             {/* tabla de resultados */}
 
- <table className="table  table-sm mt-1 ">
+ <table className="table  table-sm table-hover overflow mt-1">
  <thead>
     <tr>
       <th scope="col">N°</th>
       <th scope="col">Tipo</th>
       <th scope="col">Marca</th>
       <th scope="col">Estado</th>
+      <th scope="col">Fecha de entrega</th>
     </tr>
   </thead>
-  </table>
-  <div className='overflow'>
-  <table className="table  table-sm table-hover overflow">
+
+  
+  {/* <table className="table  table-sm table-hover overflow"> */}
 
 
   <tbody >
       {
         searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(order =>{
+
+
+
+        let fecha =  new Date(order.promised);
+
+        fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
+          //Año
+        let year = fecha.getFullYear();
+          //Mes
+        let  mes = fecha.getMonth() + 1;
+          //Día
+        let  dia = fecha.getDate() +1 ;
+    
+    
+        let dayToStringEdit = dia.toString()
+        if(dayToStringEdit.length === 1){
+          dia = "0" + dia
+        }
+    
+        let mesToStringEdit = mes.toString()
+        if(mesToStringEdit.length === 1){
+          mes = "0" + mes
+        }
+    
+    
+          //Lo ordenas a gusto.
+        let dateEdit = dia + "/" + mes + "/" + year;
+
           return(
             <tr key={order._id}>
 
@@ -225,13 +338,28 @@ onChange={(e)=>searchForState(e.target.value)}
                       <td className="text-break">{order.type}</td>
                       <td className="text-break">{order.brand}</td>
                       <td className="text-break">{order.state}</td>
+                     {
+                       
+                       order.promised === undefined ?
+
+                     <td className="text-break text-warning"></td>
+                      
+                     :
+                     
+                     <td className="text-break">{dateEdit}</td>
+
+                     }
+
+
+                   
             </tr>
           )
         })
       }
     </tbody>
+  
+
   </table>
-  </div>
 </div>
     )
 })

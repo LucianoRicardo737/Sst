@@ -2,13 +2,19 @@ import { useState, useEffect, useCallback}  from 'react';
 import Axios from 'axios';
 import {IP, PORT} from '../../../env'
 
+import {useLocation} from "react-router-dom"
 
 import './singleClient.css'
 
 import socket from '../../../io';
 import ModalValidate from '../modals/Modal_Validate';
 
-const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient, setDataClient, hideAndSeeData, setHideAndSeeData}) => {
+const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient, setDataClient, hideAndSeeData, setHideAndSeeData, setSeeClient}) => {
+
+
+
+  let location = useLocation();
+  let loc = location.pathname
 
   const initialState={
     name:dataClient[0].name,
@@ -126,15 +132,29 @@ const listAllOrders =  useCallback( () =>{
 
     //ir a ordenes
     const backToOrders = ()=>{
+      if(loc==="/taller")
+      {
+        setSeOrHideOrders(true)
+        // setSeOrHideOrder(false)
+    setTimeout(function(){
+      let idOrders = document.getElementById('idOrders');
+      idOrders.classList.remove('col-lg-12')
+      idOrders.classList.add('col-lg-6')
+   
+    },100)
+      } else {
         setSeOrHideOrders(true)
         setSeOrHideNewOrder(false)
         setSeOrHideOrder(false)
+      }
 
     }
 
 
     //setear datos de la orden
     const seeOrder = async (e)=>{
+  
+   
       let token = localStorage.getItem('auth-token');
       let config = {headers:{
         'labLERsst-auth-token': token
@@ -142,6 +162,9 @@ const listAllOrders =  useCallback( () =>{
       let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + e, config);
       setDataOrder(order.data);
       setSeOrHideOrder(true);
+      if(loc === "/taller"){
+      setSeeClient(false)
+      } 
     }
 
 
@@ -294,7 +317,7 @@ const listAllOrders =  useCallback( () =>{
         // console.log("Soy SingleCLient")
 
     return (
-        <div className=''>
+        <div className='test'>
 
 
 
@@ -565,6 +588,13 @@ defaultValue='disabled'
 onChange={(e)=>searchForState(e.target.value)}
 >
         <option  disabled value='disabled'>Buscar por Estado</option>
+        <option >a revisar</option>
+        <option >entregado</option>
+        <option >llamar al cliente</option>
+        <option >reparacion aceptada</option>
+        <option >reparacion cancelada</option>
+        <option >listo para entregar</option>
+        <option >listo para entregar si reparacion</option>
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>
       {

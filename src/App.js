@@ -9,6 +9,7 @@ import UserContext from './context/UserContext';
 import Navegation from './components/layout/Navegation';
 import Login from './components/auth/Login';
 import Sales from './components/routes/Sales';
+import Taller from './components/routes/Taller';
 
 import 'animate.css/animate.css'
 
@@ -61,6 +62,8 @@ function App() {
 
 
       <Route path='/ventas' component={Sales} />
+
+      <Route path='/taller' component={Taller} />
       </UserContext.Provider>
       <Route path='/' exact />
      </Router>

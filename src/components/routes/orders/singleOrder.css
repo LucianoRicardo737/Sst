@@ -1,3 +1,5 @@
+
+
 .overflowSingleOrder{
       overflow-x: auto;
       height: 352px !important;
@@ -8,7 +10,7 @@
 }
 .ovflow{
   overflow-x: auto;
-  height: 300px !important;
+  height: 350px !important;
   width: 100%;
 }
 .fotns{
@@ -25,8 +27,56 @@
   font-size: 11px !important;
 }
 .singleorder{
-  height: 625px !important;
+  height: 650px !important;
 }
 .tl{
   margin-left: -15px !important;
+}
+
+
+@media only screen and (max-width: 990px) {
+  .ovflow{
+   
+    height: 280px !important;
+   
+  }
+
+  .singleorder{
+    height: 700px !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+
+
+  .singleorder{
+    height: 750px !important;
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+
+
+  .singleorder{
+    height: 780px !important;
+  }
+}
+
+
+@media only screen and (max-width: 300px) {
+
+
+  .singleorder{
+    height: 820px !important;
+  }
+}
+
+
+@media only screen and (max-width: 260px) {
+
+
+  .singleorder{
+    height: 870px !important;
+  }
 }

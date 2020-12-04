@@ -8,29 +8,17 @@ import CreateClient from './clients/CreateClient';
 import CreateOrder from './orders/CreateOrder';
 import { SingleOrder } from './orders/SingleOrder';
 
+import {useLocation} from "react-router-dom"
+
 import Error from '../misc/Error'
 
 import { motion } from 'framer-motion'
-import {useLocation} from "react-router-dom"
-const Sales = () => {
+
+const Taller = () => {
+
 
   let location = useLocation();
   let loc = location.pathname
-
-
-  const test ={
-    hidden:{
-      opacity:0,
-    },
-    visible:{
-      opacity:1,
-      transition:{delay:1,duration:1}
-    },
-    exit:{
-      x:"-100w",
-      transition:{ease:"easeInOut"}
-    }
-  }
 
     //errores
     const[error, setError]=useState(undefined);
@@ -49,6 +37,32 @@ const Sales = () => {
   const [dataClient, setDataClient]=useState([]);
   //data de la orden a mostarar
   const [dataOrder, setDataOrder]=useState([]);
+const [seeClient, setSeeClient]=useState(false);
+
+  const change = () =>{
+    let idOrders = document.getElementById('idOrders');
+
+    idOrders.classList.remove('col-lg-12')
+    idOrders.classList.add('col-lg-6')
+  }
+  const changeBack = () =>{
+    setSeOrHideOrders(true)
+
+
+    // if(seOrHideOrders === false){
+      
+    // }
+
+    if(seOrHideOrders=== true){
+    let idOrders = document.getElementById('idOrders');
+    idOrders.classList.remove('col-lg-6')
+    idOrders.classList.add('col-lg-12')
+}
+
+
+
+  }
+
 
 
     return (
@@ -69,7 +83,7 @@ const Sales = () => {
      <motion.div 
      
      animate={{ y: 0, opacity: 1 }}
-  transition={{ ease: "easeIn", duration: 0.2}}
+  transition={{ ease: "easeIn", duration: 0.1}}
     style={{y:"-100px", opacity: "0"}}
 
      id="createClientTransition" className=' border  border-info p-4 mb-3 create'>
@@ -87,7 +101,7 @@ const Sales = () => {
     <motion.div 
      
     animate={{ y: 0, opacity: 1 }}
- transition={{ ease: "easeIn", duration: 0.2}}
+ transition={{ ease: "easeIn", duration: 0.1}}
    style={{y:"-100px", opacity: "0"}}  className='border  border-info p-4 mb-3'>
      <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} setError={setError} dataClient={dataClient} />
      </motion.div> : null
@@ -96,16 +110,16 @@ const Sales = () => {
 
 
 </div>
+
+
 {
-  seOrHIdeOrder === false ?
-
-
+  seeClient === true ?
   <div className='col-lg-6 '>
 
 
   <motion.div 
     animate={{ x: 0, opacity: 1 }}
-    transition={{ ease: "easeIn", duration: 0.2}}
+    transition={{ ease: "easeIn", duration: 0.1}}
       style={{x:"-100px", opacity: "0"}}
   
   
@@ -113,12 +127,29 @@ const Sales = () => {
   className='border  border-info p-2 mb-3'>
 
 
-  <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} setHideAndSeeData={setHideAndSeeData} />
+  <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} setHideAndSeeData={setHideAndSeeData} loc={loc} setSeeClient={setSeeClient} changeBack={changeBack} />
 
   </motion.div>
 
 
-</div>
+</div> 
+
+:
+
+
+null
+}
+
+
+
+
+
+
+{
+  seOrHIdeOrder === false ?
+
+
+null
 
   :
 
@@ -128,8 +159,8 @@ const Sales = () => {
 <motion.div 
   
   animate={{ x: 0, opacity: 1 }}
-  transition={{ ease: "easeIn", duration: 0.2}}
-    style={{x:"-100px", opacity: "0"}}
+  transition={{ ease: "easeIn", duration: 0.1}}
+    style={{x:"-200px", opacity: "0"}}
   className='col-lg-6 '>
 
 <div 
@@ -139,7 +170,7 @@ const Sales = () => {
 
 
 className='border border-info p-2 mb-3'>
-   <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders} setError={setError} loc={loc} />
+   <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders} setError={setError} changeBack={changeBack} loc={loc} setSeeClient={setSeeClient} seeClient={seeClient} />
 
 
 
@@ -153,14 +184,16 @@ className='border border-info p-2 mb-3'>
 
 
 {
+
+  
     seOrHideOrders === true ?
-    <div  className='col-lg-6 '>
+    <div id='idOrders'  className='col-lg-12 '>
 
 <motion.div 
-    animate={{ x: 0, opacity: 1 }}
-    transition={{ ease: "easeIn", duration: 0.2}}
-      style={{x:"100px", opacity: "0"}}  className='border border-info p-2 '>
-<Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} setDataClient={setDataClient} />
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ ease: "easeIn", duration: 0.1}}
+      style={{y:"100px", opacity: "0"}}  className='border border-info p-2 '>
+<Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} setDataClient={setDataClient} change={change} loc={loc} setSeOrHideNewOrder={setSeOrHideNewOrder}  setSeOrHideNewClient={setSeOrHideNewClient}  setSeeClient={setSeeClient} seeClient={seeClient} />
 </motion.div>
 </div>
 
@@ -169,7 +202,7 @@ className='border border-info p-2 mb-3'>
 <motion.div 
 
 animate={{ x: 0, opacity: 1 }}
-transition={{ ease: "easeIn", duration: 0.2}}
+transition={{ ease: "easeIn", duration: 0.1}}
   style={{x:"100px", opacity: "0"}}
 className='col-lg-6 '>
 
@@ -177,7 +210,8 @@ className='col-lg-6 '>
  
 <div  className='border border-info p-2 '>
 
-<SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} hideAndSeeData={hideAndSeeData} setHideAndSeeData={setHideAndSeeData} setDataClient={setDataClient} />
+<SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} hideAndSeeData={hideAndSeeData} setHideAndSeeData={setHideAndSeeData} setDataClient={setDataClient} setSeeClient=
+{setSeeClient} />
 
 
 </div>
@@ -196,4 +230,4 @@ className='col-lg-6 '>
     )
 }
 
-export default Sales
+export default Taller

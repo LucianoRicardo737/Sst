@@ -8,8 +8,9 @@ import UserContext from '../../../context/UserContext';
 import socket from '../../../io';
 import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
+import { motion } from 'framer-motion'
 
-export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders}) => {
+export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders,setError, changeBack, loc}) => {
 
 
 
@@ -56,6 +57,9 @@ const [sendNewPrice, setSendNewPrice] = useState(initualStateOrder)
 
 //Mostrar Clientes o cerrar single order
 const showClients = () =>{
+  if(loc === "/taller"){
+  changeBack()
+}
   setSeOrHideOrder(false)
 }
 
@@ -264,10 +268,24 @@ console.log(newMessage)
 
      
         setDataOrder(order?.data);
+       
+
 
      }
-    } catch (error) {
-      console.log(error)
+    } catch (err) {
+
+ 
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+   
+
+      setTimeout(function(){
+      err.response.data.msg && 
+      setError(err.response.data.msg);
+    },350);
     }
   };
 
@@ -300,7 +318,7 @@ console.log(newMessage)
 
 {/* modal */}
 
-<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice}   />
+<ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice}  setError={setError} />
 
 <div className='modal-header'>
             <div className='titleFontSingleOrder'>
@@ -360,14 +378,14 @@ console.log(newMessage)
 
        
       let fecha =  new Date(order.promised);
-
-      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
+     
+      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
         //Año
       let y = fecha.getFullYear();
         //Mes
       let  m = fecha.getMonth() +1 ;
         //Día
-      let  d = fecha.getDate();
+      let  d = fecha.getDate() +1 ;
 
       let dayToString = d.toString()
       if(dayToString.length === 1){
@@ -383,8 +401,7 @@ console.log(newMessage)
       let date = d + "/" + m + "/" + y;
 
 
-        
-
+  
 
 
           return(
@@ -480,7 +497,11 @@ Observaciones:&nbsp;&nbsp;</span>
 
     return(
 
-<div key={order._id} className='row mt-1'>
+<div key={order._id} className='row mtn
+n
+n
+n
+n-1'>
 
 <div className='col-sm-4'>
   <span 
@@ -547,18 +568,22 @@ type="submit"
       }
 
     }).sort(function(a, b){return a-b}).map(msg =>{
+
+      let fecha =  new Date(msg.createdAt);
+
+      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
      
-      let  n =  new Date(msg.createdAt);
+      // let  n =  new Date();
         //Año
-      let y = n.getFullYear();
+      let y = fecha.getFullYear();
         //Mes
-      let  m = n.getMonth() + 1;
+      let  m = fecha.getMonth() + 1;
         //Día
-      let  d = n.getDate();
+      let  d = fecha.getDate();
         //hora
-      let h = n.getHours();
+      let h = fecha.getHours();
         //minutos
-      let min = n.getMinutes();
+      let min = fecha.getMinutes();
 
       let dayToString = d.toString()
       if(dayToString.length === 1){

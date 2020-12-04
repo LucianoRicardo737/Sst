@@ -1,7 +1,7 @@
 .error-notice{
     margin-bottom: 20px;
-    border-radius: 5px;
-    border: 2px solid lightcoral;
+
+    border: 2px solid rgb(255, 127, 127);
     padding: 5px;
     /* background: rgba(232, 89, 89, 0.404); */
     display: grid;

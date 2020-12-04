@@ -8,7 +8,7 @@ import './client.css'
 import socket from '../../../io';
 
 
-const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setSeOrHideNewOrder, setHideAndSeeData
+const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setSeOrHideNewOrder, setHideAndSeeData,setSeeClient, loc, changeBack
   }) => {
 
 
@@ -17,6 +17,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
 
 
     const showNewClient = ()=>{
+
       setSeOrHideNewOrder(false);
       setSeOrHideNewClient(true);
       setSearchClients("");
@@ -56,7 +57,12 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
     },[listAllClients,render])
   
 
-    
+    const clearClick = () =>{
+      setSearchClients("")
+   
+
+      document.getElementById('searchClient').value = ""
+    }
    
     //ver cliente
     const seeClient = async (e)=>{
@@ -108,6 +114,16 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
       }
 
 
+      const closeClients = () =>{
+
+        changeBack()
+
+        setSeeClient(false)
+
+     
+
+      }
+
     // console.log("Soy Clientes")
 
     return (
@@ -118,24 +134,37 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
             <div className='modal-header '>
               <div className='titleFontClients'>
                 <span >Clientes</span>
+
+
               </div>
+              { loc === "/taller" &&
+              <div className=''>
+              <span
+                onClick={closeClients}
+                className='btn btn-close text-danger'
+                  >X</span>
             </div>
+           }
+            </div>
+          
             <div className='input-group mt-1 '>
 
                 <button
                 onClick={showNewClient}
                 className='btn btn-info rig'
                 >Nuevo Cliente</button>
-
+   
             <input
+            autoComplete="off"
             placeholder='Buscar cliente'
             type='text'
             id='searchClient'
+            onClick={()=>{clearClick()}}
             onChange={(e)=>setSearchClients(e.target.value)}
             className='form-control inputSearch  border border-info'
             />
             </div>
-
+            
               <table className="table  table-sm  mt-1">
               <thead >
                   <tr>

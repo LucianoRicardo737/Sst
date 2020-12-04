@@ -34,9 +34,12 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
       //mostrar u ocultar nuevo cliente
     // const {setSeOrHideNewClient}=useContext(SeOrHideOrdersContext);
 
-    const hideNewClient = ()=>{
+    const hideNewClient = ()=>{ 
+
         setError(undefined)
         setSeOrHideNewClient(false);
+        
+
     }
 
         //cargamos datos en el state
@@ -92,7 +95,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
 
 
 
- <div className="row  ">
+ <div className="row  " id="createClient">
 
   <div className="col-lg-12 text-left">
 

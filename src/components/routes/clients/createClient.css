@@ -5,3 +5,8 @@
   
     font-size: 15px !important;
    }
+   .chau{
+       opacity: 0;
+       transition: 1s;
+       scale: 0;
+   }

@@ -316,7 +316,7 @@ name='type'
 onChange={handleChangeText}
 defaultValue='disabled'>
         <option  disabled value='disabled'>Seleccionar Tipo</option>
-    
+       
     {
           typeData.sort(function(a, b){return a-b}).map(type =>
             {
@@ -377,6 +377,14 @@ name='state'
 defaultValue='disabled'
 onChange={handleChangeText}>
         <option  disabled value='disabled'>Estado Inicial</option>
+        <option >a revisar</option>
+        <option >entregado</option>
+        <option >llamar al cliente</option>
+        <option >reparacion aceptada</option>
+        <option >reparacion cancelada</option>
+        <option >listo para entregar</option>
+        <option >list sin reparacion</option>
+     
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>
       {
