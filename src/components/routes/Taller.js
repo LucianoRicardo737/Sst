@@ -192,7 +192,10 @@ className='border border-info p-2 mb-3'>
 <motion.div 
     animate={{ y: 0, opacity: 1 }}
     transition={{ ease: "easeIn", duration: 0.1}}
-      style={{y:"100px", opacity: "0"}}  className='border border-info p-2 '>
+      style={{y:"100px", opacity: "0"}} 
+      className='border border-info p-2'>
+
+
 <Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} setDataClient={setDataClient} change={change} loc={loc} setSeOrHideNewOrder={setSeOrHideNewOrder}  setSeOrHideNewClient={setSeOrHideNewClient}  setSeeClient={setSeeClient} seeClient={seeClient} />
 </motion.div>
 </div>

@@ -67,7 +67,7 @@ const Login = () => {
 
 
            <h3 className='text-center'
-           style={{marginTop:"70px"}}>INGRESAR</h3>
+           style={{marginTop:"70px"}}>Ingrese su cuenta</h3>
            
             <form onSubmit={submit}>
              <div className='form-group'>

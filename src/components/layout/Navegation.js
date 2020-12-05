@@ -33,23 +33,20 @@ const Navegation = ({admin, isLog}) => {
     const [render,setRender]=useState(true);
 
 
-    // useEffect(()=>{
-    //   try {
-    //     if(user === undefined){
-    //       history.push('/login');
-    //       console.log("LOG")
-    //     } else {
-    //       if(user.role === "taller"){
-    //         history.push('/taller');
-    //       }
-    //       if(user.role === "vendedor"){
-    //         history.push('/ventas');
-    //       }
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // },[user,history])
+    useEffect(()=>{
+      try {
+        if(user === undefined){
+          history.push('/login');
+        
+        } else {
+          history.push('/');
+       
+          }
+         
+      } catch (error) {
+        console.log(error)
+      }
+    },[user,history])
 
     const listAllOrders =  useCallback( () =>{
       try {
@@ -107,7 +104,7 @@ return (
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Cerrar Sesion</h5>
+        <h5 className="modal-title" id="exampleModalLabel">Cerrar Sesión</h5>
       </div>
       <div className="modal-body">
         Esta seguro que desea salir?
@@ -128,13 +125,13 @@ return (
 
   <div>
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-        <Link to='/' className="navbar-brand">Servicio Tecnico Durante</Link>
+        <Link to='/' className="navbar-brand">Servicio Técnico Durante</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="navbarColor01">
-        <ul className="navbar-nav mr-auto">
+        <ul className="navbar-nav mr-auto mt-3 mb-n3">
 
         {
                user ? <>   
@@ -169,9 +166,9 @@ return (
 
 {     isLog === true ? 
 <>
-<span className=" nav-link active ">Llamar al cliente Restantes:&nbsp;<span className='restantes border border-success'>{sear.length}</span></span>
+<span className=" nav-link active ">Clientes a llamar:&nbsp;<span className='restantes border border-success'>{sear.length}</span></span>
 
-           <span className=" nav-link active ">Reparaciones Restantes:&nbsp;<span className='restantes border border-success'>{reparacionesPEndientes.length}</span></span>
+           <span className=" nav-link active mr-4">Reparaciones Restantes:&nbsp;<span className='restantes  border border-success'>{reparacionesPEndientes.length}</span></span>
            </>
            : null}
 
@@ -182,7 +179,7 @@ return (
             <li className="nav-item nostyle">
                 <span   
                 data-toggle="modal" data-target="#exampleModal"
-                className="hover nav-link"
+                className="hover nav-link mr-4"
                 >SALIR</span>
             </li>
            

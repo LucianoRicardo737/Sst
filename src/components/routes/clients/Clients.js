@@ -84,9 +84,6 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
 
   
 
-
-  
-
       let searchFilter = clients.filter(function(client){ 
       return client.name.toLowerCase().includes(searchClients.toLowerCase())||
       client.dni.toString().includes(searchClients.toString())||
@@ -190,7 +187,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
             onClick={(e)=>seeClient(e.target.value)}
             value={client._id}
             className='btn btn-link '
-              >Ver
+              >Vér
             </button>
           </th>
                       <td className="text-break">{client.name}</td>

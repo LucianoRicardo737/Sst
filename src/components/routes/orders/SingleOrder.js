@@ -100,12 +100,7 @@ useEffect(()=>{
     }
   }
 
-  // useEffect(()=>{
-  //   let nuevaEntrega = document.getElementById('nuevaEntrega').value
-  //   console.log(nuevaEntrega)
-  //   console.log(sendNewPrice)
-
-  // },[setSendNewPrice])
+  
 
 
 //Enviar mensaje
@@ -522,7 +517,7 @@ n-1'>
 </div>
 
 <div className='col-sm-4 '>
-  <span className='textchiquito op50'>Entrego: </span> ${order.seña} 
+  <span className='textchiquito op50'>Entregó: </span> ${order.seña} 
 </div>
 
 
@@ -698,7 +693,7 @@ null
 <>
 
   <div className='fotns mr-2  ml-1'> 
-  <span className='text-muted '>Entrego:</span>
+  <span className='text-muted '>Entregó:</span>
   &nbsp;
 ${msg.señaEdit}</div>
 </>

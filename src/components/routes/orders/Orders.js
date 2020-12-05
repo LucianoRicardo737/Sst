@@ -166,30 +166,6 @@ const [render,setRender]=useState(true);
     idOrders.classList.remove('col-lg-12')
     }
 
-    // const wptest = ( ) =>{
-    //   const ventana = window.open("https://api.whatsapp.com/send?phone=+543533415285","_blank");
-    //   setTimeout(function(){
-    //       ventana.close();
-    //   }, 10000); /* 5 Segundos*/
-    // }
-
-
-  //   const showNewClient = ()=>{
-
-  //     setSeOrHideNewOrder(false);
-  //     setSeOrHideNewClient(true);
-   
-
-  //     setTimeout(function(){
-  //       window.scroll({
-  //         top: 0,
-  //         left: 0,
-  //         behavior: 'smooth'
-  //       });
-  //     },200)
-  
-  // }
-
 
 
      let fecha =  new Date();
@@ -302,7 +278,7 @@ onChange={(e)=>searchForState(e.target.value)}
 
  <table className="table  table-sm table-hover  mt-1">
  <thead>
-    <tr>
+    <tr >
       <th scope="col">N°</th>
       <th scope="col">Tipo</th>
       <th scope="col">Marca</th>
@@ -315,6 +291,7 @@ onChange={(e)=>searchForState(e.target.value)}
   {/* <table className="table  table-sm table-hover overflow"> */}
 <div className='overflow'>
   <table className="table table-sm table-hover ">
+    
   <tbody >
       {
         searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(order =>{
@@ -385,7 +362,7 @@ onChange={(e)=>searchForState(e.target.value)}
 
           <th scope='row'>
             <button
-              className='btn btn-link '
+              className='btn btn-link ml-n3'
               value={order._id}
               onClick={(e)=>seeOrder(e.target.value)}
             >{order.numberid}

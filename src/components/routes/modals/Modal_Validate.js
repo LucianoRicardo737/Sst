@@ -13,7 +13,7 @@ const ModalValidate = ({setPassword, sendEditClient}) => {
            <div className="modal-body"> 
     
     
-     <p>Ingrese su contraseña para confirmar la edicion del cliente.</p>
+     <p>Ingrese su contraseña para confirmar la edición del cliente.</p>
      
          
     </div> 

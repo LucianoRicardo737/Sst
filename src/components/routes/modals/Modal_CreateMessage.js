@@ -263,7 +263,7 @@ seeNewState === true ?
         type="button" 
         className="btn btn-secondary " 
         onClick={()=>setSeeNewState(false)}
-          >Atras</button>
+          >Atrás</button>
         <button 
         onClick={createState}
         type="button" 

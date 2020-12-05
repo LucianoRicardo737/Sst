@@ -315,7 +315,7 @@ id="type"
 name='type'
 onChange={handleChangeText}
 defaultValue='disabled'>
-        <option  disabled value='disabled'>Seleccionar Tipo</option>
+        <option  disabled value='disabled'>Seleccionar Clase</option>
        
     {
           typeData.sort(function(a, b){return a-b}).map(type =>
