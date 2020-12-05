@@ -276,7 +276,7 @@ onChange={(e)=>searchForState(e.target.value)}
   </div>
             {/* tabla de resultados */}
 
- <table className="table  table-sm table-hover  mt-1">
+ <table className="table  table-sm  mt-1">
  <thead>
     <tr >
       <th scope="col">N°</th>
@@ -291,7 +291,7 @@ onChange={(e)=>searchForState(e.target.value)}
   {/* <table className="table  table-sm table-hover overflow"> */}
 <div className='overflow'>
   <table className="table table-sm table-hover ">
-    
+
   <tbody >
       {
         searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(order =>{
@@ -362,7 +362,7 @@ onChange={(e)=>searchForState(e.target.value)}
 
           <th scope='row'>
             <button
-              className='btn btn-link ml-n3'
+              className='btn btn-link '
               value={order._id}
               onClick={(e)=>seeOrder(e.target.value)}
             >{order.numberid}

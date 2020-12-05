@@ -6,3 +6,25 @@
 .titleFontOrders{
     font-size: 22px;
 }
+table {
+    display: flex !important;
+    flex-flow: column !important;
+    width: 100% !important;
+}
+
+thead {
+    flex: 0 0 auto !important;
+}
+
+tbody {
+    flex: 1 1 auto !important;
+    display: block !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+tr {
+    width: 100% !important;
+    display: table !important;
+    table-layout: fixed !important;
+}

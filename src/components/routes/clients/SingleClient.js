@@ -316,6 +316,34 @@ const listAllOrders =  useCallback( () =>{
    
         // console.log("Soy SingleCLient")
 
+
+        let fecha =  new Date();
+
+        fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
+      
+  
+         //Año
+         let year = fecha.getFullYear();
+         //Mes
+       let  mes = fecha.getMonth() + 1;
+         //Día
+       let  dia = fecha.getDate() ;
+   
+   
+       let dayToStringEdit = dia.toString()
+       if(dayToStringEdit.length === 1){
+         dia = "0" + dia
+       }
+   
+       let mesToStringEdit = mes.toString()
+       if(mesToStringEdit.length === 1){
+         mes = "0" + mes
+       }
+   
+   
+         //Lo ordenas a gusto.
+       let dateNowComplete = dia + "/" + mes + "/" + year;
+
     return (
         <div className='test'>
 
@@ -617,10 +645,11 @@ onChange={(e)=>searchForState(e.target.value)}
           <table  className="table table-sm ">
           <thead>
     <tr>
-      <th scope="col">N°</th>
+    <th scope="col">N°</th>
       <th scope="col">Tipo</th>
       <th scope="col">Marca</th>
       <th scope="col">Estado</th>
+      <th scope="col">Fecha de entrega</th>
     </tr>
   </thead>
 
@@ -632,6 +661,66 @@ onChange={(e)=>searchForState(e.target.value)}
     {
 
 searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
+
+
+  let fecha =  new Date(order.promised);
+
+  fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
+    //Año
+  let year = fecha.getFullYear();
+    //Mes
+  let  mes = fecha.getMonth() + 1;
+    //Día
+  let  dia = fecha.getDate() +1 ;
+
+
+  let dayToStringEdit = dia.toString()
+  if(dayToStringEdit.length === 1){
+    dia = "0" + dia
+  }
+
+  let mesToStringEdit = mes.toString()
+  if(mesToStringEdit.length === 1){
+    mes = "0" + mes
+  }
+
+
+    //Lo ordenas a gusto.
+  let dateEdit = dia + "/" + mes + "/" + year;
+
+
+  function FechaDeEntrega(){
+    try {
+      if(dateNowComplete === dateEdit) {
+        return (
+          <td className="text-break text-warning">{dateEdit}</td>
+        )
+      } 
+      
+    
+      if(dateNowComplete > dateEdit) {
+        return (
+          <td className="text-break text-danger">{dateEdit}</td>
+        )
+      }
+      if(order.state === "entregado"){
+       return(
+          <td className="text-break text-success">{dateEdit}</td>
+       )
+      } 
+      
+      else {
+        return (
+        <td className="text-break ">{dateEdit}</td>)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+}
+
+
+
+
         return(
           <tr key={order._id}>
         <th scope='row'><button
@@ -643,9 +732,22 @@ searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
                     <td>{order.type}</td>
                     <td>{order.brand}</td>
                     <td>{order.state}</td>
-                    <td>
-                        
-                    </td>
+                    {
+                       
+                       order.promised === undefined ?
+
+                     <td className="text-break text-warning"></td>
+                      
+                     :
+                     
+                   
+                      
+                      <FechaDeEntrega/>
+                     
+                      
+                   
+
+                     }
           </tr>
         )
       })
