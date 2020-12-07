@@ -214,7 +214,7 @@ className='col-lg-6 '>
 <div  className='border border-info p-2 '>
 
 <SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} hideAndSeeData={hideAndSeeData} setHideAndSeeData={setHideAndSeeData} setDataClient={setDataClient} setSeeClient=
-{setSeeClient} />
+{setSeeClient} setError={setError} />
 
 
 </div>

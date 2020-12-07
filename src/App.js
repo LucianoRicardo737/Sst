@@ -13,6 +13,7 @@ import Taller from './components/routes/Taller';
 import Admin from './components/routes/Admin';
 
 import 'animate.css/animate.css'
+import Home from './components/routes/Home';
 
 function App() {
 
@@ -99,6 +100,10 @@ try {
       <Navegation admin={admin} isLog={isLog} />
       <Route path='/login'  component={Login}/>
 
+
+   
+
+
 { admin === true ? <Route path='/admin' component={Admin} />:null}
 
  {
@@ -115,7 +120,12 @@ try {
 
     
       </UserContext.Provider>
-      {  userData.user && <Route path='/' exact /> }
+  {
+   isLog=== true ? 
+    <Route path='/' exact component={Home} />   
+    : null
+  }
+    
      </Router>
 
     </div>

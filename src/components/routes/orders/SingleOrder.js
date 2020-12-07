@@ -155,8 +155,8 @@ useEffect(()=>{
           if(pacord===""){
             dataPacord = dataOrder[0].pacord
           }
-          if(promised===""){
-            dataPromised = dataOrder[0].promised
+          if(promised===""||promised===undefined){
+            dataPromised = undefined
           }
        
        
@@ -179,6 +179,9 @@ useEffect(()=>{
       promised:dataPromised} , config );
 
       socket.emit('order');
+
+console.log(dataPromised)
+
 
     let estadoEditado = undefined
     if(sendNewPrice.state !== initualStateOrder.state)
@@ -217,6 +220,8 @@ useEffect(()=>{
       nuevaEntrega = undefined
     }
 
+    // console.log(fecha)
+
   //empaquetamos
   const newMessage = {
     name:nameIdentify,
@@ -231,7 +236,7 @@ useEffect(()=>{
 
   // enviamos la info con el token
   await Axios.post(`http://${IP}:${PORT}/mensajes/nuevoMensaje`,newMessage, config);
-console.log(newMessage)
+
 
   setMsg("")
 
@@ -247,8 +252,7 @@ console.log(newMessage)
       
       let stateValueSelect = document.getElementById('state');
       stateValueSelect.selectedIndex = 0;
-      console.log(clearInput)
-
+      
       document.getElementById('password').value = ""
      
       

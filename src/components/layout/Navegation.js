@@ -95,6 +95,15 @@ const Navegation = ({admin, isLog}) => {
      }
     })
 
+
+    let revisarPendientes = repairs.filter(function(rep){
+      if(rep.state === "a revisar"){
+        return rep.state
+     } else {
+       return null
+     }
+    })
+
 return (
     <>
 
@@ -166,9 +175,15 @@ return (
 
 {     isLog === true ? 
 <>
-<span className=" nav-link active ">Clientes a llamar:&nbsp;<span className='restantes border border-success'>{sear.length}</span></span>
 
-           <span className=" nav-link active mr-4">Reparaciones Restantes:&nbsp;<span className='restantes  border border-success'>{reparacionesPEndientes.length}</span></span>
+            <span className=" nav-link active ">Revisar:&nbsp;<span className={ revisarPendientes.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{revisarPendientes.length}</span></span>
+
+            <span className=" nav-link active ">llamar:&nbsp;<span className={ sear.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{sear.length}</span></span>
+
+           <span className=" nav-link active mr-4">Reparaciones:&nbsp;<span className={ reparacionesPEndientes.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{reparacionesPEndientes.length}</span></span>
+
+          
+
            </>
            : null}
 

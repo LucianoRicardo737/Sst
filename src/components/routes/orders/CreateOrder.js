@@ -383,7 +383,7 @@ onChange={handleChangeText}>
         <option >reparacion aceptada</option>
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
-        <option >list sin reparacion</option>
+        <option >listo sin reparacion</option>
      
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>

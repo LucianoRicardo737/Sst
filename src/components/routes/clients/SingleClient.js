@@ -9,7 +9,7 @@ import './singleClient.css'
 import socket from '../../../io';
 import ModalValidate from '../modals/Modal_Validate';
 
-const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient, setDataClient, hideAndSeeData, setHideAndSeeData, setSeeClient}) => {
+const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient, setDataClient, hideAndSeeData, setHideAndSeeData, setSeeClient, setError}) => {
 
 
 
@@ -207,6 +207,19 @@ const listAllOrders =  useCallback( () =>{
        }
       }
 
+
+      const goToWP = (e) =>{
+     
+        try {
+          const ventana = window.open(`https://api.whatsapp.com/send?phone=${e}`,"_blank");
+          setTimeout(function(){
+              ventana.close();
+          }, 10000); /* 10 Segundos*/
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
       const handleChangeText = (e)=>{
         try {
           setEditClientData({...editClientData, [e.target.name]:e.target.value});
@@ -309,8 +322,9 @@ const listAllOrders =  useCallback( () =>{
 
   setPassword(undefined)
   document.getElementById("password").value= ""
-        } catch (error) {
-          console.log(error)
+        } catch (err) {
+          err.response.data.msg && 
+          setError(err.response.data.msg);
         }
       }
    
@@ -358,7 +372,7 @@ const listAllOrders =  useCallback( () =>{
         {/* informacion de */}
       <div className='modal-header '>
 
-        <div className='text-break titleFont'>
+        <div className='text-break titleFont '>
         {
                 dataClient.map(client=>{
                     return(
@@ -372,7 +386,7 @@ const listAllOrders =  useCallback( () =>{
   hideAndSeeData === true ?
   
   
- <div className="button-group">
+ <div className="button-group mb-n4">
 
  <span
   className=' btn btn-editar text-success mr-4'
@@ -448,7 +462,10 @@ className=' col-lg-6' >
 <span 
 className='op50 textchiquito'
 >Teléfono:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.prefijo + " " + client.codigo + "-" + client.telephone}</span>
+<span className='spanData ml-n3 btn btn-link text-break'
+ title={client.prefijo + " " +client.codigo + "-" + client.telephone}
+onClick={(e)=>goToWP(e.target.title)}
+>{client.prefijo + " " + client.codigo + "-" + client.telephone}</span>
 </label>
 <label
 className=' col-lg-6' >

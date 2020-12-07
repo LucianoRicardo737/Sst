@@ -126,10 +126,10 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
     return (
         <>
 
-          <div className=''>
+          <div className='divClientes'>
 
             <div className='modal-header '>
-              <div className='titleFontClients'>
+              <div className='titleFontClients mb-2'>
                 <span >Clientes</span>
 
 

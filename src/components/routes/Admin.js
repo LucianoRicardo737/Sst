@@ -746,12 +746,12 @@ className='btn btn-block btn-success'>Crear</button>
 : 
 
   <>
-    <ul className='adminPanelOverflow border'>
+    <ul className='adminPanelOverflow '>
 
     { 
         usuariosInternos.map(ident=>{
             return(
-            <li key={ident._id} className='list-group-item-action text-left  d-flex justify-content-between mb-2 ml-n3 align-items-center '><span className='ml-3'>{ident.name}</span>
+            <li key={ident._id} className='list-group-item-action text-left  d-flex justify-content-between mb-2 ml-n3 align-items-center'><span className='ml-3'>{ident.name}</span>
             
             <div className='button-group'>
 
@@ -1040,38 +1040,44 @@ null
     style={{x:"-100px", opacity: "0"}} className='col-lg-6  mt-4'>
 
             <div className='border border-info p-2 max'>
+                
+                <div className='justify-content-between align-items-center d-flex'>
                 <span>Listar y eliminar estados de reparaciones</span>
-                <ul className='over'>
+               </div>
+               <hr></hr>
+               <div className='over adminPanelOverflow '>
 
-                {
-                    estados.map(stat=>{
-                        return(
-                        <li key={stat._id} className='list-group-item-action text-left  d-flex justify-content-between mb-2 p-2 align-items-center'>{stat.stateAdd}
-                        
-                        <div className='button-group'>
+               <ul className=' mt-1 ml-n2 '>
+                  
 
-                        <span className='btn text-warning point mr-1 edit'>
-                            Editar
-                        </span>
-                        <span
-                        title={stat._id}
-                        onClick={(e)=>eliminarEstadoDeReparacion(e.target.title)}
-                        className='btn text-danger point mr-2 delete'>
-                            X
-                        </span>
-                        
-                        </div>
-                        </li>
-                        
-
-
-
-                        )
-                    })
-                }
-                </ul>
-
-
+                  {
+                      estados.map(stat=>{
+                          return(
+                          <li key={stat._id} className='pl-2 list-group-item-action text-left  d-flex justify-content-between mb-2 ml-n3 align-items-center'>{stat.stateAdd}
+                          
+                          <div className='button-group'>
+  
+                    
+                          <span
+                          title={stat._id}
+                          onClick={(e)=>eliminarEstadoDeReparacion(e.target.title)}
+                          className='btn text-danger point mr-2 delete'>
+                              X
+                          </span>
+                          
+                          </div>
+                          </li>
+                          
+  
+  
+  
+                          )
+                      })
+                  }
+                  </ul>
+  
+  
+               </div>
                 
             </div>
 
@@ -1085,36 +1091,42 @@ null
     style={{x:"100px", opacity: "0"}} className='col-lg-6  mt-4'>
 
 <div className='border border-info p-2 max'>
-    <span>Listar y eliminar categorías de productos</span>
-    <ul className='over'>
 
-    {
-        productos.map(usrs=>{
-            return(
-            <li key={usrs._id} className='list-group-item-action text-left  d-flex justify-content-between mb-2 p-2 align-items-center'>{usrs.typeProduct}
-            
-            <div className='button-group'>
+<div className='justify-content-between align-items-center d-flex'>
+<span>Listar y eliminar categorías de productos</span>
+               </div> 
+               <hr></hr>
 
-            <span className='btn text-warning point mr-1 edit'>
-                Editar
-            </span>
-            <span 
-            title={usrs._id}
-            onClick={(e)=>eliminarTipoDeProducto(e.target.title)}
-            className='btn text-danger point mr-2 delete'>
-                X
-            </span>
-            
-            </div>
-            </li>
-            
+ 
+   <div className='over adminPanelOverflow'>
+   <ul className='mt-1 ml-n2'>
+
+{
+    productos.map(usrs=>{
+        return(
+        <li key={usrs._id} className='pl-2 list-group-item-action text-left  d-flex justify-content-between mb-2 ml-n3 align-items-center'>{usrs.typeProduct}
+        
+        <div className='button-group'>
+
+  
+        <span 
+        title={usrs._id}
+        onClick={(e)=>eliminarTipoDeProducto(e.target.title)}
+        className='btn text-danger point mr-2 delete'>
+            X
+        </span>
+        
+        </div>
+        </li>
+        
 
 
 
-            )
-        })
-    }
-    </ul>
+        )
+    })
+}
+</ul>
+   </div>
 
 
     

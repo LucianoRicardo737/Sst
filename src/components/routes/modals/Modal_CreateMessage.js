@@ -170,7 +170,7 @@ console.log("Contraseña Invalida")
         <option >reparacion aceptada</option>
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
-        <option >listo para entregar si reparacion</option>
+        <option >listo sin reparacion</option>
      
 
 
