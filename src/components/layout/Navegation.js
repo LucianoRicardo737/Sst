@@ -103,6 +103,13 @@ const Navegation = ({admin, isLog}) => {
        return null
      }
     })
+    let irADomicilio = repairs.filter(function(rep){
+      if(rep.state === "ir a domicilio"){
+        return rep.state
+     } else {
+       return null
+     }
+    })
 
 return (
     <>
@@ -175,6 +182,11 @@ return (
 
 {     isLog === true ? 
 <>
+
+
+            <span className=" nav-link active ">Domicilios:&nbsp;<span className={ irADomicilio.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{irADomicilio.length}</span></span>
+
+
 
             <span className=" nav-link active ">Revisar:&nbsp;<span className={ revisarPendientes.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{revisarPendientes.length}</span></span>
 

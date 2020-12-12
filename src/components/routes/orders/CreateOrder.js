@@ -13,7 +13,7 @@ import socket from '../../../io';
 import './createorder.css'
 
 
-const ModalSingleClien = ({setSeOrHideNewOrder,dataClient, setError}) => {
+const ModalSingleClien = ({setSeOrHideNewOrder,dataClient, setError,setExito}) => {
 
   //user context
   const {userData}=useContext(UserContext)
@@ -31,6 +31,8 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient, setError}) => {
     //estados de carga de datos de variables
     const [typeData, setTypeData]=useState([]);
     const [stateData, setStateData]=useState([]);
+  
+
 
     //passwor de validacion
     const [password, setPassword]=useState("");
@@ -66,7 +68,7 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient, setError}) => {
       },[newOrder])
 
 
-         //cargar nuevo cliente
+         //cargar nueva orden
     const submit = async ()=> {
       
 
@@ -93,10 +95,11 @@ const ModalSingleClien = ({setSeOrHideNewOrder,dataClient, setError}) => {
           let stateValueSType = document.getElementById('type');
           stateValueSType.selectedIndex = 0;
 
-  
+          setNewOrder(initialState)
           // listAllOrders()
             socket.emit('order');
             setError(undefined)
+            setExito("Orden agregada con éxito")
             // console.log("Enviando")
         } catch (err) {
           err.response.data.msg && 
@@ -378,6 +381,7 @@ defaultValue='disabled'
 onChange={handleChangeText}>
         <option  disabled value='disabled'>Estado Inicial</option>
         <option >a revisar</option>
+        <option >ir a domicilio</option>
         <option >entregado</option>
         <option >llamar al cliente</option>
         <option >reparacion aceptada</option>

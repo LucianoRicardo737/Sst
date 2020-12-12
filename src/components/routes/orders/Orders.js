@@ -29,6 +29,8 @@ const [render,setRender]=useState(true);
  //estados de carga de datos de variables
  const [stateData, setStateData]=useState([]);
 
+ const [verEntregados, setVerEntregados] = useState(false)
+
  
 
   const listAllOrders =  useCallback( () =>{
@@ -97,16 +99,20 @@ const [render,setRender]=useState(true);
 
     // filtro de busqueda de orden de trabajo
     let searchFilter = orders.filter(function(order){
+
+      if (verEntregados === false) {
+          return order.state !== "entregado" 
+      }
+
       if (searchOrders === "") {
         return order.state.toString().includes(searchOrdersForState.toString())
-       
       }
       
       if(order.numberid.toString() === searchOrders.toString()){
-        
       return order.numberid.toString().includes(searchOrders.toString())
-
     } 
+
+
   
     else {
       return null
@@ -142,7 +148,16 @@ const [render,setRender]=useState(true);
             // console.log("Ver data")
         },[])
   
-     
+        const mostrarOrdenesEntregadas = () =>{
+          if(verEntregados === false){
+            setVerEntregados(true)
+            
+          } else {
+            setVerEntregados(false)
+          }
+
+        }
+
   
     useEffect(() => {
       if(render===true){
@@ -230,7 +245,15 @@ const [render,setRender]=useState(true);
     
       <div className='titleFontOrders'>
        <span>Ordenes de Trabajo</span>
+
+    
      </div>
+     <div class="input-group-text">
+       <span>Ver Entregados:&nbsp; </span>
+      <input type="checkbox" aria-label="Checkbox for following text input"
+      onChange={()=>mostrarOrdenesEntregadas()}
+      />
+    </div>
     </div>
 
              {/* barra de busqueda y botones de accion */}
@@ -258,6 +281,7 @@ onChange={(e)=>searchForState(e.target.value)}
 >
         <option  disabled value='disabled'>Buscar por Estado</option>
         <option >a revisar</option>
+        <option >ir a domicilio</option>
         <option >entregado</option>
         <option >llamar al cliente</option>
         <option >reparacion aceptada</option>
@@ -283,6 +307,15 @@ onChange={(e)=>searchForState(e.target.value)}
       <th scope="col">Tipo</th>
       <th scope="col">Marca</th>
       <th scope="col">Estado</th>
+     { 
+
+     loc === "/taller" ?
+     
+     <th scope="col">Fecha de ingreso</th>
+
+     : null
+     
+     }
       <th scope="col">Fecha de entrega</th>
     </tr>
   </thead>
@@ -324,6 +357,9 @@ onChange={(e)=>searchForState(e.target.value)}
         let dateEdit = dia + "/" + mes + "/" + year;
 
 
+       
+
+
         function FechaDeEntrega(){
           try {
             if(dateNowComplete === dateEdit) {
@@ -352,6 +388,45 @@ onChange={(e)=>searchForState(e.target.value)}
             console.log(error)
           }
 }
+
+
+
+let fechaDeCreacion =  new Date(order.createdAt);
+
+fechaDeCreacion.setMinutes(fechaDeCreacion.getMinutes() + fechaDeCreacion.getTimezoneOffset()/60)
+  //Año
+let añoDeCreacion = fechaDeCreacion.getFullYear();
+  //Mes
+let  mesDeCreacion = fechaDeCreacion.getMonth() + 1;
+  //Día
+let  DiaDeCreacion = fechaDeCreacion.getDate() +1 ;
+
+
+let dayToStringEditCreate = DiaDeCreacion.toString()
+if(dayToStringEditCreate.length === 1){
+  DiaDeCreacion = "0" + DiaDeCreacion
+}
+
+let mesToStringEditCreate = mesDeCreacion.toString()
+if(mesToStringEditCreate.length === 1){
+  mesDeCreacion = "0" + mesDeCreacion
+}
+
+
+  //Lo ordenas a gusto.
+let dateCreated = DiaDeCreacion + "/" + mesDeCreacion + "/" + añoDeCreacion;
+
+function FechaDeIngreso(){
+  try {
+
+      return (
+      <td className="text-break ">{dateCreated}</td>)
+
+ 
+  } catch (error) {
+    console.log(error)
+  }
+}
       
       
       
@@ -371,9 +446,20 @@ onChange={(e)=>searchForState(e.target.value)}
                       <td className="text-break">{order.type}</td>
                       <td className="text-break">{order.brand}</td>
                       <td className="text-break">{order.state}</td>
+                      {
+                       
+                     loc === "/taller" ? 
+                     <FechaDeIngreso/>
+                      
+                     :
+                      null
+                   
+                     }
+
+
                      {
                        
-                       order.promised === undefined ?
+                       order.promised === null||  order.promised === undefined ?
 
                      <td className="text-break text-warning"></td>
                       

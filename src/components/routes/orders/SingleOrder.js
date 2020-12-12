@@ -8,26 +8,26 @@ import UserContext from '../../../context/UserContext';
 import socket from '../../../io';
 import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 
 export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders,setError, changeBack, loc}) => {
 
 
 
   const initualStateOrder = {
-    numberid:dataOrder[0].numberid,
-    type:dataOrder[0].type,
-    pacord:dataOrder[0].pacord,
-    seña:dataOrder[0].seña, 
-    brand:dataOrder[0].brand, 
-    model:dataOrder[0].model, 
-    nserie:dataOrder[0].nserie, 
-    failure:dataOrder[0].failure,
-    state:dataOrder[0].state, 
-    observation:dataOrder[0].observation,
-    client:dataOrder[0].client,
-    createdby:dataOrder[0].createdby,
-    promised:dataOrder[0].promised
+    numberid:"",
+    type:"",
+    pacord:"",
+    seña:"", 
+    brand:"", 
+    model:"", 
+    nserie:"", 
+    failure:"",
+    state:"", 
+    observation:"",
+    client:"",
+    createdby:"",
+    promised:""
   }
   
 
@@ -127,6 +127,10 @@ useEffect(()=>{
       if(nameIdentify){
 
 
+      
+    
+
+
         let {numberid,
           type,
           pacord,
@@ -145,6 +149,23 @@ useEffect(()=>{
           let dataState = state;
           let dataPacord = pacord;
           let dataPromised = promised;
+
+
+
+          type=dataOrder[0].type
+       
+         
+          brand=dataOrder[0].brand 
+          model=dataOrder[0].model 
+          nserie=dataOrder[0].nserie 
+          failure=dataOrder[0].failure
+       
+          observation=dataOrder[0].observation
+          client=dataOrder[0].client
+          createdby=dataOrder[0].createdby
+        
+
+
 
           if(seña===""){
             dataSeña = dataOrder[0].seña
@@ -180,8 +201,7 @@ useEffect(()=>{
 
       socket.emit('order');
 
-console.log(dataPromised)
-
+        setSendNewPrice(initualStateOrder)
 
     let estadoEditado = undefined
     if(sendNewPrice.state !== initualStateOrder.state)
@@ -289,31 +309,81 @@ console.log(dataPromised)
   };
 
 
+    //ver cliente
+  const seeClient = async (e)=>{
+    let token = localStorage.getItem('auth-token');
+
+    let config = {headers:{
+      'labLERsst-auth-token': token
+    }};
+
+
+    let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + e, config);
+
+
+    setDataClient(client?.data);
+    setSeOrHideOrders(false);
+
+  }
+
+
+  const goToWP = (e) =>{
+  
+    try {
+
+
+         
+      let fecha =  new Date(dataOrder[0].createdAt);
+     
+      fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
+        //Año
+      let y = fecha.getFullYear();
+        //Mes
+      let  m = fecha.getMonth() +1 ;
+        //Día
+      let  d = fecha.getDate() +1 ;
+
+      let dayToString = d.toString()
+      if(dayToString.length === 1){
+        d = "0" + d
+      }
+
+      let mesToString = m.toString()
+      if(mesToString.length === 1){
+        m = "0" + m
+      }
+
+      //   //Lo ordenas a gusto.
+      let date = d + "/" + m + "/" + y;
 
 
 
-     //ver cliente
-     const seeClient = async (e)=>{
-      let token = localStorage.getItem('auth-token');
-
-      let config = {headers:{
-        'labLERsst-auth-token': token
-      }};
 
 
-      let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + e, config);
+      let numeroDeTelefonoCelularParaWhatsapp = dataClient[0].prefijo + dataClient[0].codigo + dataClient[0].telephone
 
 
-      setDataClient(client?.data);
-      setSeOrHideOrders(false);
+      let mensajeDeWhatsapp = `Orden N°: ${dataOrder[0].numberid} - Durante equipamientos informa que recibió de ${dataClient[0].name} ${dataClient[0].lastname} el día ${date}, un/a ${dataOrder[0].type}, modelo: ${dataOrder[0].model}, numero de serie: ${dataOrder[0].nserie}. Con la siguiente falla: ${dataOrder[0].failure}. Observando que: ${dataOrder[0].observation}.`
 
+
+
+
+
+      const ventana = window.open(`https://api.whatsapp.com/send?phone=${numeroDeTelefonoCelularParaWhatsapp}&text=${mensajeDeWhatsapp}`,"_blank");
+      setTimeout(function(){
+          ventana.close();
+      }, 10000); /* 10 Segundos*/
+     
+    } catch (error) {
+      console.log(error)
     }
-
- 
-
-
+  }
     return (
       <div className='singleorder'>
+
+
+
+        
 
 {/* modal */}
 
@@ -325,10 +395,14 @@ console.log(dataPromised)
                 dataOrder.map(order=>{
                   return(
                     <span
+                    className='point btn-link'
+                    title='Enviar informacion al cliente'
                     key={order._id}
+                    onClick={()=>goToWP()}
                     >
                     Orden N°:&nbsp;{order.numberid}
                   </span>
+                  
                   )
                 })
               }
@@ -338,6 +412,8 @@ console.log(dataPromised)
                 onClick={showClients}
                 className='btn btn-close text-danger'
                   >X</span>
+
+      
             </div>
 
         </div>
@@ -481,7 +557,7 @@ Observaciones:&nbsp;&nbsp;</span>
       
       
       {
-      order.promised === undefined ? <span>indefinida</span> :
+      order.promised === null ||order.promised === undefined ? <span>indefinida</span> :
       
       date}
       
@@ -528,7 +604,7 @@ n-1'>
 
 
 <div className='col-sm-4 '>
-  <span className='textchiquito op50'>Resta: </span> <span className=''>${order.pacord - order.seña}</span> 
+  <span className='textchiquito op50'>Resta: </span> <span className=''>${order.pacord - order.seña}</span>  <span className='textchiquito '> + iva </span> 
 </div>
 
 

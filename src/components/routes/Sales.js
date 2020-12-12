@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import './sales.css'
 
 import Clients from './clients/Clients';
@@ -9,6 +9,7 @@ import CreateOrder from './orders/CreateOrder';
 import { SingleOrder } from './orders/SingleOrder';
 
 import Error from '../misc/Error'
+import Exito from '../misc/Exito'
 
 import { motion } from 'framer-motion'
 import {useLocation} from "react-router-dom"
@@ -34,7 +35,7 @@ const Sales = () => {
 
     //errores
     const[error, setError]=useState(undefined);
-
+    const [exito, setExito]=useState(undefined)
     //mostrar u ocultar ordenes/cliente
     const [seOrHideOrders, setSeOrHideOrders]=useState(true);
     //mostrar u ocultar nuevo cliente
@@ -51,6 +52,18 @@ const Sales = () => {
   const [dataOrder, setDataOrder]=useState([]);
 
 
+  useEffect(() => {
+    try {
+      if(exito !== undefined){
+        setTimeout(() => {
+          setExito(undefined)
+        }, 2500);
+      }
+    } catch (error) {
+      
+    }
+  }, [exito])
+
     return (
         <>
         <div className='contenedor'>
@@ -59,6 +72,11 @@ const Sales = () => {
         {
     error && (<Error message={error} clearError={()=>setError(undefined)}/>)
     }
+
+    {
+    exito && (<Exito message={exito} clearError={()=>setExito(undefined)}/>)
+    }
+
 
 <div className='row'>
 <div className='col-lg-12 '>
@@ -74,7 +92,7 @@ const Sales = () => {
 
      id="createClientTransition" className=' border  border-info p-4 mb-3 create'>
 
-    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} setError={setError} />
+    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} setError={setError} setExito={setExito} />
     </motion.div> : null
 
   }
@@ -89,7 +107,7 @@ const Sales = () => {
     animate={{ y: 0, opacity: 1 }}
  transition={{ ease: "easeIn", duration: 0.2}}
    style={{y:"-100px", opacity: "0"}}  className='border  border-info p-4 mb-3'>
-     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} setError={setError} dataClient={dataClient} />
+     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} setError={setError} dataClient={dataClient} setExito={setExito} />
      </motion.div> : null
 
   }

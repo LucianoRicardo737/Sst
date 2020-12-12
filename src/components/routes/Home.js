@@ -62,7 +62,7 @@ const Home = () => {
            }
           })
           let listosConRep = repairs.filter(function(rep){
-            if(rep.state === "listos para entregar"){
+            if(rep.state === "listo para entregar"){
               return rep.state
            } else {
              return null
@@ -82,6 +82,15 @@ const Home = () => {
              return null
            }
           })
+
+          let irADomicilio = repairs.filter(function(rep){
+            if(rep.state === "ir a domicilio"){
+              return rep.state
+           } else {
+             return null
+           }
+          })
+
           let entregados = repairs.filter(function(rep){
             if(rep.state === "entregado"){
               return rep.state
@@ -137,20 +146,25 @@ const Home = () => {
         <hr></hr>
 <div className='row'>
 
-<div className='col-lg-4  '>
+<div className='col-lg-3  '>
 <span className=" nav-link active ">Revisiones Pendientes:&nbsp;<span className={ revisarPendientes.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{revisarPendientes.length}</span></span>
 
 </div>
 
-<div className='col-lg-4  '>
+<div className='col-lg-3  '>
 <span className=" nav-link active ">Llamados pendientes:&nbsp;<span className={ sear.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{sear.length}</span></span>
 
 </div>
 
 
 
-<div className='col-lg-4  '>
+<div className='col-lg-3  '>
 <span className=" nav-link active ">Reparaciones pendientes:&nbsp;<span className={ reparacionesPEndientes.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{reparacionesPEndientes.length}</span></span>
+
+</div>
+
+<div className='col-lg-3  '>
+<span className=" nav-link active ">Domicilios Pendientes:&nbsp;<span className={ irADomicilio.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{reparacionesPEndientes.length}</span></span>
 
 </div>
 

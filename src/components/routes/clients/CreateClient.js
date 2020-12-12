@@ -10,7 +10,7 @@ import './createClient.css'
 import socket from '../../../io';
 
 
-const CreateClient = ({setSeOrHideNewClient, setError}) => {
+const CreateClient = ({setSeOrHideNewClient, setError, setExito}) => {
 
 
     //state inicial para el nuevo usuario
@@ -21,6 +21,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
         address:"",
         prefijo:"+54",
         telephone:"",
+        fijo:"",
         codigo:"",
         email:"",
         city:"",
@@ -81,6 +82,7 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
             socket.emit('cliente');
           setSeOrHideNewClient(false);
           setError(undefined)
+          setExito('Cliente creado con éxito')
         } catch (err) {
           err.response.data.msg && 
           setError(err.response.data.msg);
@@ -170,12 +172,21 @@ const CreateClient = ({setSeOrHideNewClient, setError}) => {
     <input
     type="text"
     className="form-control"
-    placeholder="Teléfono"
+    placeholder="Teléfono celular"
     name='telephone'
     id='telephone'
     onChange={handleChangeText} />
   </div>
-  <div className="col-md-6 mb-2">
+  <div className="col-md-3 mb-2">
+    <input
+    type="text"
+    className="form-control"
+    placeholder="Telefono fijo"
+    name='fijo'
+    id='fijo'
+    onChange={handleChangeText} />
+  </div>
+  <div className="col-md-3 mb-2">
     <input
     type="email"
     className="form-control"

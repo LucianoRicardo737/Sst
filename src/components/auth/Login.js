@@ -12,13 +12,6 @@ const Login = () => {
     const[error, setError]=useState(undefined);
 
 
-
-
-
-
-
-
-
     const {setUserData} = useContext(UserContext);
     
     const history = useHistory();

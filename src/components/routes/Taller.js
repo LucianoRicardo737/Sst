@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import './sales.css'
 
 import Clients from './clients/Clients';
@@ -11,6 +11,7 @@ import { SingleOrder } from './orders/SingleOrder';
 import {useLocation} from "react-router-dom"
 
 import Error from '../misc/Error'
+import Exito from '../misc/Exito'
 
 import { motion } from 'framer-motion'
 
@@ -23,6 +24,7 @@ const Taller = () => {
     //errores
     const[error, setError]=useState(undefined);
 
+    const [exito, setExito]=useState(undefined)
     //mostrar u ocultar ordenes/cliente
     const [seOrHideOrders, setSeOrHideOrders]=useState(true);
     //mostrar u ocultar nuevo cliente
@@ -63,6 +65,18 @@ const [seeClient, setSeeClient]=useState(false);
 
   }
 
+  useEffect(() => {
+    try {
+      if(exito !== undefined){
+        setTimeout(() => {
+          setExito(undefined)
+        }, 2500);
+      }
+    } catch (error) {
+      
+    }
+  }, [exito])
+
 
 
     return (
@@ -72,6 +86,10 @@ const [seeClient, setSeeClient]=useState(false);
 
         {
     error && (<Error message={error} clearError={()=>setError(undefined)}/>)
+    }
+
+{
+    exito && (<Exito message={exito} clearError={()=>setExito(undefined)}/>)
     }
 
 <div className='row'>
@@ -88,7 +106,7 @@ const [seeClient, setSeeClient]=useState(false);
 
      id="createClientTransition" className=' border  border-info p-4 mb-3 create'>
 
-    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} setError={setError} />
+    <CreateClient setSeOrHideNewClient={setSeOrHideNewClient} setError={setError} setExito={setExito} />
     </motion.div> : null
 
   }
@@ -103,7 +121,7 @@ const [seeClient, setSeeClient]=useState(false);
     animate={{ y: 0, opacity: 1 }}
  transition={{ ease: "easeIn", duration: 0.1}}
    style={{y:"-100px", opacity: "0"}}  className='border  border-info p-4 mb-3'>
-     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} setError={setError} dataClient={dataClient} />
+     <CreateOrder setSeOrHideNewOrder={setSeOrHideNewOrder} setError={setError} dataClient={dataClient} setExito={setExito}/>
      </motion.div> : null
 
   }

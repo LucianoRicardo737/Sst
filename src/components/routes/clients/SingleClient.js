@@ -24,6 +24,7 @@ const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder
     codigo:dataClient[0].codigo,
     prefijo:dataClient[0].prefijo,
     telephone:dataClient[0].telephone,
+    fijo:dataClient[0].fijo,
     email:dataClient[0].email,
     city:dataClient[0].city,
     observation:dataClient[0].observation
@@ -262,6 +263,7 @@ const listAllOrders =  useCallback( () =>{
     codigo,
     prefijo,
     telephone,
+    fijo,
     email,
     city,
     observation} =editClientData
@@ -287,6 +289,9 @@ const listAllOrders =  useCallback( () =>{
     if(telephone===""){
       telephone=dataClient[0].telephone
     }
+    if(fijo===""){
+      fijo=dataClient[0].fijo
+    }
     if(email===""){
       email=dataClient[0].email
     }
@@ -308,6 +313,7 @@ const listAllOrders =  useCallback( () =>{
          codigo,
          prefijo,
          telephone,
+         fijo,
          email,
          city,
          observation} , config );
@@ -457,6 +463,8 @@ className=' col-lg-6' >
 <span className='spanData text-break'>{client.city}</span></label>
 </div>
 <div className='input-group '>
+
+
 <label
 className=' col-lg-6' >
 <span 
@@ -467,6 +475,8 @@ className='op50 textchiquito'
 onClick={(e)=>goToWP(e.target.title)}
 >{client.prefijo + " " + client.codigo + "-" + client.telephone}</span>
 </label>
+
+
 <label
 className=' col-lg-6' >
   <span className='op50 textchiquito'>Dni:</span>&nbsp;&nbsp;
@@ -474,6 +484,18 @@ className=' col-lg-6' >
   </label>
 </div>
 <div className='input-group mb-1 '>
+{
+
+client.fijo === "" ? null :
+
+<label
+className=' col-lg-6' >
+<span className='op50 textchiquito'>Teléfono fijo:</span>&nbsp;&nbsp;
+<span className='spanData text-break'>{client.fijo}</span></label>
+
+
+}
+
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Email:</span>&nbsp;&nbsp;
@@ -570,7 +592,7 @@ className='col-lg-4' >
     <input
     type="text"
     className="form-control"
-    placeholder={initialState.codigo}
+    placeholder={initialState.codigo === ""?"Codigo":initialState.codigo}
     name='codigo'
     id='codigo'
     onChange={handleChangeText} />
@@ -580,7 +602,7 @@ className='col-lg-5' >
     <input
     type="text"
     className="form-control"
-    placeholder={initialState.telephone}
+    placeholder={initialState.telephone==="" ?"Teléfono celular" : initialState.telephone}
     name='telephone'
     id='telephone'
     onChange={handleChangeText} />
@@ -589,11 +611,21 @@ className='col-lg-5' >
 </div>
 <div className='input-group  '>
 <label
-className=' col-lg-12' >
+className='col-lg-5' >
+    <input
+    type="text"
+    className="form-control"
+    placeholder={initialState.fijo===""? "Teléfono fijo":initialState.fijo}
+    name='fijo'
+    id='fijo'
+    onChange={handleChangeText} />
+</label>
+<label
+className=' col-lg-7' >
   <input
     type="email"
     className="form-control"
-    placeholder={initialState.email}
+    placeholder={initialState.email === "" ? "Email" : initialState.email }
     name='email'
     id='email'
     onChange={handleChangeText} />
@@ -751,7 +783,7 @@ searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
                     <td>{order.state}</td>
                     {
                        
-                       order.promised === undefined ?
+                       order.promised === null|| order.promised === undefined ?
 
                      <td className="text-break text-warning"></td>
                       
