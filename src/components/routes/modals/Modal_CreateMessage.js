@@ -165,13 +165,14 @@ console.log("Contraseña Invalida")
           <option  disabled value='disabled'>No modificar estado</option>
 
           <option >a revisar</option>
-          <option >ir a domicilio</option>
-          <option >entregado</option>
+        <option >ir a domicilio</option>
+        <option >entregado</option>
         <option >llamar al cliente</option>
         <option >reparacion aceptada</option>
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
         <option >listo sin reparacion</option>
+        <option >anulado</option>
      
 
 

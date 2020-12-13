@@ -30,7 +30,7 @@ const [render,setRender]=useState(true);
  const [stateData, setStateData]=useState([]);
 
  const [verEntregados, setVerEntregados] = useState(false)
-
+ const [verAnulados, setVerAnulados] = useState(false)
  
 
   const listAllOrders =  useCallback( () =>{
@@ -99,10 +99,17 @@ const [render,setRender]=useState(true);
 
     // filtro de busqueda de orden de trabajo
     let searchFilter = orders.filter(function(order){
+      
 
       if (verEntregados === false) {
-          return order.state !== "entregado" 
+          return (order.state !== "entregado")
+          
+          
       }
+      if (verAnulados === false) {
+        return (order.state !== "anulado" )
+       }
+     
 
       if (searchOrders === "") {
         return order.state.toString().includes(searchOrdersForState.toString())
@@ -112,8 +119,7 @@ const [render,setRender]=useState(true);
       return order.numberid.toString().includes(searchOrders.toString())
     } 
 
-
-  
+   
     else {
       return null
     }
@@ -157,6 +163,17 @@ const [render,setRender]=useState(true);
           }
 
         }
+
+        const mostrarOrdenesAnuladas = () =>{
+          if(verAnulados === false){
+            setVerAnulados(true)
+            
+          } else {
+            setVerAnulados(false)
+          }
+
+        }
+
 
   
     useEffect(() => {
@@ -249,9 +266,13 @@ const [render,setRender]=useState(true);
     
      </div>
      <div class="input-group-text">
-       <span>Ver Entregados:&nbsp; </span>
+       <span>Entregados:&nbsp; </span>
       <input type="checkbox" aria-label="Checkbox for following text input"
       onChange={()=>mostrarOrdenesEntregadas()}
+      />&nbsp;&nbsp;
+         <span>Anulados:&nbsp; </span>
+      <input type="checkbox" aria-label="Checkbox for following text input"
+      onChange={()=>mostrarOrdenesAnuladas()}
       />
     </div>
     </div>
@@ -288,6 +309,7 @@ onChange={(e)=>searchForState(e.target.value)}
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
         <option >listo sin reparacion</option>
+        <option >anulado</option>
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>
       {

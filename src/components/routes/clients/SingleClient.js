@@ -666,12 +666,14 @@ onChange={(e)=>searchForState(e.target.value)}
 >
         <option  disabled value='disabled'>Buscar por Estado</option>
         <option >a revisar</option>
+        <option >ir a domicilio</option>
         <option >entregado</option>
         <option >llamar al cliente</option>
         <option >reparacion aceptada</option>
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
-        <option >listo para entregar si reparacion</option>
+        <option >listo sin reparacion</option>
+        <option >anulado</option>
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>
       {
