@@ -91,6 +91,14 @@ const Home = () => {
            }
           })
 
+          let esperandoRespuesta = repairs.filter(function(rep){
+            if(rep.state === "esperando respuesta"){
+              return rep.state
+           } else {
+             return null
+           }
+          })
+
           let entregados = repairs.filter(function(rep){
             if(rep.state === "entregado"){
               return rep.state
@@ -157,33 +165,44 @@ const Home = () => {
 </div>
 
 
+<div className='col-lg-3 mt-1  '>
+<span className=" nav-link active ">Esperando Respuesta:&nbsp;<span className={ esperandoRespuesta.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{esperandoRespuesta.length}</span></span>
+
+</div>
+
+
+<div className='col-lg-3  '>
+<span className=" nav-link active ">Domicilios Pendientes:&nbsp;<span className={ irADomicilio.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{irADomicilio.length}</span></span>
+
+</div>
+
+
 
 <div className='col-lg-3  '>
 <span className=" nav-link active ">Reparaciones pendientes:&nbsp;<span className={ reparacionesPEndientes.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{reparacionesPEndientes.length}</span></span>
 
 </div>
 
-<div className='col-lg-3  '>
-<span className=" nav-link active ">Domicilios Pendientes:&nbsp;<span className={ irADomicilio.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{reparacionesPEndientes.length}</span></span>
 
-</div>
 
-<div className='col-lg-4 mt-1   '>
+<div className='col-lg-3 mt-1   '>
 <span className=" nav-link active ">Reparaciones canceladas:&nbsp;<span className={ reparacionesCanceladas.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{reparacionesCanceladas.length}</span></span>
 
 </div>
 
-<div className='col-lg-4 mt-1  '>
+<div className='col-lg-3 mt-1  '>
 <span className=" nav-link active ">Reparaciones Listas:&nbsp;<span className={ listosConRep.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{listosConRep.length}</span></span>
 
 </div>
 
 
 
-<div className='col-lg-4 mt-1  '>
+<div className='col-lg-3 mt-1  '>
 <span className=" nav-link active ">Entregar sin reparacion:&nbsp;<span className={ listosSinRep.length === 0 ?'restantes border border-success' : 'restantes border border-warning'}>{listosSinRep.length}</span></span>
 
 </div>
+
+
 
 
 </div>

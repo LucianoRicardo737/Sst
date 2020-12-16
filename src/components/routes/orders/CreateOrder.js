@@ -388,6 +388,7 @@ onChange={handleChangeText}>
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
         <option >listo sin reparacion</option>
+        <option >esperando respuesta</option>
         <option >anulado</option>
      
   {    

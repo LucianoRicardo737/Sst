@@ -378,6 +378,35 @@ useEffect(()=>{
       console.log(error)
     }
   }
+
+
+
+  let fecha =  new Date(dataOrder[0].createdAt);
+     
+  fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset()/60)
+    //Año
+  let y = fecha.getFullYear();
+    //Mes
+  let  m = fecha.getMonth() +1 ;
+    //Día
+  let  d = fecha.getDate() +1 ;
+
+  let dayToString = d.toString()
+  if(dayToString.length === 1){
+    d = "0" + d
+  }
+
+  let mesToString = m.toString()
+  if(mesToString.length === 1){
+    m = "0" + m
+  }
+
+  //   //Lo ordenas a gusto.
+  let date = d + "/" + m + "/" + y;
+
+
+
+
     return (
       <div className='singleorder'>
 
@@ -390,8 +419,11 @@ useEffect(()=>{
 <ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice}  setError={setError} />
 
 <div className='modal-header'>
+  
             <div className='titleFontSingleOrder'>
-              {
+           <div className='ml-n4'>
+                
+           {
                 dataOrder.map(order=>{
                   return(
                     <span
@@ -406,7 +438,23 @@ useEffect(()=>{
                   )
                 })
               }
+           </div>
+                     <div className=' mb-n3 '>
+       <span className='textchiquito op50'>Fecha de Ingreso:</span> <span className='textchiquito'>
+  {date}
+</span>
+       </div>
             </div>
+
+
+
+
+
+
+              
+
+
+
             <div className=''>
               <span
                 onClick={showClients}
@@ -551,6 +599,7 @@ Observaciones:&nbsp;&nbsp;</span>
 </div>
  <div className=' col-lg-6'
       >
+   
       <span className='textchiquito op50'>Fecha de entrega:</span>
       
       <span className='text-danger textchiquito'>&nbsp;

@@ -101,14 +101,9 @@ const [render,setRender]=useState(true);
     let searchFilter = orders.filter(function(order){
       
 
-      if (verEntregados === false) {
-          return (order.state !== "entregado")
-          
-          
-      }
-      if (verAnulados === false) {
-        return (order.state !== "anulado" )
-       }
+       
+   
+     
      
 
       if (searchOrders === "") {
@@ -265,7 +260,7 @@ const [render,setRender]=useState(true);
 
     
      </div>
-     <div class="input-group-text">
+     <div className="input-group-text">
        <span>Entregados:&nbsp; </span>
       <input type="checkbox" aria-label="Checkbox for following text input"
       onChange={()=>mostrarOrdenesEntregadas()}
@@ -309,6 +304,7 @@ onChange={(e)=>searchForState(e.target.value)}
         <option >reparacion cancelada</option>
         <option >listo para entregar</option>
         <option >listo sin reparacion</option>
+        <option >esperando respuesta</option>
         <option >anulado</option>
   {    
     stateData?.sort(function(a, b){return a-b}).map(state =>
@@ -349,7 +345,22 @@ onChange={(e)=>searchForState(e.target.value)}
 
   <tbody >
       {
-        searchFilter.slice(0, 150).sort(function(a, b){return a-b}).map(order =>{
+        searchFilter.slice(0, 150).sort(function(a, b){return a-b}).filter(function(order){
+          if (verEntregados === false) {
+      
+            return (order.state !== "entregado")
+           } else {
+            return (order.state)
+           }
+       
+        }).filter(function(order){
+          if (verAnulados === false) {
+      
+            return (order.state !== "anulado")
+           } else {
+            return (order.state)
+           }
+        }).map(order =>{
 
 
 
@@ -384,6 +395,12 @@ onChange={(e)=>searchForState(e.target.value)}
 
         function FechaDeEntrega(){
           try {
+
+            if(order.state === "entregado"){
+              return(
+                 <td className="text-break text-success">{dateEdit}</td>
+              )
+             } 
             if(dateNowComplete === dateEdit) {
               return (
                 <td className="text-break text-warning">{dateEdit}</td>
@@ -396,11 +413,7 @@ onChange={(e)=>searchForState(e.target.value)}
                 <td className="text-break text-danger">{dateEdit}</td>
               )
             }
-            if(order.state === "entregado"){
-             return(
-                <td className="text-break text-success">{dateEdit}</td>
-             )
-            } 
+         
             
             else {
               return (

@@ -1,7 +1,5 @@
 import React,{useCallback, useEffect, useState} from 'react'
 
-import Error from '../misc/Error'
-
 import Axios from 'axios';
 import {IP, PORT} from '../../env'
 
@@ -9,9 +7,18 @@ import './admin.css'
 
 import { motion } from 'framer-motion'
 
+import Error from '../misc/Error'
+import Exito from '../misc/Exito'
+
 const Admin = () => {
 
+
+
+    //errores
+
+    const [exito, setExito]=useState(undefined);
     const[error, setError]=useState(undefined);
+
     const nuevoUsuarioIdentificatorio = {
         name:"",
         password:"",
@@ -212,7 +219,14 @@ const Admin = () => {
         atributeValueSelect.selectedIndex = 0;
         roleValueSelect.selectedIndex = 0;
         setNuevoUsuarioData(nuevoUsuario)
-      
+
+        setExito("Usuario creado con éxito")
+        
+        setVerUsuariosUnicos(true)
+        setViewCreateUsuarios(false)
+        setVerNuevoUsuarioIdentificatorio(false)
+        setEditarUsuarios(false)
+        setSeeUser(false)
 
      } catch (err ) {
         err.response.data.msg && 
@@ -222,6 +236,17 @@ const Admin = () => {
 
     }
 
+    useEffect(() => {
+        try {
+          if(exito !== undefined){
+            setTimeout(() => {
+              setExito(undefined)
+            }, 2500);
+          }
+        } catch (error) {
+          
+        }
+      }, [exito])
 
     const editarUsuarioExistente = async (e)=>{
 
@@ -289,6 +314,8 @@ const Admin = () => {
         let getUsuarios = await Axios.get(`http://${IP}:${PORT}/usuarios/`, config);
 
         setUsuarios(getUsuarios?.data)
+
+        
 
         } catch (err) {
             err.response.data.msg && 
@@ -490,6 +517,11 @@ try {
 {
     error && (<Error message={error} clearError={()=>setError(undefined)}/>)
     }
+
+{
+    exito && (<Exito message={exito} clearError={()=>setExito(undefined)}/>)
+    }
+
            
 
            <div className='row'>
