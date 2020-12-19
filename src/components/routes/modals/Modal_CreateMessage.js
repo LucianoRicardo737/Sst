@@ -196,14 +196,11 @@ placeholder="Fecha de Entrega"
 name='promised'
 id='promised'
 
-
 onChange={chargeNewPrice} 
 />
 </div>
 
         <div className='row'>
-
-
 
 <input
 type="number"
@@ -211,8 +208,6 @@ className="form-control  col-lg-5 ml-auto mr-auto mt-2"
 placeholder="Entrega"
 name='seña'
 id='nuevaEntrega'
-
-
 onChange={chargeNewPrice} 
 />
 
@@ -222,22 +217,12 @@ className="form-control  col-lg-5 ml-auto mr-auto mt-2"
 placeholder="Precio"
 name='pacord'
 id='newPrice'
-
-
 onChange={chargeNewPrice} 
 />
 
 </div>
-        
         </div>
-
-
-     
   }
-
-
-     
-
 
 </div>
 

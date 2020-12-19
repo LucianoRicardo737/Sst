@@ -406,15 +406,11 @@ onChange={(e)=>searchForState(e.target.value)}
                 <td className="text-break text-warning">{dateEdit}</td>
               )
             } 
-            
-          
             if(dateNowComplete > dateEdit) {
               return (
                 <td className="text-break text-danger">{dateEdit}</td>
               )
             }
-         
-            
             else {
               return (
               <td className="text-break ">{dateEdit}</td>)
