@@ -9,8 +9,7 @@ import {IP, PORT} from '../../../env'
 
 import socket from '../../../io';
 
-const Orders =memo (({setSeeClient,seeClient,setSeOrHideNewOrder, setSeOrHideNewClient,
-  setSearchClients, setDataOrder, setSeOrHideOrder,  setDataClient, change,loc}) => {
+const Orders =memo (({setSeeClient,seeClient,setDataOrder, setSeOrHideOrder,  setDataClient, change,loc}) => {
 
 
 
@@ -253,7 +252,7 @@ const [render,setRender]=useState(true);
           className="btn btn-block btn-danger">ENVIAR WP</button> */}
 
 
-    <div className='modal-header'>
+    <div className='modal-header noBorderBut'>
     
       <div className='titleFontOrders'>
        <span>Ordenes de Trabajo</span>
@@ -283,13 +282,13 @@ const [render,setRender]=useState(true);
             placeholder='Buscar por numero'
             id='searchOrder'
             type='text'
-            className='form-control  border border-info'
+            className={ loc === "/taller" ? "form-control  border border-info" : "rounded-left form-control  border border-info" }
             onClick={()=>{clearClick()}}
             onChange={(e)=>searchForOrderNumber(e.target.value)}
             />
 
 <select
-className="custom-select border border-info"
+className="custom-select border border-info backgreey achicar"
 id="state"
 name='state'
 defaultValue='disabled'
@@ -318,7 +317,7 @@ onChange={(e)=>searchForState(e.target.value)}
   </div>
             {/* tabla de resultados */}
 
- <table className="table  table-sm  mt-1">
+ <table className="table  textchiquito2 table-sm  mt-1">
  <thead>
     <tr >
       <th scope="col">N°</th>

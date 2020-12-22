@@ -140,8 +140,8 @@ const Home = () => {
           
         }
       }).filter(function(rep){
-        if(rep.updateAt >= desde){
-        
+        if(rep.updatedAt >= desde){
+          
           return rep 
         } 
         
@@ -153,14 +153,37 @@ const Home = () => {
         return totalDesde+=todo
       })
 
+  
 
-      let testttt = new Date(desde)
-
-console.log(testttt)
       
+      let filtrosHasta = repairs.filter(function(rep){
+        if(rep.state === "entregado"){
+        
 
-console.log(totalDesde)
+          return rep
+          
+        }
+      }).filter(function(rep){
+        if(rep.updatedAt <= hasta){
+          
+          return rep 
+        } 
+        
+      }).map(test=>{return test.pacord})
 
+      let totalHasta = 0;
+    
+      filtrosHasta.map(todo => {
+        return totalHasta-=todo
+      })
+
+
+      console.log("totalDesde:",totalDesde)
+      console.log("totalHasta:",totalHasta)
+    
+
+      let res = totalDesde - totalHasta
+      console.log("TOTAL:",res)
 
   //     let searchFilter = clients.filter(function(client){ 
   //       return client.name.toLowerCase().includes(searchClients.toLowerCase())||
@@ -281,7 +304,7 @@ console.log(totalDesde)
 </div>
 
 
-
+{/* 
 <div className='row'>
 
 <div className='col-lg-12  border  border-info p-4 mb-3 create'>
@@ -383,7 +406,7 @@ console.log(totalDesde)
 </div>
 
 
-
+ */}
 
 
         </div>

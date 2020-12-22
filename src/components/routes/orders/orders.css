@@ -28,3 +28,11 @@ tr {
     display: table !important;
     table-layout: fixed !important;
 }
+.backgreey{
+    background: rgb( 204, 204, 204,0.17) !important;
+  
+}
+.textchiquito2{
+    font-size: 13px !important;
+  
+}

@@ -142,7 +142,7 @@ const [seeClient, setSeeClient]=useState(false);
   
   
   
-  className='border  border-info p-2 mb-3'>
+  className='border  altoTotal border-info p-2 mb-3'>
 
 
   <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} setHideAndSeeData={setHideAndSeeData} loc={loc} setSeeClient={setSeeClient} changeBack={changeBack} />
@@ -187,7 +187,7 @@ null
   
 
 
-className='border border-info p-2 mb-3'>
+className='border altoTotal border-info p-2 mb-3'>
    <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders} setError={setError} changeBack={changeBack} loc={loc} setSeeClient={setSeeClient} seeClient={seeClient} />
 
 
@@ -211,7 +211,7 @@ className='border border-info p-2 mb-3'>
     animate={{ y: 0, opacity: 1 }}
     transition={{ ease: "easeIn", duration: 0.1}}
       style={{y:"100px", opacity: "0"}} 
-      className='border border-info p-2'>
+      className='border border-info p-2 altoTotal'>
 
 
 <Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} setDataClient={setDataClient} change={change} loc={loc} setSeOrHideNewOrder={setSeOrHideNewOrder}  setSeOrHideNewClient={setSeOrHideNewClient}  setSeeClient={setSeeClient} seeClient={seeClient} />
@@ -229,7 +229,7 @@ className='col-lg-6 '>
 
  
  
-<div  className='border border-info p-2 '>
+<div  className='border altoTotal border-info p-2 '>
 
 <SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} hideAndSeeData={hideAndSeeData} setHideAndSeeData={setHideAndSeeData} setDataClient={setDataClient} setSeeClient=
 {setSeeClient} setError={setError} />

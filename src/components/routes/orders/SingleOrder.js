@@ -8,12 +8,15 @@ import UserContext from '../../../context/UserContext';
 import socket from '../../../io';
 import ModalCreateMessage from '../modals/Modal_CreateMessage';
 
-// import { motion } from 'framer-motion'
+import { motion } from 'framer-motion'
+
+import ModalValidateOrder from '../modals/Modal_ValidateOrder';
+
 
 export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders,setError, changeBack, loc}) => {
 
 
-
+//Datos iniciales para mensajes
   const initualStateOrder = {
     numberid:"",
     type:"",
@@ -29,11 +32,27 @@ export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient
     createdby:"",
     promised:""
   }
+//Datos iniciales para edicion
+  const initialOrder = {
+    numberid:"",
+    type:"",
+    pacord:"",
+    seña:"", 
+    brand:"", 
+    model:"", 
+    nserie:"", 
+    failure:"",
+    state:"", 
+    observation:"",
+    client:"",
+    createdby:"",
+    promised:""
+  }
   
-
+  //datos del usuario 
   const {userData}=useContext(UserContext)
   const user = userData.user
-
+  //info del mensaje
   const [messageData, setMessageData] = useState([]);
 
 
@@ -43,7 +62,7 @@ export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient
   const [userid, setUserid]=useState(user.id);
   //passwor de validacion
   const [password, setPassword]=useState("");
- 
+
 
 // condicional el render
 const [render,setRender]=useState(true);
@@ -52,8 +71,16 @@ const [render,setRender]=useState(true);
 // const [price, setPrice] = useState("")
 const [sendNewPrice, setSendNewPrice] = useState(initualStateOrder)
 
+//Editar orden
+const [verEditarOrden, setVerEditarOrden] = useState(false)
 
 
+//editar orden
+const [datosOrdenModificada, setDatosOrdenModificada]=useState(initialOrder)
+
+
+
+  
 
 //Mostrar Clientes o cerrar single order
 const showClients = () =>{
@@ -406,6 +433,141 @@ useEffect(()=>{
 
 
 
+  const editarOrden = () =>{
+    //  let infoClient = document.getElementById('dataClient')
+   try {
+    setVerEditarOrden(true);
+   
+   } catch (error) {
+     console.log(error)
+   }
+    }
+
+    const cancelarEditarOrden = () =>{
+     try {
+      setVerEditarOrden(false)
+     
+     } catch (error) {
+       console.log(error)
+     }
+    }
+
+
+    const cargarDatosEditadosDeOrden = (e)=>{
+      try {
+        setDatosOrdenModificada({...datosOrdenModificada, [e.target.name]:e.target.value});
+    
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const sendEditOrder = async () =>{
+      try {
+         //validamos los datos
+        const token = localStorage.getItem('auth-token');
+        const config = { headers:{
+          'labLERsst-auth-token':token
+                        }};
+
+//importamos la clave
+const validateUser = {password}
+
+
+
+
+//validamos el usuario solo con la pw
+const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,
+validateUser,config);
+
+//cargamos el nombre en una variable
+let nameIdentify = userLogRes.data.userExisting.name
+
+if(nameIdentify){
+
+
+
+
+let  {type, 
+  brand,
+  pacord, 
+  seña, 
+  model,
+  nserie, 
+  state, 
+  failure,
+  promised, 
+  observation} = datosOrdenModificada
+
+  if(type===""){
+    type=dataOrder[0].type
+  }
+  if(brand===""){
+    brand=dataOrder[0].brand
+  }
+  if(pacord===""){
+    pacord=dataOrder[0].pacord
+  }
+  if(seña===""){
+    seña=dataOrder[0].seña
+  }
+  if(model===""){
+    model=dataOrder[0].model
+  }
+  if(nserie===""){
+    nserie=dataOrder[0].nserie
+  }
+  if(state===""){
+    state=dataOrder[0].state
+  }
+  if(failure===""){
+    failure=dataOrder[0].failure
+  }
+  if(promised===""){
+    promised=dataOrder[0].promised
+  }
+  if(observation===""){
+    observation=dataOrder[0].observation
+  }
+ 
+
+
+
+       await Axios.put(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, 
+       {type, 
+        brand,
+        pacord, 
+        seña, 
+        model,
+        nserie, 
+        state, 
+        failure,
+        promised, 
+        observation} , config );
+
+       
+        socket.emit('order');
+      let order = await Axios.get(`http://${IP}:${PORT}/reparaciones/` + dataOrder[0]._id, config);
+
+      let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea,input[type='password'],input[type='date']");
+      let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea,input[type='password'],input[type='date']");
+      for(let clearInput of clearInputs)
+      clearInput.value = "";
+
+      setDataOrder(order?.data);
+      setVerEditarOrden(false);
+    
+}
+
+setPassword(undefined)
+document.getElementById("password").value= ""
+      } catch (err) {
+        err.response.data.msg && 
+        setError(err.response.data.msg);
+      }
+    }
+ 
+
 
     return (
       <div className='singleorder'>
@@ -417,6 +579,8 @@ useEffect(()=>{
 {/* modal */}
 
 <ModalCreateMessage setPassword={setPassword} sendMessage={sendMessage}  showClients={showClients} dataOrder={dataOrder} password={password}  setSendNewPrice={setSendNewPrice} chargeNewPrice={chargeNewPrice}  setError={setError} />
+
+<ModalValidateOrder setPassword={setPassword} sendEditOrder={sendEditOrder}  />
 
 <div className='modal-header'>
   
@@ -451,25 +615,62 @@ useEffect(()=>{
 
 
 
-              
+            {
+  verEditarOrden === true ?
+  
+  
+ <div className="button-group mb-n4">
+
+ <span
+  className=' btn btn-editar text-success mr-4'
+  data-toggle="modal" data-target="#confirmEditClient"
+  // onClick={()=>sendEditClient()}
+  >
+     ✔
+ </span> 
+ <span
+  className='btn btn-close text-danger'
+  onClick={()=>cancelarEditarOrden()}
+  >
+    X
+ </span> 
+ </div>
+  :
+
+ <div className="button-group">
+        <span
+           className=' btn btn-editar text-warning'
+           onClick={()=>editarOrden()}
+           >
+              ?
+          </span>
+          <span
+           className='btn btn-close text-danger'
+           onClick={()=>showClients()}>
+              X
+          </span>
+
+          </div>
+
+}
 
 
 
-            <div className=''>
+            {/* <div className=''>
               <span
                 onClick={showClients}
                 className='btn btn-close text-danger'
                   >X</span>
 
       
-            </div>
+            </div> */}
 
         </div>
 
 
 
   {/* info del orden */}
-<div className='mt-1 text-left border rounded'>
+<div className='mt-1 text-left  rounded'>
 
 
 
@@ -528,9 +729,16 @@ useEffect(()=>{
 
 
           return(
+            
 <div key={order._id} className=''>
 
-<div className='input-group '>
+{
+  verEditarOrden===false ? <motion.div 
+     
+  animate={{ opacity: 1 }}
+transition={{ ease: "easeIn", duration: 0.3}}
+ style={{ opacity: "0"}}>
+  <div className='input-group '>
 
 <label
 className=' col-lg-6' >
@@ -597,6 +805,7 @@ Observaciones:&nbsp;&nbsp;</span>
 </label>
 
 </div>
+
  <div className=' col-lg-6'
       >
    
@@ -614,6 +823,95 @@ Observaciones:&nbsp;&nbsp;</span>
       </span></div>
   
 </div>
+</motion.div>
+ :
+ <motion.div 
+     
+  animate={{ opacity: 1 }}
+transition={{ ease: "easeIn", duration: 0.3}}
+ style={{ opacity: "0"}}>
+
+
+<div id="editClient" className='mt-1  text-left  '>
+
+
+<div  className='mt-2'>
+
+<div className='input-group '>
+
+
+
+<label
+className=' col-lg-6' >
+  <div className="input-group flex-nowrap">
+ 
+ 
+   <div className="input-group-prepend">
+    <span className="input-group-text textchiquito" id="addon-wrapping">Marca:</span>
+  </div>
+  <input
+    type="text"
+    className="form-control"
+    placeholder={dataOrder[0].brand}
+    name='brand'
+    id='brand'
+    onChange={cargarDatosEditadosDeOrden} />
+</div>
+</label>
+
+<label
+className=' col-lg-6' >
+    <div className="input-group flex-nowrap">
+ 
+ 
+ <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Modelo:</span>
+</div>
+<input
+    type="text"
+    className="form-control"
+    placeholder={dataOrder[0].model}
+    name='model'
+    id='model'
+    onChange={cargarDatosEditadosDeOrden} />
+</div>
+  
+</label>
+
+</div>
+
+<div className='input-group '>
+  
+<label
+className=' col-lg-12' >
+   <div className="input-group flex-nowrap">
+ 
+ 
+ <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Numero de serie:</span>
+</div>
+<input
+    type="text"
+    className="form-control"
+    placeholder={dataOrder[0].nserie}
+    name='nserie'
+    id='nserie'
+    onChange={cargarDatosEditadosDeOrden} />
+</div>
+ 
+</label>
+
+</div>
+
+</div>
+         
+</div>
+
+
+
+ </motion.div>
+}
+
 </div>
          )
       })
@@ -621,7 +919,7 @@ Observaciones:&nbsp;&nbsp;</span>
 
 
 </div>
-
+<hr></hr>
 
 {
 

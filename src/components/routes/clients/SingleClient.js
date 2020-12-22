@@ -17,17 +17,17 @@ const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder
   let loc = location.pathname
 
   const initialState={
-    name:dataClient[0].name,
-    lastname:dataClient[0].lastname,
-    dni:dataClient[0].dni,
-    address:dataClient[0].address,
-    codigo:dataClient[0].codigo,
-    prefijo:dataClient[0].prefijo,
-    telephone:dataClient[0].telephone,
-    fijo:dataClient[0].fijo,
-    email:dataClient[0].email,
-    city:dataClient[0].city,
-    observation:dataClient[0].observation
+    name:"",
+    lastname:"",
+    dni:"",
+    address:"",
+    codigo:"",
+    prefijo:"",
+    telephone:"",
+    fijo:"",
+    email:"",
+    city:"",
+    observation:""
   }
 
     //Setear parametros de busqueda de ordenes
@@ -40,18 +40,26 @@ const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder
     const [password, setPassword]=useState("");   
 
     
-    const [idClient] = useState(dataClient[0]._id)
+    // const [idClient] = useState(dataClient[0]._id)
       // condicional el render
     const [render,setRender]=useState(true);
 
     const [editClientData, setEditClientData]=useState(initialState)
     
 
+    // useEffect(() => {
+    // try {
+    //   setEditClientData(initialState)
+    // } catch (error) {
+    //   console.log(error)
+    // }
+    //   }, [])
 
     const [searchOrdersForState,setSearchOrdersForState]=useState("");
 
   //estados de carga de datos de variables
     const [stateData, setStateData]=useState([]);
+    
 
 const showNewOrder = () =>{
   setSeOrHideNewClient(false)
@@ -208,7 +216,7 @@ const listAllOrders =  useCallback( () =>{
        }
       }
 
-
+      //Enviar mensaje al cliente por whastapp
       const goToWP = (e) =>{
      
         try {
@@ -221,6 +229,7 @@ const listAllOrders =  useCallback( () =>{
         }
       }
 
+      //Cargar datos en la varible de datos
       const handleChangeText = (e)=>{
         try {
           setEditClientData({...editClientData, [e.target.name]:e.target.value});
@@ -229,81 +238,81 @@ const listAllOrders =  useCallback( () =>{
           console.log(error)
         }
       }
+     
 
+      //Enviar cliente editado
       const sendEditClient = async () =>{
         try {
-           //validamos los datos
-          const token = localStorage.getItem('auth-token');
-          const config = { headers:{
-            'labLERsst-auth-token':token
-                          }};
+        //validamos los datos
+        const token = localStorage.getItem('auth-token');
+        const config = { headers:{
+          'labLERsst-auth-token':token
+                        }};
 
- //importamos la clave
- const validateUser = {password}
-
-
-
-
- //validamos el usuario solo con la pw
- const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,
- validateUser,config);
-
- //cargamos el nombre en una variable
- let nameIdentify = userLogRes.data.userExisting.name
-
- if(nameIdentify){
+        //importamos la clave
+        const validateUser = {password}
 
 
 
 
-  let {name,
-    lastname,
-    dni,
-    address,
-    codigo,
-    prefijo,
-    telephone,
-    fijo,
-    email,
-    city,
-    observation} =editClientData
-  
-    if(name===""){
-      name=dataClient[0].name
-    }
-    if(lastname===""){
-      lastname=dataClient[0].lastname
-    }
-    if(dni===""){
-      dni=dataClient[0].dni
-    }
-    if(address===""){
-      address=dataClient[0].address
-    }
-    if(codigo===""){
-      codigo=dataClient[0].codigo
-    }
-    if(prefijo===""){
-      prefijo=dataClient[0].prefijo
-    }
-    if(telephone===""){
-      telephone=dataClient[0].telephone
-    }
-    if(fijo===""){
-      fijo=dataClient[0].fijo
-    }
-    if(email===""){
-      email=dataClient[0].email
-    }
-    if(city===""){
-      city=dataClient[0].city
-    }
-    if(observation===""){
-      observation=dataClient[0].observation
-    }
-  
+        //validamos el usuario solo con la pw
+        const userLogRes = await Axios.post(`http://${IP}:${PORT}/identificando/login`,
+        validateUser,config);
+
+        //cargamos el nombre en una variable
+        let nameIdentify = userLogRes.data.userExisting.name
+
+        if(nameIdentify){
 
 
+
+
+        let {name,
+          lastname,
+          dni,
+          address,
+          codigo,
+          prefijo,
+          telephone,
+          fijo,
+          email,
+          city,
+          observation} = editClientData
+        
+          if(name===""){
+            name=dataClient[0].name
+          }
+          if(lastname===""){
+            lastname=dataClient[0].lastname
+          }
+          if(dni===""){
+            dni=dataClient[0].dni
+          }
+          if(address===""){
+            address=dataClient[0].address
+          }
+          if(codigo===""){
+            codigo=dataClient[0].codigo
+          }
+          if(prefijo===""){
+            prefijo=dataClient[0].prefijo
+          }
+          if(telephone===""){
+            telephone=dataClient[0].telephone
+          }
+          if(fijo===""){
+            fijo=dataClient[0].fijo
+          }
+          if(email===""){
+            email=dataClient[0].email
+          }
+          if(city===""){
+            city=dataClient[0].city
+          }
+          if(observation===""){
+            observation=dataClient[0].observation
+          }
+     
 
          await Axios.put(`http://${IP}:${PORT}/clientes/` + dataClient[0]._id, 
          {name,
@@ -317,16 +326,22 @@ const listAllOrders =  useCallback( () =>{
          email,
          city,
          observation} , config );
-
+          
          
         socket.emit('cliente');
-        let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + idClient, config);
+        let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + dataClient[0]._id, config);
+
+
+        let clearInput = document.querySelector("input[type='text'],input[type='number'],textarea,input[type='password'],input[type='date']");
+        let clearInputs=document.querySelectorAll("input[type='text'],input[type='number'],textarea,input[type='password'],input[type='date']");
+        for(let clearInput of clearInputs)
+        clearInput.value = "";
 
         setDataClient(client?.data);
         setHideAndSeeData(false);
 }
 
-  setPassword(undefined)
+  setPassword("")
   document.getElementById("password").value= ""
         } catch (err) {
           err.response.data.msg && 
@@ -376,7 +391,7 @@ const listAllOrders =  useCallback( () =>{
           
 
         {/* informacion de */}
-      <div className='modal-header '>
+      <div className='modal-header  '>
 
         <div className='text-break titleFont '>
         {
@@ -430,7 +445,7 @@ const listAllOrders =  useCallback( () =>{
         {/* info del cliente */}
 {
   hideAndSeeData === false ? 
-  <div id="dataClient" className='mt-1  text-left border rounded'>
+  <div id="dataClient" className='mt-1  text-left  rounded'>
 
   {
         dataClient.map(client =>{
@@ -513,65 +528,110 @@ className=' col-lg-6' >
     }
   </div>
 :
-<div id="editClient" className='mt-1  text-left border rounded'>
+<div id="editClient" className='mt-1  text-left  '>
 
 
 <div  className='mt-2'>
 <div className='input-group '>
 
 <label
-className=' col-lg-4' >
+className=' col-lg-6' >
+      <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Nombre:</span>
+</div>
 <input
     type="text"
     className="form-control"
-    placeholder={initialState.name}
+    placeholder={dataClient[0].name}
     name='name'
     id='name'
     onChange={handleChangeText} />
+    </div>
 </label>
 <label
-className=' col-lg-4' >
+className=' col-lg-6' >
+    <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Apellido:</span>
+</div>
 <input
     type="text"
     className="form-control"
-    placeholder={initialState.lastname}
+    placeholder={dataClient[0].lastname}
     name='lastname'
     id='lastname'
     onChange={handleChangeText} />
+    </div>
 </label>
-<label
-className=' col-lg-4' >
-  <input
-    type="number"
-    className="form-control"
-    placeholder={initialState.dni}
-    name='dni'
-    id='dni'
-    onChange={handleChangeText} />
-</label>
+
 
 </div>
 
 <div className='input-group '>
 <label
 className=' col-lg-6' >
+    <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Dni:</span>
+</div>
+  <input
+    type="number"
+    className="form-control"
+    placeholder={dataClient[0].dni}
+    name='dni'
+    id='dni'
+    onChange={handleChangeText} />
+    </div>
+</label>
+
+
+
+<label
+className=' col-lg-6' >
+   <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Direccion:</span>
+</div>
   <input
     type="text"
     className="form-control"
-    placeholder={initialState.address}
+    placeholder={dataClient[0].address}
     name='address'
     id='address'
     onChange={handleChangeText} />
+    </div>
 </label>
 <label
 className=' col-lg-6' >
+     <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Ciudad:</span>
+</div>
   <input
     type="text"
     className="form-control"
-    placeholder={initialState.city}
+    placeholder={dataClient[0].city}
     name='city'
     id='city'
     onChange={handleChangeText} />
+    </div>
+</label>
+
+<label
+className='col-lg-6' >
+       <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Tel fijo:</span>
+</div>
+    <input
+    type="text"
+    className="form-control"
+    placeholder={dataClient[0].fijo===""? "Teléfono fijo":dataClient[0].fijo}
+    name='fijo'
+    id='fijo'
+    onChange={handleChangeText} />
+    </div>
 </label>
 </div>
 
@@ -579,56 +639,64 @@ className=' col-lg-6' >
 <div className='input-group '>
 <label
 className=' col-lg-3' >
+               <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">País:</span>
+</div>
   <input
     type="text"
     className="form-control "
-    placeholder={initialState.prefijo}
+    placeholder={dataClient[0].prefijo}
     name='prefijo'
     id='prefijo'
-    onChange={handleChangeText} />
+    onChange={handleChangeText} /></div>
     </label>
     <label
 className='col-lg-4' >
+             <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Área:</span>
+</div>
     <input
     type="text"
     className="form-control"
-    placeholder={initialState.codigo === ""?"Codigo":initialState.codigo}
+    placeholder={dataClient[0].codigo === ""?"Codigo":dataClient[0].codigo}
     name='codigo'
     id='codigo'
-    onChange={handleChangeText} />
+    onChange={handleChangeText} /></div>
     </label>
     <label
 className='col-lg-5' >
+           <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Cel:</span>
+</div>
     <input
     type="text"
     className="form-control"
-    placeholder={initialState.telephone==="" ?"Teléfono celular" : initialState.telephone}
+    placeholder={dataClient[0].telephone==="" ?"Teléfono celular" : dataClient[0].telephone}
     name='telephone'
     id='telephone'
-    onChange={handleChangeText} />
+    onChange={handleChangeText} /></div>
 </label>
 
 </div>
 <div className='input-group  '>
+
 <label
-className='col-lg-5' >
-    <input
-    type="text"
-    className="form-control"
-    placeholder={initialState.fijo===""? "Teléfono fijo":initialState.fijo}
-    name='fijo'
-    id='fijo'
-    onChange={handleChangeText} />
-</label>
-<label
-className=' col-lg-7' >
+className=' col-lg-12' >
+         <div className="input-group flex-nowrap">
+   <div className="input-group-prepend">
+  <span className="input-group-text textchiquito" id="addon-wrapping">Email:</span>
+</div>
   <input
     type="email"
     className="form-control"
-    placeholder={initialState.email === "" ? "Email" : initialState.email }
+    placeholder={dataClient[0].email === "" ? "Email" : dataClient[0].email }
     name='email'
     id='email'
     onChange={handleChangeText} />
+    </div>
 </label>
 
 </div>
@@ -658,7 +726,7 @@ className=' col-lg-7' >
             onChange={(e)=>setSearchOrders(e.target.value)}
             />
             <select
-className="custom-select border border-info"
+className="custom-select border border-info backgreey"
 id="state"
 name='state'
 defaultValue='disabled'
@@ -694,7 +762,7 @@ onChange={(e)=>searchForState(e.target.value)}
         {/* ordenes de trabajo */}
         <div className='wid mt-1'>
 
-          <table  className="table table-sm ">
+          <table  className="table textchiquito2 table-sm ">
           <thead>
     <tr>
     <th scope="col">N°</th>

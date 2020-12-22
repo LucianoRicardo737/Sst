@@ -128,7 +128,7 @@ const Sales = () => {
   
   
   
-  className='border  border-info p-2 mb-3'>
+  className='border  border-info p-2 mb-3 altoTotal'>
 
 
   <Clients setSeOrHideOrders={setSeOrHideOrders} setDataClient={setDataClient} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideNewOrder={setSeOrHideNewOrder} setHideAndSeeData={setHideAndSeeData} />
@@ -156,7 +156,7 @@ const Sales = () => {
   
 
 
-className='border border-info p-2 mb-3'>
+className='border border-info p-2 mb-3 altoTotal'>
    <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders} setError={setError} loc={loc} />
 
 
@@ -177,7 +177,7 @@ className='border border-info p-2 mb-3'>
 <motion.div 
     animate={{ x: 0, opacity: 1 }}
     transition={{ ease: "easeIn", duration: 0.2}}
-      style={{x:"100px", opacity: "0"}}  className='border border-info p-2 '>
+      style={{x:"100px", opacity: "0"}}  className='border altoTotal border-info p-2 '>
 <Orders setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} setDataClient={setDataClient} />
 </motion.div>
 </div>
@@ -193,7 +193,7 @@ className='col-lg-6 '>
 
  
  
-<div  className='border border-info p-2 '>
+<div  className='border border-info p-2 altoTotal '>
 
 <SingleClient setSeOrHideNewOrder={setSeOrHideNewOrder} setSeOrHideNewClient={setSeOrHideNewClient} setSeOrHideOrder={setSeOrHideOrder} setSeOrHideOrders={setSeOrHideOrders} setDataOrder={setDataOrder} dataClient={dataClient} hideAndSeeData={hideAndSeeData} setHideAndSeeData={setHideAndSeeData} setDataClient={setDataClient} setError={setError} />
 

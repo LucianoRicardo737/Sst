@@ -128,8 +128,8 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
 
           <div className='divClientes'>
 
-            <div className='modal-header '>
-              <div className='titleFontClients mb-2'>
+            <div className='modal-header noBorderBut'>
+              <div className='titleFontClients mb-1'>
                 <span >Clientes</span>
 
 
@@ -162,7 +162,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
             />
             </div>
             
-              <table className="table  table-sm  mt-1">
+              <table className="table textchiquito2 table-sm  mt-1">
               <thead >
                   <tr>
                     <th scope="col">Cliente</th>

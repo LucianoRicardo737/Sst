@@ -1,6 +1,7 @@
 import React from 'react'
 
-const ModalValidate = ({setPassword, sendEditClient}) => {
+const ModalValidate = ({setPassword, sendEditOrder}) => {
+
     return (
         <div>
       
@@ -8,11 +9,13 @@ const ModalValidate = ({setPassword, sendEditClient}) => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">Editar Cliente</h5>
+   <h5 className="modal-title" id="exampleModalLabel">Editar Orden</h5>
       </div>
            <div className="modal-body"> 
     
-     <p>Ingrese su contraseña para confirmar la edición del cliente.</p>
+    <p>Ingrese su contraseña para confirmar la edición de la orden</p> 
+
+    
          
     </div> 
     
@@ -36,20 +39,18 @@ const ModalValidate = ({setPassword, sendEditClient}) => {
     
     
     </div>
-        
-    
+  
             <button 
             type="button" 
             className="btn btn-secondary " 
             data-dismiss="modal"
               >Cancelar</button>
             <button 
-            onClick={()=>sendEditClient()}
+            onClick={()=>sendEditOrder()}  
             type="button" 
             className="btn btn-danger" 
             data-dismiss="modal"
-              >Agregar</button>
-              
+              >Editar</button>
           </div>
         </div>
       </div>
