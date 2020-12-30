@@ -118,10 +118,7 @@ useEffect(()=>{
 
   const chargeNewPrice =  (e) =>{
     try {
-
       setSendNewPrice({...sendNewPrice, [e.target.name]:e.target.value}); 
-
-
     } catch (error) {
       console.log(error)
     }
@@ -150,13 +147,8 @@ useEffect(()=>{
       //cargamos el nombre en una variable
       let nameIdentify = userLogRes.data.userExisting.name
 
-      
+      // si hay un usuario existente (que tenga nombre)
       if(nameIdentify){
-
-
-      
-    
-
 
         let {numberid,
           type,
@@ -191,9 +183,7 @@ useEffect(()=>{
           client=dataOrder[0].client
           createdby=dataOrder[0].createdby
         
-
-
-
+          // en caso de que los datos esten vacios se rellena con lo anterior.. 
           if(seña===""){
             dataSeña = dataOrder[0].seña
           }
@@ -225,10 +215,11 @@ useEffect(()=>{
       client,
       createdby,
       promised:dataPromised} , config );
-
+        //emitimos las ordenes de vuelta
       socket.emit('order');
-
+        //seteamos la info editada como inicial
         setSendNewPrice(initualStateOrder)
+
 
     let estadoEditado = undefined
     if(sendNewPrice.state !== initualStateOrder.state)
@@ -583,30 +574,46 @@ document.getElementById("password").value= ""
 <ModalValidateOrder setPassword={setPassword} sendEditOrder={sendEditOrder}  />
 
 <div className='modal-header'>
-  
+
             <div className='titleFontSingleOrder'>
-           <div className='ml-n4'>
+      
+           <div className='ml-n4 mb-n2'>
                 
            {
+                 
                 dataOrder.map(order=>{
                   return(
+                   
                     <span
-                    className='point btn-link'
+                    className='point btn-link ml-n2'
                     title='Enviar informacion al cliente'
                     key={order._id}
                     onClick={()=>goToWP()}
                     >
-                    Orden N°:&nbsp;{order.numberid}
+                    Orden N°:&nbsp; <motion.span 
+     
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>{order.numberid}  </motion.span>
                   </span>
-                  
+                
                   )
                 })
+          
               }
            </div>
                      <div className=' mb-n3 '>
-       <span className='textchiquito op50'>Fecha de Ingreso:</span> <span className='textchiquito'>
+                       
+       <span className='textchiquito op50'>Fecha de Ingreso:&nbsp;</span>
+       <motion.span 
+     className='textchiquito'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>
+       
+        
   {date}
-</span>
+  </motion.span>
        </div>
             </div>
 
@@ -733,24 +740,37 @@ document.getElementById("password").value= ""
 <div key={order._id} className=''>
 
 {
-  verEditarOrden===false ? <motion.div 
-     
-  animate={{ opacity: 1 }}
-transition={{ ease: "easeIn", duration: 0.3}}
- style={{ opacity: "0"}}>
+  verEditarOrden===false ?
+  <div>
   <div className='input-group '>
 
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>
 Tipo:&nbsp;&nbsp;</span>
-<span className='spanData text-break'>{order.type}</span>
+
+<motion.span 
+     className='spanData text-break'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>
+  {order.type}
+  
+  
+  </motion.span>
 </label>
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>
 Marca:&nbsp;&nbsp;</span>
-<span className='spanData text-break'>{order.brand}</span>
+<motion.span 
+     className='spanData text-break'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>
+      
+      {order.brand}
+      </motion.span>
 </label>
 
 
@@ -765,13 +785,21 @@ Marca:&nbsp;&nbsp;</span>
 className=' col-lg-6' >
 <span className='op50 textchiquito'>
 Modelo:&nbsp;&nbsp;</span>
-<span className='spanData text-break'>{order.model}</span>
+<motion.span 
+     className='spanData text-break'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>{order.model} </motion.span>
 </label>
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>
 N° Serie:&nbsp;&nbsp;</span>
-<span className='spanData text-break'>{order.nserie}</span>
+<motion.span 
+     className='spanData text-break'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>{order.nserie} </motion.span>
 </label>
 
 </div>
@@ -781,7 +809,12 @@ N° Serie:&nbsp;&nbsp;</span>
 className=' col-lg-6' >
 <span id='spanStateTitle' className='op50 textchiquito'>
 Estado:&nbsp;&nbsp;</span>
-<span className='spanData text-break' id='spanState'>{order.state}</span></label>
+<motion.span 
+     className='spanData text-break' id='spanState'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>
+{order.state}</motion.span></label>
 
 
 
@@ -792,7 +825,11 @@ Estado:&nbsp;&nbsp;</span>
 className=' col-lg-6' >
 <span className='op50 textchiquito'>
 Falla:&nbsp;&nbsp;</span>
-<span className='text-break spanData'>{order.failure}</span>
+<motion.span 
+     className='spanData text-break'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>{order.failure}</motion.span>
 </label>
 </div>
 <div className='input-group '>
@@ -801,7 +838,11 @@ Falla:&nbsp;&nbsp;</span>
 >
 <span className='op50 textchiquito'>
 Observaciones:&nbsp;&nbsp;</span>
-<span className=' text-break spanData'>{order.observation}</span>
+<motion.span 
+     className='spanData text-break'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>{order.observation}</motion.span>
 </label>
 
 </div>
@@ -810,8 +851,12 @@ Observaciones:&nbsp;&nbsp;</span>
       >
    
       <span className='textchiquito op50'>Fecha de entrega:</span>
-      
-      <span className='text-danger textchiquito'>&nbsp;
+      <motion.span 
+     className='text-danger textchiquito'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.2}}
+    style={{ opacity: "0"}}>
+      &nbsp;
       
       
       {
@@ -820,10 +865,10 @@ Observaciones:&nbsp;&nbsp;</span>
       date}
       
       
-      </span></div>
+      </motion.span></div>
   
 </div>
-</motion.div>
+</div>
  :
  <motion.div 
      
@@ -927,32 +972,50 @@ className=' col-lg-12' >
 
 
     return(
+      <div key={order._id} className='row mt-1'>
 
-<div key={order._id} className='row mtn
-n
-n
-n
-n-1'>
+
 
 <div className='col-sm-4'>
   <span 
   className='textchiquito op50' 
   id='acordPriceView'
-    >Acordado: 
-  </span>$ 
-  <span id='monto' className='text-break textonotanchiquitojajaja'>{order.pacord} </span>
+    >Acordado:&nbsp;$&nbsp;
+  </span>
+
+  <motion.span 
+     id='monto' className='text-break textonotanchiquitojajaja'
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.4}}
+    style={{ opacity: "0"}}>
+    {order.pacord} </motion.span>
 </div>
 
 <div className='col-sm-4 '>
-  <span className='textchiquito op50'>Entregó: </span> ${order.seña} 
+  <span className='textchiquito op50'>Entregó:&nbsp;$&nbsp;</span>
+  
+  <motion.span 
+    
+    animate={{ opacity: 1 }}
+  transition={{ ease: "easeIn", duration: 0.4}}
+   style={{ opacity: "0"}}>
+  {order.seña} </motion.span> 
 </div>
 
 
 
 
 <div className='col-sm-4 '>
-  <span className='textchiquito op50'>Resta: </span> <span className=''>${order.pacord - order.seña}</span>  <span className='textchiquito '> + iva </span> 
+  <span className='textchiquito op50'>Resta:&nbsp;$&nbsp;</span>
+  
+  <motion.span 
+    
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.4}}
+    style={{ opacity: "0"}}>
+ {order.pacord - order.seña}</motion.span>  <span className='textchiquito op50'> + iva </span> 
 </div>
+
 
 
 </div>
@@ -963,7 +1026,9 @@ n-1'>
 
 
 
+      
 <div className='col-lg-12  mt-1'>
+
 <div className='input-group'>
 
 
@@ -982,6 +1047,8 @@ type="submit"
 
 
 </div>
+
+
 <div className=' mt-2 '>
 <div className="container ovflow">
 
@@ -1069,8 +1136,12 @@ type="submit"
 
       return (
  
+<motion.div 
+     key={msg._id} className='row  border-bottom  mt-1 '
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.4}}
+    style={{ opacity: "0"}}>
 
-    <div key={msg._id} className='row  border-bottom  mt-1 '>
 
         <span className='text-muted col-sm-4 text-left fotns'>{msg.name}</span>
         <span id='date' className='text-muted col-sm-8 text-right fotns'>{date}</span>
@@ -1138,7 +1209,9 @@ null
   <div className=' fotns mr-2'> 
   <span className='text-muted '>Entregar:</span>
   &nbsp;
-{dateEdit}</div>
+{dateEdit}
+
+</div>
 </>
 
 
@@ -1151,8 +1224,8 @@ null
             </div>
     
           
-        </div>
-
+        
+        </motion.div>
 
       )
     })
@@ -1160,6 +1233,7 @@ null
 
 </div>
 </div>
+
 </div>
 
       </div>

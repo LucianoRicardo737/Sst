@@ -48,18 +48,18 @@ const [seeClient, setSeeClient]=useState(false);
     idOrders.classList.add('col-lg-6')
   }
   const changeBack = () =>{
-    setSeOrHideOrders(true)
-
-
-    // if(seOrHideOrders === false){
-      
-    // }
 
     if(seOrHideOrders=== true){
+      setSeOrHideOrders(true)
     let idOrders = document.getElementById('idOrders');
     idOrders.classList.remove('col-lg-6')
     idOrders.classList.add('col-lg-12')
 }
+  if(seOrHideOrders=== false){
+    // setSeOrHideOrders(true)
+    setSeeClient(true)
+
+  }
 
 
 

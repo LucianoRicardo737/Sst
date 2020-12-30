@@ -9,6 +9,8 @@ import './singleClient.css'
 import socket from '../../../io';
 import ModalValidate from '../modals/Modal_Validate';
 
+import { motion } from 'framer-motion'
+
 const SingleClient = ({setSeOrHideNewOrder,setSeOrHideNewClient,setSeOrHideOrder, setSeOrHideOrders,setDataOrder, dataClient, setDataClient, hideAndSeeData, setHideAndSeeData, setSeeClient, setError}) => {
 
 
@@ -153,8 +155,8 @@ const listAllOrders =  useCallback( () =>{
     },100)
       } else {
         setSeOrHideOrders(true)
-        setSeOrHideNewOrder(false)
-        setSeOrHideOrder(false)
+        // setSeOrHideNewOrder(false)
+        // setSeOrHideOrder(false)
       }
 
     }
@@ -397,7 +399,11 @@ const listAllOrders =  useCallback( () =>{
         {
                 dataClient.map(client=>{
                     return(
-                    <span  key={client._id}>{client.name}&nbsp;{client.lastname}</span>
+                      <motion.span 
+     
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}
+    style={{ opacity: "0"}} key={client._id}>{client.name}&nbsp;{client.lastname}</motion.span>
                     )
                 })
             }
@@ -405,6 +411,7 @@ const listAllOrders =  useCallback( () =>{
         
 {
   hideAndSeeData === true ?
+  
   
   
  <div className="button-group mb-n4">
@@ -456,12 +463,18 @@ const listAllOrders =  useCallback( () =>{
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Nombre:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.name}</span>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.name}</motion.span>
 </label>
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Apellido:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.lastname}</span>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.lastname}</motion.span>
 </label>
 
 </div>
@@ -470,12 +483,18 @@ className=' col-lg-6' >
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Dirección:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.address}</span>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.address}</motion.span>
 </label>
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Ciudad:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.city}</span></label>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.city}</motion.span></label>
 </div>
 <div className='input-group '>
 
@@ -485,17 +504,23 @@ className=' col-lg-6' >
 <span 
 className='op50 textchiquito'
 >Teléfono:</span>&nbsp;&nbsp;
-<span className='spanData ml-n3 btn btn-link text-break'
+<motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}} className='spanData ml-n3 btn btn-link text-break'
  title={client.prefijo + " " +client.codigo + "-" + client.telephone}
 onClick={(e)=>goToWP(e.target.title)}
->{client.prefijo + " " + client.codigo + "-" + client.telephone}</span>
+>{client.prefijo + " " + client.codigo + "-" + client.telephone}</motion.span>
 </label>
 
 
 <label
 className=' col-lg-6' >
   <span className='op50 textchiquito'>Dni:</span>&nbsp;&nbsp;
-  <span className='spanData text-break'>{client.dni}</span>
+   <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.dni}</motion.span>
   </label>
 </div>
 <div className='input-group mb-1 '>
@@ -506,7 +531,10 @@ client.fijo === "" ? null :
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Teléfono fijo:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.fijo}</span></label>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.fijo}</motion.span></label>
 
 
 }
@@ -514,12 +542,18 @@ className=' col-lg-6' >
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Email:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.email}</span>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.email}</motion.span>
 </label>
 <label
 className=' col-lg-6' >
 <span className='op50 textchiquito'>Observación:</span>&nbsp;&nbsp;
-<span className='spanData text-break'>{client.observation}</span>
+ <motion.span 
+     style={{ opacity: "0"}}
+     animate={{ opacity: 1 }}
+   transition={{ ease: "easeIn", duration: 0.3}}>{client.observation}</motion.span>
 </label>
 </div>
 </div>
@@ -528,7 +562,10 @@ className=' col-lg-6' >
     }
   </div>
 :
-<div id="editClient" className='mt-1  text-left  '>
+<motion.div 
+style={{ opacity: "0"}}
+animate={{ opacity: 1 }}
+transition={{ ease: "easeIn", duration: 0.3}} id="editClient" className='mt-1  text-left  '>
 
 
 <div  className='mt-2'>
@@ -702,7 +739,7 @@ className=' col-lg-12' >
 </div>
 </div>
          
-</div>
+</motion.div>
 
 }
 
@@ -779,7 +816,7 @@ onChange={(e)=>searchForState(e.target.value)}
 
 <tbody>
     {
-
+      
 searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
 
 
@@ -836,13 +873,18 @@ searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
     } catch (error) {
       console.log(error)
     }
+    
 }
 
 
 
 
         return(
-          <tr key={order._id}>
+
+          <motion.tr 
+style={{ opacity: "0"}}
+animate={{ opacity: 1 }}
+transition={{ ease: "easeIn", duration: 0.4}} key={order._id}>
         <th scope='row'><button
                         value={order._id}
                         onClick={(e)=>seeOrder(e.target.value)}
@@ -868,9 +910,10 @@ searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
                    
 
                      }
-          </tr>
+          </motion.tr>
         )
       })
+      
     }
 </tbody>
 </table>
@@ -883,6 +926,7 @@ searchFilter.slice(0, 2550).sort(function(a, b){return a-b}).map(order =>{
 
 
     )
+    
 }
 
 export default SingleClient
