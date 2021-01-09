@@ -646,13 +646,13 @@ document.getElementById("password").value= ""
 
  <div className="button-group">
         <span
-           className=' btn btn-editar text-warning'
+           className=' text-warning point mr-4 borderbot font20'
            onClick={()=>editarOrden()}
            >
-              ?
+              Editar
           </span>
           <span
-           className='btn btn-close text-danger'
+           className=' text-danger point borderbot font20'
            onClick={()=>showClients()}>
               X
           </span>
