@@ -56,7 +56,7 @@ const [seeClient, setSeeClient]=useState(false);
     idOrders.classList.add('col-lg-12')
 }
   if(seOrHideOrders=== false){
-    // setSeOrHideOrders(true)
+    setSeOrHideOrders(true)
     setSeeClient(true)
 
   }
@@ -188,7 +188,7 @@ null
 
 
 className='border altoTotal border-info p-2 mb-3'>
-   <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders} setError={setError} changeBack={changeBack} loc={loc} setSeeClient={setSeeClient} seeClient={seeClient} />
+   <SingleOrder dataOrder={dataOrder} setDataOrder={setDataOrder} setSeOrHideOrder={setSeOrHideOrder} dataClient={dataClient} setDataClient={setDataClient} setSeOrHideOrders={setSeOrHideOrders} setError={setError} changeBack={changeBack} loc={loc} setSeeClient={setSeeClient} seeClient={seeClient} seOrHideOrders={seOrHideOrders} setSeeClient={setSeeClient}/>
 
 
 

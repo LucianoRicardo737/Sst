@@ -5,7 +5,7 @@ const ModalValidate = ({setPassword, sendEditOrder}) => {
     return (
         <div>
       
-        <div className="modal fade" id="confirmEditClient" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="confirmEditOrder" data-backdrop="static" data-keyboard="false" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">

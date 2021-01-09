@@ -188,8 +188,8 @@ const [render,setRender]=useState(true);
 
 
       let idOrders = document.getElementById('idOrders');
-    idOrders.classList.add('col-lg-6')
-    idOrders.classList.remove('col-lg-12')
+      idOrders.classList.add('col-lg-6')
+      idOrders.classList.remove('col-lg-12')
     }
 
 

@@ -138,7 +138,7 @@ const Clients = memo(({setSeOrHideOrders,setDataClient,setSeOrHideNewClient,setS
               <div className=''>
               <span
                 onClick={closeClients}
-                className='btn btn-close text-danger'
+                className=' text-danger point borderbot font20'
                   >X</span>
             </div>
            }

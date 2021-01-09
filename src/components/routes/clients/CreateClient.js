@@ -101,8 +101,10 @@ const CreateClient = ({setSeOrHideNewClient, setError, setExito}) => {
 
   <div className="col-lg-12 text-left">
 
-        <h4>NUEVO CLIENTE</h4>
+        <h4>Crear Nuevo Cliente</h4>
+        <hr></hr>
       </div>
+      
   <div className="col-md-4 ">
 
     <input
@@ -203,23 +205,23 @@ const CreateClient = ({setSeOrHideNewClient, setError, setExito}) => {
   id='observation'
   onChange={handleChangeText} ></textarea>
   </div>
-<div  className='row col-md-12 justify-content-end'>
+<div  className='row col-md-12 justify-content-end mt-2 mb-n2'>
 
-<div className="col-md-1 borderButtonGreen">
+<div className="col-md-1 ">
 
 <span
 type="button"
 data-dismiss="modal"
 onClick={()=>submit()}
-className="btn btn-check text-success ">
-    ✔</span>
+className="text-success point mr-4 borderbot font20 ">
+    Confirmar</span>
 
     </div>
-    <div className="col-md-1 borderButtonRed  mr-2">
+    <div className="col-md-1   mr-2">
 
 <span
 type="button"
-className="btn btn-close text-danger "
+className="text-danger point borderbot font20"
 data-dismiss="modal"
 onClick={hideNewClient}>
     X</span>

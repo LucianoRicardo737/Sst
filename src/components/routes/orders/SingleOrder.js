@@ -13,7 +13,7 @@ import { motion } from 'framer-motion'
 import ModalValidateOrder from '../modals/Modal_ValidateOrder';
 
 
-export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders,setError, changeBack, loc}) => {
+export const SingleOrder = ({dataOrder,setDataOrder,setSeOrHideOrder, dataClient,setDataClient,setSeOrHideOrders,seOrHideOrders,setError,setSeeClient, changeBack, loc}) => {
 
 
 //Datos iniciales para mensajes
@@ -85,10 +85,14 @@ const [datosOrdenModificada, setDatosOrdenModificada]=useState(initialOrder)
 //Mostrar Clientes o cerrar single order
 const showClients = () =>{
   if(loc === "/taller"){
+   
+    
+  
   changeBack()
+  setSeeClient(false)
 }
   setSeOrHideOrder(false)
-}
+} 
 
 //Actualizar datos de ordenes
 const actualizarDatos = useCallback(() =>{
@@ -629,14 +633,14 @@ document.getElementById("password").value= ""
  <div className="button-group mb-n4">
 
  <span
-  className=' btn btn-editar text-success mr-4'
-  data-toggle="modal" data-target="#confirmEditClient"
+  className='text-success point mr-4 borderbot font20'
+  data-toggle="modal" data-target="#confirmEditOrder"
   // onClick={()=>sendEditClient()}
   >
-     ✔
+     confirmar
  </span> 
  <span
-  className='btn btn-close text-danger'
+  className='text-danger point borderbot font20'
   onClick={()=>cancelarEditarOrden()}
   >
     X

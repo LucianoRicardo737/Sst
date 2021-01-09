@@ -417,14 +417,14 @@ const listAllOrders =  useCallback( () =>{
  <div className="button-group mb-n4">
 
  <span
-  className=' btn btn-editar text-success mr-4'
+  className='text-success point mr-4 borderbot font20'
   data-toggle="modal" data-target="#confirmEditClient"
   // onClick={()=>sendEditClient()}
   >
-     ✔
+     Confirmar
  </span> 
  <span
-  className='btn btn-close text-danger'
+  className='text-danger point borderbot font20'
   onClick={()=>cancelEdit()}>
     X
  </span> 
@@ -433,12 +433,12 @@ const listAllOrders =  useCallback( () =>{
 
  <div className="button-group">
         <span
-           className=' btn btn-editar text-warning'
+           className=' text-warning point mr-4 borderbot font20'
            onClick={()=>editClientOn()}>
-              ?
+              Editar
           </span>
           <span
-           className='btn btn-close text-danger'
+           className='text-danger point borderbot font20'
            onClick={()=>backToOrders()}>
               X
           </span>
