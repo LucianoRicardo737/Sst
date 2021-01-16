@@ -28,3 +28,6 @@ Frontend:
 
 
 ![image](https://raw.github.com/LucianoRicardo737/Sst/main/Imagenes/1.png)
+
+
+![image](https://raw.github.com/LucianoRicardo737/Sst/main/Imagenes/2.png)
