@@ -79,15 +79,9 @@ const [verEditarOrden, setVerEditarOrden] = useState(false)
 const [datosOrdenModificada, setDatosOrdenModificada]=useState(initialOrder)
 
 
-
-  
-
 //Mostrar Clientes o cerrar single order
 const showClients = () =>{
   if(loc === "/taller"){
-   
-    
-  
   changeBack()
   setSeeClient(false)
 }
@@ -106,18 +100,12 @@ const actualizarDatos = useCallback(() =>{
 },[dataOrder,user.id,setMessageData])
 
 
-
-
-
 useEffect(()=>{
   actualizarDatos();
   return()=>{
     setRender(false)
   };
 },[dataOrder,actualizarDatos,render,setMessageData])
-
-
-
 
 
   const chargeNewPrice =  (e) =>{
@@ -127,8 +115,6 @@ useEffect(()=>{
       console.log(error)
     }
   }
-
-  
 
 
 //Enviar mensaje
@@ -294,14 +280,8 @@ useEffect(()=>{
       
       let stateValueSelect = document.getElementById('state');
       stateValueSelect.selectedIndex = 0;
-      
       document.getElementById('password').value = ""
-     
-      
       setPassword()
-   
-    
-
 
         socket.emit('message'); 
 
@@ -310,8 +290,6 @@ useEffect(()=>{
      
         setDataOrder(order?.data);
        
-
-
      }
     } catch (err) {
 
@@ -339,13 +317,9 @@ useEffect(()=>{
       'labLERsst-auth-token': token
     }};
 
-
     let client = await Axios.get(`http://${IP}:${PORT}/clientes/` + e, config);
-
-
     setDataClient(client?.data);
     setSeOrHideOrders(false);
-
   }
 
 
