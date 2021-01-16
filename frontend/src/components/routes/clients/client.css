@@ -1,0 +1,37 @@
+.marginbot{
+    margin-bottom: 10px;
+}
+.overflow{
+    overflow-x: auto;
+    height: 487px !important;
+
+}
+.divClientes{
+  height: 670px;
+}
+.titleFontClients{
+  font-size: 22px;
+}
+.telep{
+  color: rgb(3, 58, 3);
+}
+.whatsapp{
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 10px;
+
+}
+.whatsapp:hover{
+  padding: 6px;
+
+}
+.email{
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 10px;
+
+}
+.email:hover{
+
+  padding: 6px;
+}

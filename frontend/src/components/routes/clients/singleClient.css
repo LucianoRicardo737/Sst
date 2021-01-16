@@ -1,0 +1,19 @@
+.spanData{
+    color: black;
+}
+.noradius{
+    border-radius: 0px !important;
+}
+.overflowSingle{
+    overflow-x: auto;
+    height: 280px !important;
+    width: 100%;
+}
+/* .wid{
+    height: 368px !important;
+    width: 100%;
+} */
+.titleFont{
+  font-size: 22px;
+}
+
