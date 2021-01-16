@@ -24,3 +24,10 @@ Frontend:
 "react-dom": "^17.0.1",
 "react-router-dom": "^5.2.0",
 "socket.io-client": "^3.0.3"
+
+
+
+![image](https://raw.github.com/LucianoRicardo737/Sst/main/Imagenes/1.png)
+
+
+![image](https://raw.github.com/LucianoRicardo737/Sst/main/Imagenes/2.png)
